@@ -15,7 +15,7 @@ func (s *MediaRouter) InitMediaRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
 	router := Router.Group("algorithm/media", middleware.TimeoutMiddleware(global.TimeOut))
 	api := v1.ApiGroupApp.AlgoGroup.MediaApi
 	{
-		router.POST("add", api.AddMedia)
+		router.POST("add", api.ConfMedia)
 		router.GET("get", api.GetMedia)
 		router.POST("list", api.GetDevices)
 		router.GET("live", api.GetLiveUrl)

@@ -28,10 +28,13 @@ func Routers() *gin.Engine {
 		algoRouter.InitImageRouter(PublicGroup)
 		algoRouter.InitKaolaRouter(PublicGroup)
 		algoRouter.InitMediaRouter(PublicGroup)
+
 		algoRouter.InitQueryRouter(PublicGroup)
 		algoRouter.InitHostRouter(PublicGroup)
 		algoRouter.InitConfigRouter(PublicGroup)
 		algoRouter.InitRegisterRouter(PublicGroup)
+
+		algoRouter.InitTestAlarmRouter(PublicGroup)
 
 	}
 	logger.Info("Router Init Ok")

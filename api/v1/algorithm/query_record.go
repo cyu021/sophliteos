@@ -43,17 +43,25 @@ func (b *QueryApi) GetRecord(c *gin.Context) {
 	var items []mvc.AlarmReqItem
 
 	for _, record := range records {
-		var alarmInfo mvc.AlarmInfo
-		json.Unmarshal([]byte(record.JsonDate), &alarmInfo)
 
-		imagePath := fmt.Sprintf("/algorithm/image?cameraId=%s&type=%s&fileName=%s", record.CameraId, record.Type, record.Filename)
+		smallImagePath := fmt.Sprintf("/algorithm/image?taskId=%s&type=%d&fileName=%s", record.TaskId, record.Type, record.SamllPictureFilename)
+		bigImagePath := fmt.Sprintf("/algorithm/image?taskId=%s&fileName=%s", record.TaskId, record.BigPictureFilename)
 		item := mvc.AlarmReqItem{
-			DeviceName: record.CameraId,
-			Image:      imagePath,
+			Id:         int(record.ID),
+			TaskId:     record.TaskId,
+			SrcID:      record.SrcID,
+			FrameIndex: record.FrameIndex,
+			Type:       record.Type,
+			BigImage:   bigImagePath,
+			SmallImage: smallImagePath,
 			Time:       record.Date,
-			AlarmType:  record.Type,
-			Boxes:      alarmInfo.Boxes,
-			ItemsInBox: alarmInfo.Extra.ItemsInBox,
+			Box: mvc.Box{
+				LeftTopY:  record.LeftTopY,
+				LeftTopX:  record.LeftTopX,
+				RightBtmY: record.RightBtmY,
+				RightBtmX: record.RightBtmX,
+			},
+			Extend: record.Extend,
 		}
 		items = append(items, item)
 	}
@@ -72,31 +80,41 @@ func (b *QueryApi) GetRecord(c *gin.Context) {
 
 }
 
+func (b *QueryApi) GetQueryInfo(c *gin.Context) {
+	var taskIds, srcIds []string
+	var types []int
+	database.DB.Model(&mvc.Record{}).Pluck("distinct(task_id)", &taskIds)
+	database.DB.Model(&mvc.Record{}).Pluck("distinct(src_id)", &srcIds)
+	database.DB.Model(&mvc.Record{}).Pluck("distinct(type)", &types)
+
+	queryList := mvc.QueryInfo{
+		Types:   types,
+		TaskIds: taskIds,
+		SrcIds:  srcIds,
+	}
+
+	c.JSON(http.StatusOK, mvc.Success(queryList))
+
+}
+
 func (b *QueryApi) ModSize(c *gin.Context) {
 	var maxSize struct {
 		MaxSize int64 `json:"maxSize"`
 	}
-	body, _ := io.ReadAll(c.Request.Body)
-	err := json.Unmarshal(body, &maxSize)
-	if err != nil {
-		c.JSON(http.StatusOK, mvc.Fail(-1, "JSON解析失败"))
+	if err := c.ShouldBindJSON(&maxSize); err != nil {
+		c.JSON(http.StatusOK, mvc.FailWithMsg(-1, "参数错误"))
 		return
 	}
 
-	conf := &config.Conf
-	conf.Lock()
-	v := conf.GetViper()
-	v.Set("dir.maxsize", maxSize.MaxSize)
-	err = v.WriteConfig()
-	conf.Unlock()
-	fmt.Println(maxSize.MaxSize)
+	global.SystemConf.Picture.MaxSize = maxSize.MaxSize
+
+	err := config.SaveConfig()
 	if err != nil {
 		c.JSON(http.StatusOK, mvc.Fail(-1, "set error"))
 		return
 	}
-	clearDisk()
+	go clearDisk()
 	c.JSON(http.StatusOK, mvc.Ok())
-
 }
 
 func queryRecord(algoQuery mvc.AlgoQuery) ([]mvc.Record, int) {
@@ -117,16 +135,22 @@ func queryRecord(algoQuery mvc.AlgoQuery) ([]mvc.Record, int) {
 		vars = append(vars, &algoQuery.EndTime)
 	}
 
-	// 添加 DeviceName 条件
-	if algoQuery.DeviceName != "" {
-		query = query + " and camera_id = ? "
-		vars = append(vars, algoQuery.DeviceName)
+	// 添加 task_id 条件
+	if algoQuery.TaskID != "" {
+		query = query + " and task_id = ? "
+		vars = append(vars, algoQuery.TaskID)
+	}
+
+	// 添加 task_id 条件
+	if algoQuery.SrcID != "" {
+		query = query + " and src_id = ? "
+		vars = append(vars, algoQuery.SrcID)
 	}
 
 	// 添加 Alarms 条件
-	if len(algoQuery.Alarms) > 0 {
+	if len(algoQuery.Types) > 0 {
 		alarmConditions := []string{}
-		for _, alarm := range algoQuery.Alarms {
+		for _, alarm := range algoQuery.Types {
 			alarmConditions = append(alarmConditions, "type = ?")
 			vars = append(vars, alarm)
 		}
@@ -145,18 +169,13 @@ func queryRecord(algoQuery mvc.AlgoQuery) ([]mvc.Record, int) {
 }
 
 func getSize() (int64, int64) {
-	size, err := calculateSize(global.PicDir)
+	size, err := calculateSize(global.SystemConf.Picture.Dir)
 	if err != nil {
 		logger.Error("Unable to parse du output")
 		return 0, 0
 	}
-	conf := &config.Conf
-	conf.Lock()
-	v := conf.GetViper()
-	maxSize := v.GetInt64("dir.maxsize")
-	conf.Unlock()
 
-	return size, maxSize * 1024 * 1024
+	return size, global.SystemConf.Picture.MaxSize * 1024 * 1024
 }
 
 func formatSize(size int64) string {
@@ -198,29 +217,17 @@ func calculateSize(path string) (int64, error) {
 }
 
 func clearDisk() {
-	usedSize, maxSize := getSize()
-	num := (usedSize - maxSize) / 1024 / 256
-
-	var total int64
-	db := database.DB.Model(&mvc.Record{})
-	db.Count(&total)
-	if num > total {
-		num = total
-	}
-	if num <= 0 {
-		return
-	}
-	logger.Info("删除告警记录，数量：%d\n", num)
-	removeAlarmRecode(num)
-
-	for i := 0; i < 100; i++ {
-		usedSize, maxSize = getSize()
+	num := 0
+	for i := 0; i < 800; i++ {
+		usedSize, maxSize := getSize()
 		if usedSize > maxSize {
 			removeAlarmRecode(1)
+			num++
 		} else {
 			break
 		}
 	}
+	logger.Info("删除告警记录，数量：%d\n", num)
 }
 
 func removeAlarmRecode(num int64) {
@@ -232,7 +239,7 @@ func removeAlarmRecode(num int64) {
 
 	// 删除记录
 	for _, record := range records {
-		filePath := global.PicDir + "/" + record.CameraId + "/" + record.Type + "/" + record.Filename
+		filePath := global.SystemConf.Picture.Dir + "/" + record.TaskId + "/" + strconv.Itoa(record.Type) + "/" + record.SamllPictureFilename
 		err := os.Remove(filePath)
 		if err != nil {
 			logger.Error("无法删除文件：%v\n", err)
@@ -241,5 +248,19 @@ func removeAlarmRecode(num int64) {
 		if err := db.Delete(&record).Error; err != nil {
 			logger.Error("无法删除记录：%v\n", err)
 		}
+		if isNotInRecodes(record.BigPictureFilename) {
+			filePath := global.SystemConf.Picture.Dir + "/" + record.TaskId + "/" + record.BigPictureFilename
+			err := os.Remove(filePath)
+			if err != nil {
+				logger.Error("无法删除文件：%v\n", err)
+			}
+		}
+
 	}
+}
+
+func isNotInRecodes(name string) bool {
+	var record mvc.Record
+	notFound := database.DB.Where("big_picture_filename = ?", name).First(&record).RecordNotFound()
+	return notFound
 }

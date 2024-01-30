@@ -1,4 +1,3 @@
-# SOPHLITEOS算法业务
 ## 目录结构
 * api: 接口业务逻辑处理
 * build: 编译打包脚本文件
@@ -41,4 +40,3 @@ tar -xvf algoliteos-amd64.tgz && sudo ./install.sh
 
 - 安装arm版本  
 tar -xvf algoliteos-arm64.tgz && sudo ./install.sh
-

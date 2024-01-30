@@ -7,4 +7,5 @@ type AlgorithmGroup struct {
 	MediaApi
 	QueryApi
 	HostApi
+	TestApi
 }

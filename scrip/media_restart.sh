@@ -66,7 +66,6 @@ get_ip
 echo "IP地址：$local_ip"
 
 
-
 echo "修改/etc/hosts....."
 sed -i '/clServer/d' /etc/hosts
 sed -i '/mediagateway/d' /etc/hosts
@@ -75,16 +74,12 @@ echo $local_ip mediagateway >> /etc/hosts
 echo "修改完成"
 
 
-echo "导入镜像....."
-sudo docker load -i license_service.tar.gz
-sudo docker load -i media_gateway.tar.gz
-sudo docker load -i device_detector.tar.gz
-sudo docker load -i mysql.tar.gz
-echo "导入镜像完成"
+echo "删除流媒体容器....."
+sudo docker run -d -p 4406:3306 --restart always  --name media-mysql -e MYSQL_ROOT_PASSWORD='Bitmain_(root123)'  ubuntu/mysql:latest
 
-echo "启动流媒体容器....."
-sudo docker run -d -p 4406:3306 --name media-mysql --restart always  -e MYSQL_ROOT_PASSWORD='Bitmain_(root123)'  mysql:5.7
-sudo docker run -itd --name media_gateway --restart always  --net host media_gateway -bind_ip $local_ip -db_ip $local_ip -db_port 4406 -db_user root -db_pass 'Bitmain_(root123)'
-sudo docker run -itd  --name device_detector --restart always  --net host device_detector
-sudo docker run -itd --name license_service --restart always  -p 26085:10085 license_service
+sudo docker run -itd --restart always  --name media_gateway --net host media_gateway -bind_ip 127.0.0.1 -db_ip 127.0.0.1 -db_port 4406 -db_user root -db_pass 'Bitmain_(root123)'
+
+sudo docker run -itd --restart always   --name device_detector --net host --restart always device_detector
+
+sudo docker run -itd  --restart always --name license_service --restart always -p 26085:10085 license_service
 echo "流媒体容器启动成功"

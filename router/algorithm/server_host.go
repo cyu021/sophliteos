@@ -30,6 +30,9 @@ func (s *ServerHostRouter) InitRegisterRouter(Router *gin.RouterGroup) (R gin.IR
 	{
 		router.GET("register", api.GetRegisterHost)
 
+		router.POST("alarm/upload/mod", api.ModAlarmIP)
+		router.GET("alarm/upload/get", api.GetAlarmIP)
+
 	}
 
 	return router

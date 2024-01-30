@@ -12,12 +12,19 @@ import (
 type ImageApi struct{}
 
 func (b *ImageApi) GetImage(c *gin.Context) {
-	id := c.Query("cameraId")
+	taskId := c.Query("taskId")
 	event := c.Query("type")
 	fileName := c.Query("fileName")
 
+	var file *os.File
+	var err error
 	// 打开图片文件
-	file, err := os.Open(global.PicDir + "/" + id + "/" + event + "/" + fileName)
+	if event == "" {
+		file, err = os.Open(global.SystemConf.Picture.Dir + "/" + taskId + "/" + fileName)
+	} else {
+		file, err = os.Open(global.SystemConf.Picture.Dir + "/" + taskId + "/" + event + "/" + fileName)
+	}
+
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Unable to open image")
 		return
@@ -31,4 +38,9 @@ func (b *ImageApi) GetImage(c *gin.Context) {
 		c.String(http.StatusInternalServerError, "Unable to send image")
 		return
 	}
+}
+
+func (b *ImageApi) GetVedio(c *gin.Context) {
+	pathVedio := c.Query("path")
+	c.File(pathVedio)
 }

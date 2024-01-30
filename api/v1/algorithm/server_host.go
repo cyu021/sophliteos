@@ -2,11 +2,11 @@ package algorithm
 
 import (
 	"algoliteos/config"
+	"algoliteos/global"
 	"algoliteos/logger"
 	"algoliteos/mvc"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -33,6 +33,7 @@ func init() {
 	cornRegister.Start()
 }
 
+// 注册到sophliteos服务
 func register() {
 	var req struct {
 		Msg  string `json:"msg"`
@@ -40,7 +41,7 @@ func register() {
 	}
 	logger.Info("尝试注册sophliteos服务")
 
-	data := NewRequestWithHeaders("127.0.0.1:8080/api/register", "GET", nil, nil)
+	data := mvc.NewRequestWithHeaders("127.0.0.1:8080/api/register", "GET", nil, nil)
 	json.Unmarshal(data, &req)
 
 	if req.Msg != "ok" {
@@ -50,52 +51,66 @@ func register() {
 	cornRegister.Remove(registerEntryID)
 }
 
-func (b *HostApi) AddServerHost(c *gin.Context) {
-	var serverHost MediaHost
-	body, _ := io.ReadAll(c.Request.Body)
-	err := json.Unmarshal(body, &serverHost)
-	if err != nil {
-		c.JSON(http.StatusOK, mvc.Fail(-1, "JSON解析失败"))
-		return
-	}
-
-	conf := &config.Conf
-	conf.Lock()
-	v := conf.GetViper()
-	v.Set("algorithm.host", serverHost.Ip+":"+strconv.Itoa(serverHost.Port))
-	// 将更改保存到配置文件
-	err = v.WriteConfig()
-	conf.Unlock()
-
-	if err != nil {
-		c.JSON(http.StatusOK, mvc.Fail(-1, "set error"))
-		return
-	}
-	c.JSON(http.StatusOK, mvc.Ok())
-}
-
-func (b *HostApi) GetServerHost(c *gin.Context) {
-	res := getHost()
-	parts := strings.Split(res, ":")
-	port, _ := strconv.Atoi(parts[1])
-	mediaHost := MediaHost{
-		Ip:   parts[0],
-		Port: port,
-	}
-	c.JSON(http.StatusOK, mvc.Success(mediaHost))
-}
-
+// 接收sophliteos服务的检测
 func (b *HostApi) GetRegisterHost(c *gin.Context) {
 	c.JSON(http.StatusOK, mvc.Ok())
 }
 
-func getHost() string {
-	conf := &config.Conf
-	conf.Lock()
-	v := conf.GetViper()
-	res := v.GetString("algorithm.host")
-	conf.Unlock()
+// 获取告警ip
+func (b *HostApi) GetAlarmIP(c *gin.Context) {
+	host, _, err := mvc.ExtractIP(global.SystemConf.UploadHost)
+	if err != nil {
+		c.JSON(http.StatusOK, mvc.Fail(-1, "地址错误"))
+	}
+	c.JSON(http.StatusOK, mvc.Success(host))
+}
 
-	return res
+// 配置告警ip
+func (b *HostApi) ModAlarmIP(c *gin.Context) {
+	var req mvc.UploadIp
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusOK, mvc.FailWithMsg(-1, "参数错误"))
+		return
+	}
 
+	global.SystemConf.UploadHost = req.Ip + ":8081"
+
+	err := config.SaveConfig()
+	if err != nil {
+		c.JSON(http.StatusOK, mvc.Fail(-1, "配置失败"))
+		return
+	}
+
+	c.JSON(http.StatusOK, mvc.Ok())
+}
+
+// 配置算法服务IP和端口
+func (b *HostApi) AddServerHost(c *gin.Context) {
+	var serverHost mvc.AlgorithmHost
+	if err := c.ShouldBindJSON(&serverHost); err != nil {
+		c.JSON(http.StatusOK, mvc.FailWithMsg(-1, "参数错误"))
+		return
+	}
+
+	global.SystemConf.AlgorithmHost = serverHost.Ip + ":" + strconv.Itoa(serverHost.Port)
+
+	err := config.SaveConfig()
+	if err != nil {
+		c.JSON(http.StatusOK, mvc.Fail(-1, "配置失败"))
+		return
+	}
+
+	c.JSON(http.StatusOK, mvc.Ok())
+}
+
+// 获取算法服务ip和端口，接口
+func (b *HostApi) GetServerHost(c *gin.Context) {
+
+	parts := strings.Split(global.SystemConf.AlgorithmHost, ":")
+	port, _ := strconv.Atoi(parts[1])
+	algoHost := mvc.AlgorithmHost{
+		Ip:   parts[0],
+		Port: port,
+	}
+	c.JSON(http.StatusOK, mvc.Success(algoHost))
 }

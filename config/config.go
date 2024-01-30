@@ -1,11 +1,15 @@
 package config
 
 import (
+	"algoliteos/global"
 	"algoliteos/logger"
+	"fmt"
+	"os"
 	"sync"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -13,66 +17,21 @@ const (
 )
 
 var Conf Config
-var JsonConf Config
-var Event Config
 
 func LoadConfig() {
 	Conf = Config{}
-	Conf.name = "algoliteos"
 	Conf.v = viper.New()
 
 	v := Conf.Application.v
-	v.AddConfigPath(configurePath)
-	v.SetConfigName(Conf.name)
+	v.SetConfigFile("/etc/sophliteos/config/algoliteos.yaml")
 	v.SetConfigType("yaml")
 
 	if err := v.ReadInConfig(); err != nil { // viper解析配置文件
-		logger.Info("load config path: %s, error: %s", configurePath, err)
+		fmt.Printf("load config path: %s, error: %s", configurePath, err)
 	}
 
-	Event = Config{}
-	Event.name = "events"
-	Event.v = viper.New()
-
-	k := Event.Application.v
-	k.AddConfigPath(configurePath)
-	k.SetConfigName(Event.name)
-	k.SetConfigType("yaml")
-
-	if err := k.ReadInConfig(); err != nil { // viper解析配置文件
-		logger.Info("load config path: %s, error: %s", configurePath, err)
-	}
-
-	JsonConf = Config{}
-	JsonConf.name = "event"
-	JsonConf.v = viper.New()
-
-	j := JsonConf.Application.v
-	j.AddConfigPath(configurePath)
-	j.SetConfigName(JsonConf.name)
-	j.SetConfigType("json")
-
-	if err := j.ReadInConfig(); err != nil { // viper解析配置文件
-		logger.Info("load config path: %s, error: %s", configurePath, err)
-	}
-
-	exists := true
-	if exists {
-		// 监控配置文件变化并热加载程序
-		watchConfig(v, func(in fsnotify.Event) {
-			logger.Info("Config file changed: %s", in.Name)
-			v.ReadInConfig()
-		})
-
-		watchConfig(k, func(in fsnotify.Event) {
-			logger.Info("Config file changed: %s", in.Name)
-			k.ReadInConfig()
-		})
-
-		watchConfig(j, func(in fsnotify.Event) {
-			logger.Info("Config file changed: %s", in.Name)
-			j.ReadInConfig()
-		})
+	if err := v.Unmarshal(&global.SystemConf); err != nil {
+		fmt.Printf("Unable to decode into struct, %s", err)
 	}
 
 }
@@ -115,4 +74,20 @@ func (sc *Config) Unlock() {
 func watchConfig(v *viper.Viper, callback func(in fsnotify.Event)) {
 	v.OnConfigChange(callback)
 	v.WatchConfig()
+}
+
+func SaveConfig() error {
+	out, err := yaml.Marshal(global.SystemConf)
+	if err != nil {
+		logger.Error("error marshalling yaml: %v", err)
+		return err
+	}
+
+	err = os.WriteFile("/etc/sophliteos/config/algoliteos.yaml", out, 0644) // 0644 是文件权限
+	if err != nil {
+		logger.Error("error marshalling yaml: %v", err)
+		return err
+	}
+
+	return nil
 }

@@ -10,10 +10,10 @@ import (
 	"fmt"
 	"image"
 	"image/jpeg"
-	"io"
 	"math/rand"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,60 +30,141 @@ func init() {
 	Rand = rand.New(source)
 }
 
-func (b *ReceiveAlarmApi) AlarmRev(c *gin.Context) {
+// 调试用
+func (b *ReceiveAlarmApi) AlarmRev1(c *gin.Context) {
+	// reqBody, _ := io.ReadAll(c.Request.Body)
+	// logger.Info("接受告警:%s", string(reqBody))
+
 	var alarmDate mvc.AlarmDate
-	body, _ := io.ReadAll(c.Request.Body)
-	json.Unmarshal(body, &alarmDate)
-
-	dir := global.PicDir + "/" + alarmDate.CameraId
-	if !fileIsExisted(dir) {
-		os.MkdirAll(dir, os.ModePerm)
-	}
-	dir = dir + "/" + alarmDate.AlarmType
-	if !fileIsExisted(dir) {
-		os.MkdirAll(dir, os.ModePerm)
+	if err := c.ShouldBindJSON(&alarmDate); err != nil {
+		logger.Error("告警接收失败，参数错误:%v", err)
+		c.JSON(http.StatusOK, mvc.FailWithMsg(-1, "参数错误"))
+		return
 	}
 
-	name := fmt.Sprintf("%c%c%d", Rand.Intn(26)+'A', Rand.Intn(26)+'A', alarmDate.Ts) + ".jpg"
-	if err := jpegSave(&alarmDate.Scene, dir+"/"+name); err != nil {
+	logger.Info("接受告警，%s", alarmDate.TaskID)
+
+	dir := global.SystemConf.Picture.Dir + "/" + alarmDate.TaskID
+	if !mvc.FileIsExisted(dir) {
+		os.MkdirAll(dir, os.ModePerm)
+	}
+
+	now := time.Now()
+	bigPicName := fmt.Sprintf("%c%c%d", Rand.Intn(26)+'A', Rand.Intn(26)+'A', now.Unix()) + ".jpg"
+	if err := jpegSave(&alarmDate.SceneImageBase64, dir+"/"+bigPicName); err != nil {
 		logger.Error("图片保存错误:%v", err)
-		c.JSON(http.StatusOK, mvc.Fail(1, "picture save error"))
+		c.JSON(http.StatusOK, mvc.Fail(-1, "picture save error"))
 		return
 	}
 
-	alarmInfo := mvc.AlarmInfo{
-		Boxes: alarmDate.Boxes,
-		Extra: alarmDate.Extra,
-	}
-	alarmInfoJson, err := json.Marshal(alarmInfo)
-	if err != nil {
-		logger.Error("序列化 JSON 错误:%v", err)
-		c.JSON(http.StatusOK, mvc.Fail(1, "error"))
-		return
-	}
+	for _, event := range alarmDate.AnalyzeEvents {
+		eventDir := global.SystemConf.Picture.Dir + "/" + alarmDate.TaskID + "/" + strconv.Itoa(event.Type)
+		if !mvc.FileIsExisted(eventDir) {
+			os.MkdirAll(eventDir, os.ModePerm)
+		}
+		smallPicName := fmt.Sprintf("%c%c%d", Rand.Intn(26)+'A', Rand.Intn(26)+'A', now.Unix()) + ".jpg"
+		if err := jpegSave(&event.ImageBase64, eventDir+"/"+smallPicName); err != nil {
+			logger.Error("图片保存错误:%v", err)
+			continue
+		}
 
-	record := mvc.Record{
-		CameraId: alarmDate.CameraId,
-		Type:     alarmDate.AlarmType,
-		Date:     alarmDate.Ts,
-		Filename: name,
-		JsonDate: string(alarmInfoJson),
-	}
-	if err = SaveRecord(record); err != nil {
-		logger.Error("写数据库错误:%v", err)
-		c.JSON(http.StatusOK, mvc.Fail(1, "error"))
-		return
+		jsonData, err := json.Marshal(event.Extend)
+		if err != nil {
+			logger.Error("解析Extend错误")
+		}
+
+		record := mvc.Record{
+			TaskId:             alarmDate.TaskID,
+			SrcID:              alarmDate.SrcID,
+			FrameIndex:         alarmDate.FrameIndex,
+			BigPictureFilename: bigPicName,
+
+			Type:                 event.Type,
+			Date:                 now.Unix(),
+			SamllPictureFilename: smallPicName,
+			LeftTopY:             event.Box.LeftTopY,
+			RightBtmY:            event.Box.RightBtmY,
+			LeftTopX:             event.Box.LeftTopX,
+			RightBtmX:            event.Box.RightBtmX,
+			Extend:               string(jsonData),
+		}
+		if err := SaveRecord(record); err != nil {
+			logger.Error("写数据库错误:%v", err)
+			continue
+		}
+
 	}
 
 	c.JSON(http.StatusOK, mvc.Ok())
 }
 
-func fileIsExisted(name string) bool {
-	_, err := os.Stat(name)
-	if err != nil {
-		return false
+func (b *ReceiveAlarmApi) AlarmRev(c *gin.Context) {
+	// reqBody, _ := io.ReadAll(c.Request.Body)
+	// logger.Info("接受告警:%s", string(reqBody))
+
+	var alarmDates []mvc.AlarmDate
+	if err := c.ShouldBindJSON(&alarmDates); err != nil {
+		logger.Error("告警接收失败，参数错误:%v", err)
+		c.JSON(http.StatusOK, mvc.FailWithMsg(-1, "参数错误"))
+		return
 	}
-	return true
+
+	logger.Info("接受告警，%s", alarmDates[0].TaskID)
+
+	for _, alarmDate := range alarmDates {
+		dir := global.SystemConf.Picture.Dir + "/" + alarmDate.TaskID
+		if !mvc.FileIsExisted(dir) {
+			os.MkdirAll(dir, os.ModePerm)
+		}
+
+		now := time.Now()
+		bigPicName := fmt.Sprintf("%c%c%d", Rand.Intn(26)+'A', Rand.Intn(26)+'A', now.Unix()) + ".jpg"
+		if err := jpegSave(&alarmDate.SceneImageBase64, dir+"/"+bigPicName); err != nil {
+			logger.Error("图片保存错误:%v", err)
+			c.JSON(http.StatusOK, mvc.Fail(-1, "picture save error"))
+			return
+		}
+
+		for _, event := range alarmDate.AnalyzeEvents {
+			eventDir := global.SystemConf.Picture.Dir + "/" + alarmDate.TaskID + "/" + strconv.Itoa(event.Type)
+			if !mvc.FileIsExisted(eventDir) {
+				os.MkdirAll(eventDir, os.ModePerm)
+			}
+			smallPicName := fmt.Sprintf("%c%c%d", Rand.Intn(26)+'A', Rand.Intn(26)+'A', now.Unix()) + ".jpg"
+			if err := jpegSave(&event.ImageBase64, eventDir+"/"+smallPicName); err != nil {
+				logger.Error("图片保存错误:%v", err)
+				continue
+			}
+
+			jsonData, err := json.Marshal(event.Extend)
+			if err != nil {
+				logger.Error("解析Extend错误")
+			}
+
+			record := mvc.Record{
+				TaskId:             alarmDate.TaskID,
+				SrcID:              alarmDate.SrcID,
+				FrameIndex:         alarmDate.FrameIndex,
+				BigPictureFilename: bigPicName,
+
+				Type:                 event.Type,
+				Date:                 now.Unix(),
+				SamllPictureFilename: smallPicName,
+				LeftTopY:             event.Box.LeftTopY,
+				RightBtmY:            event.Box.RightBtmY,
+				LeftTopX:             event.Box.LeftTopX,
+				RightBtmX:            event.Box.RightBtmX,
+				Extend:               string(jsonData),
+			}
+			if err := SaveRecord(record); err != nil {
+				logger.Error("写数据库错误:%v", err)
+				continue
+			}
+		}
+
+	}
+
+	c.JSON(http.StatusOK, mvc.Ok())
 }
 
 func jpegSave(base64ImageData *string, name string) error {
@@ -101,7 +182,7 @@ func jpegSave(base64ImageData *string, name string) error {
 	}
 
 	// 设置 JPEG 编码器的选项，包括图像质量（1-100，100表示最高质量）,数值越高，图片越清晰，磁盘占用也越高
-	options := jpeg.Options{Quality: 80}
+	options := jpeg.Options{Quality: int(global.SystemConf.Picture.Quality)}
 
 	// 图片保存
 	outputFile, err := os.Create(name)

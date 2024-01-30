@@ -7,4 +7,5 @@ type RouterGroup struct {
 	MediaRouter
 	QueryRouter
 	ServerHostRouter
+	TestAlarmRouter
 }

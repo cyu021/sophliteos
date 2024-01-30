@@ -15,6 +15,8 @@ func (s *ReceiveAlarmRouter) InitKaolaRouter(Router *gin.RouterGroup) (R gin.IRo
 	router := Router.Group("algorithm/task", middleware.TimeoutMiddleware(global.TimeOut))
 	api := v1.ApiGroupApp.AlgoGroup.TaskApi
 	{
+		router.GET("abilities", api.AbilitiesList)
+
 		router.POST("add", api.AddTask)
 		router.POST("modify", api.ModTask)
 		router.POST("delete", api.DeleteTask)
@@ -32,7 +34,7 @@ func (s *ReceiveAlarmRouter) InitConfigRouter(Router *gin.RouterGroup) (R gin.IR
 	router := Router.Group("algorithm/config", middleware.TimeoutMiddleware(global.TimeOut))
 	api := v1.ApiGroupApp.AlgoGroup.TaskApi
 	{
-		router.GET("get", api.GetTaskConfig)
+		router.POST("get", api.GetTaskConfig)
 		router.POST("mod", api.ModTaskConfig)
 
 	}

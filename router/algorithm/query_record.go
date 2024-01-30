@@ -16,6 +16,7 @@ func (s *QueryRouter) InitQueryRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
 	api := v1.ApiGroupApp.AlgoGroup.QueryApi
 	{
 		router.POST("list", api.GetRecord)
+		router.GET("info", api.GetQueryInfo)
 		router.POST("modSize", api.ModSize)
 
 	}
