@@ -1,0 +1,36 @@
+export default {
+  param: {
+    algoType: '算法类型',
+    minDetectRange: '最小检测范围',
+    alarmInterval: '告警间隔',
+    algoThreshold: '算法阈值',
+    paramConfig: '参数编辑',
+    selectTask: '选择算法任务',
+    channelDetail: '通道详情',
+    channel: '通道名称',
+    media: '流媒体服务',
+    channelStatus: '状态',
+    ratio: '分辨率',
+    protocol: '设备协议',
+    codeType: '编码格式',
+    algoList: '算法功能列表',
+    folowFrame: '跟踪帧间隔',
+    checkFrame: '检测帧间隔',
+    minRatio: '检测目标最小像素',
+    maxRatio: '检测目标最大像素',
+    setAlgoParams: '参数设置',
+  },
+  draw: {
+    clear: '清除绘制',
+    drawRegion: '绘制多边形区域',
+    drawRect: '绘制矩形区域',
+    drawLineDetect: '绘制检测线',
+    regionTip:
+      '点击鼠标绘制一个点，两个以上的点连成线，绘制三个及以上的点之后点击第一个点完成多边形绘制。双击取消未完成的绘制',
+    lineTip:
+      '点击鼠标绘制点，绘制两个点之后连城直线，从直线中心拉出一个箭头指向需要检测的方向，点击鼠标确认箭头位置完成绘制。双击取消未完成的绘制',
+    rectTip: '框选绘制矩形：按下鼠标、移动鼠标、抬起鼠标，完成绘制',
+    region: '检测区域',
+    line: '检测线',
+  },
+};

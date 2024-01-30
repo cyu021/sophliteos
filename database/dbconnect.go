@@ -1,17 +1,25 @@
 package database
 
 import (
-	"algoliteos/logger"
-	"algoliteos/mvc"
 	"database/sql"
+	"fmt"
 	"regexp"
+	"sophliteos/global"
+	"sophliteos/logger"
+	"sophliteos/pkg/dto"
+	"sophliteos/pkg/model"
+	"sophliteos/pkg/repo"
+
+	"strings"
+	"time"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // init only
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/mattn/go-sqlite3"
+	"github.com/robfig/cron/v3"
 
-	"algoliteos/config"
+	"sophliteos/config"
 )
 
 const sqlite3Go = "sqlite3_with_go_func"
@@ -43,6 +51,7 @@ func InitDB() {
 	conf.Lock()
 	v := conf.GetViper()
 	dbPath := v.GetString("db.path")
+	saveDays := v.GetInt64("db.save-days")
 	conf.Unlock()
 
 	sqlDb, err := sql.Open(sqlite3Go, dbPath)
@@ -56,11 +65,47 @@ func InitDB() {
 	} else {
 		DB.DB().SetMaxOpenConns(1)
 	}
+	global.DB = DB
 
 	DB.SingularTable(true)
 
-	_ = GetDBUtil(DB).CreateTableIfNotExist(&mvc.Record{}, "record_id", "id")
-	_ = GetDBUtil(DB).CreateTableIfNotExist(&mvc.AlgoTaskSql{}, "task_id", "id")
+	_ = GetDBUtil(DB).CreateTableIfNotExist(&repo.User{}, "user_id", "id")
+	_ = GetDBUtil(DB).CreateTableIfNotExist(&repo.Alarm{}, "alarm_id", "id")
+	_ = GetDBUtil(DB).CreateTableIfNotExist(&repo.OptLog{}, "opt_log_id", "id")
+	_ = GetDBUtil(DB).CreateTableIfNotExist(&model.Command{}, "id")
+	_ = GetDBUtil(DB).CreateTableIfNotExist(&dto.HostOperate{}, "id")
+	_, err = repo.QueryUserWithName(admin)
+	if err != nil && strings.EqualFold(recordNotFound, err.Error()) {
+		repo.SaveUser(&repo.User{
+			Model: gorm.Model{
+				ID: 1,
+			},
+			UserID:     "admin",
+			Status:     "",
+			UserName:   admin,
+			Password:   v.GetString("server.admin-password"),
+			Token:      "",
+			Address:    "",
+			Role:       "",
+			LoginTime:  time.Time{},
+			LockedTime: time.Time{},
+			ExpireTime: time.Time{},
+			Label:      "",
+		})
+	}
+
+	c := cron.New(cron.WithSeconds())
+	_, err = c.AddFunc("0 0 0 * * ?", func() {
+		date := time.Now().Add(-time.Hour * 24 * time.Duration(saveDays))
+		logger.Info("清理数据：%s %v", saveDays, date)
+		_ = repo.DeleteOldestAlarms()
+		_ = repo.DeleteOptLogByCreatedAt(date)
+	})
+	if err != nil {
+		fmt.Println("cron init err:", err)
+	}
+
+	c.Start()
 }
 
 // 创建表, 支持索引

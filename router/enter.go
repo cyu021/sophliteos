@@ -1,11 +1,13 @@
 package router
 
 import (
-	"algoliteos/router/algorithm"
+	"sophliteos/router/app"
+	"sophliteos/router/system"
 )
 
 type RouterGroup struct {
-	Algorithm algorithm.RouterGroup
+	System system.RouterGroup
+	App    app.RouterGroup
 }
 
 var RouterGroupApp = new(RouterGroup)

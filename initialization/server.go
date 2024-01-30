@@ -1,9 +1,10 @@
 package initialization
 
 import (
-	"algoliteos/global"
-	"algoliteos/logger"
 	"net/http"
+	"sophliteos/config"
+	"sophliteos/global"
+	"sophliteos/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,10 +14,16 @@ type server interface {
 }
 
 func InitServer(router *gin.Engine) server {
-	logger.Info("Starting HTTP service at %s", global.SystemConf.AlgoPort)
+	conf := &config.Conf
+	conf.Lock()
+	v := conf.GetViper()
+	address := v.GetString("server.port")
+	conf.Unlock()
+
+	logger.Info("Starting HTTP service at %s", address)
 
 	return &http.Server{
-		Addr:         ":" + global.SystemConf.AlgoPort,
+		Addr:         ":" + address,
 		Handler:      router,
 		ReadTimeout:  global.OtaTimeOut,
 		WriteTimeout: global.OtaTimeOut,

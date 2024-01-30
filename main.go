@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	"algoliteos/initialization"
-	"algoliteos/logger"
+	"sophliteos/initialization"
+	"sophliteos/logger"
 )
 
 func main() {
