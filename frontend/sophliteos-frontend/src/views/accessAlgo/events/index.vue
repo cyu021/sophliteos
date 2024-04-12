@@ -71,8 +71,11 @@
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px">
               <img style="object-fit: contain; height: 120px; width: 120px; max-width: 100%; max-height: 100%; border: 1px solid red" :src="`data:image/png;base64,${item.ImageBase64}`" />
             </div>
-            <div style="display: flex; flex-direction: column; max-width: 100%; align-items: center; justify-content: center; color: white">
-              {{ JSON.stringify(item.Extend.age) }}
+            <div style="display: flex; flex-direction: column; max-width: 100%; align-items: flex-start; justify-content: center; color: white">
+              <div>{{ 'TaskID: ' + item.TaskID }}</div>
+              <div>{{ 'SrcID: ' + item.SrcID }}</div>
+              <div>{{ 'label: ' + item.Extend.label }}</div>
+              <div>{{ 'Type: ' + item.Type }}</div>
             </div>
           </li>
         </ul>
@@ -113,7 +116,13 @@ const handleChange = (value) => {
     return ws.listen((data) => {
       console.log('onMounted 收到消息:', data[0].AnalyzeEvents);
 
-      const list = data[0].AnalyzeEvents.concat(itemList.value)
+      const newList = data[0].AnalyzeEvents;
+      newList.forEach(element => {
+        element.SrcID = data[0].SrcID
+        element.TaskID = data[0].TaskID
+      });
+
+      const list = newList.concat(itemList.value)
       console.log(list)
       itemList.value = list
 
