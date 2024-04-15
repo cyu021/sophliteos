@@ -110,7 +110,7 @@ const videoHeight = ref(600);
 const video = ref();
 let player = null;
 
-const itemList = ref([{TaskID: 'taskID', SrcID: 'srcID', Type: 'Type', Extend: {label: 'label'}}])
+const itemList = ref([])
 const options = ref([]);
 const handleChange = (value) => {
   console.log(`selected ${value}`);
