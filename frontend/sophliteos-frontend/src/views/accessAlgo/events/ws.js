@@ -1,5 +1,5 @@
 
-const wsUrl = "ws://192.168.0.188:5566/ws"
+const wsUrl = "ws://localhost:5566/ws"
 
 const websocket = new WebSocket(wsUrl);
 
