@@ -2,21 +2,13 @@
 const serverUrl = 'http://localhost:38081/dynamic';
 
 const list = () => {
-  // generate mock data
-  const data = [
-    { key: 1, annotator_name: 'full_structure', sts: 1 },
-    { key: 2, annotator_name: 'full_structure_2', sts: 0 },
-  ];
-  // return with a promise
-  return new Promise((resolve) => resolve(data));
-
-  // const url = `${serverUrl}/getDynamicModel`;
-  // return fetch(url, {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  // }).then((res) => res.json());
+  const url = `${serverUrl}/getDynamicModel`;
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((res) => res.json());
 };
 
 const upload = (file) => {

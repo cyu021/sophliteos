@@ -61,7 +61,7 @@
       "
     >
       <div style="font-size: 20px">
-        实时事件
+        Realtime events
       </div>
       <a-divider />
       <div style="background-color: white; overflow-y: auto; height: 100vh">
@@ -76,11 +76,11 @@
               <div>{{ 'label: ' + item.Extend.label }}</div>
               <div>{{ 'Type: ' + item.Type }}</div>
             </div>
-            <a-popover title="Title" trigger="click">
+            <a-popover title="Detail" trigger="click">
               <template #content>
                 <p>{{ JSON.stringify(item) }}</p>
               </template>
-              <a-button type="primary" style="align-self: center">详情</a-button>
+              <a-button type="primary" style="align-self: center">Detail</a-button>
             </a-popover>
           </li>
         </ul>
