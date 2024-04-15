@@ -1,4 +1,5 @@
 import { getVideosList, LivePreview } from '/@/api/dataSource/index';
+import { getAbilites } from '/@/api/task/index';
 
 const videosList = () => {
   return getVideosList()
@@ -8,9 +9,14 @@ const preview = (param) => {
   return LivePreview(param)
 }
 
+const getAbilitesTypes = () => {
+  return getAbilites()
+}
+
 const apis = {
   videosList,
   preview,
+  getAbilitesTypes,
 };
 
 /**

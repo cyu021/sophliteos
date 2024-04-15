@@ -61,7 +61,7 @@
       "
     >
       <div style="font-size: 20px">
-        Realtime events
+        Events
       </div>
       <a-divider />
       <div style="background-color: white; overflow-y: auto; height: 100vh">
@@ -74,11 +74,11 @@
               <div>{{ 'TaskID: ' + item.TaskID }}</div>
               <div>{{ 'SrcID: ' + item.SrcID }}</div>
               <div>{{ 'label: ' + item.Extend.label }}</div>
-              <div>{{ 'Type: ' + item.Type }}</div>
+              <div>{{ 'Type: ' + getTitleOfType(item.Type) }}</div>
             </div>
-            <a-popover title="Detail" trigger="click">
+            <a-popover title="Detail" trigger="click" placement="topLeft">
               <template #content>
-                <p>{{ JSON.stringify(item) }}</p>
+                <div style="white-space: pre-line;">{{ JSON.stringify(item.Extend, null, 2) }}</div>
               </template>
               <a-button type="primary" style="align-self: center">Detail</a-button>
             </a-popover>
@@ -112,8 +112,12 @@ let player = null;
 
 const itemList = ref([])
 const options = ref([]);
+
+let deviceId = null;
+
 const handleChange = (value) => {
   console.log(`selected ${value}`);
+  deviceId = value;
 
   apis.preview({ deviceId: value }).then((res) => {
     play(res)
@@ -122,7 +126,17 @@ const handleChange = (value) => {
     return ws.listen((data) => {
       console.log('onMounted 收到消息:', data[0].AnalyzeEvents);
 
-      const newList = data[0].AnalyzeEvents;
+      if (!deviceId) { return; }
+
+      const filterResult = data.filter((item) => {
+        item.SrcID == deviceId
+      })
+
+      if (filterResult.length == 0) {
+        return;
+      }
+
+      const newList = filterResult[0].AnalyzeEvents;
       newList.forEach(element => {
         element.SrcID = data[0].SrcID
         element.TaskID = data[0].TaskID
@@ -185,8 +199,23 @@ const drawRect = (x, y, width, height) => {
     ctx.stroke();
 }
 
+let types = [];
+
+const getTitleOfType = (type) => {
+  console.log(types, type)
+  if (types.length == 0) return type
+
+  return types.filter(item => item.type == type)[0].name
+}
+
 onMounted(() => {
   console.log('on mounted')
+
+  apis.getAbilitesTypes().then((res) => {
+    console.log('===>>>>', res)
+    types = res;
+  })
+
   apis.videosList().then((res) => {
     options.value = res.map((item) => ({
       value: item.deviceId,
