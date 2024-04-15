@@ -22,8 +22,7 @@
         display: flex;
         flex-direction: column;
         padding: 20px;
-        flex: 2;
-        background-color: gray;
+        flex: 1;
       "
     >
 
@@ -49,7 +48,7 @@
           width="1920"
           height="1080"
           :style="{ width: videoWidth + 'px', height: videoHeight + 'px' }"
-          style="border: 1px solid red; position: absolute; top: 0; left: 0"></canvas>
+          style="position: absolute; top: 0; left: 0"></canvas>
       </div>
     </div>
     <div
@@ -66,17 +65,23 @@
       </div>
       <a-divider />
       <div style="background-color: white; overflow-y: auto; height: 100vh">
-        <ul style="list-style: none; padding: 0">
-          <li v-for="(item, index) in itemList" :key="index" style="display:flex; flex-direction: row; margin-bottom: 10px; border-radius: 10px; border: 1px solid #0F1E2F; background-color: #0F1E2F; height: 140px; padding: 10px">
+        <ul style="list-style: none; padding: 10px">
+          <li v-for="(item, index) in itemList" :key="index" style="display:flex; flex-direction: row; margin-bottom: 10px; border: 1px solid #e8e8e8; border-radius: 10px; height: 140px; padding: 10px">
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px">
-              <img style="object-fit: contain; height: 120px; width: 120px; max-width: 100%; max-height: 100%; border: 1px solid red" :src="`data:image/png;base64,${item.ImageBase64}`" />
+              <img style="background-color: gray; object-fit: contain; height: 120px; width: 120px; max-width: 100%; max-height: 100%; border: 1px solid red" :src="`data:image/png;base64,${item.ImageBase64}`" />
             </div>
-            <div style="display: flex; flex-direction: column; max-width: 100%; align-items: flex-start; justify-content: center; color: white">
+            <div style="flex-grow: 1; display: flex; flex-direction: column; max-width: 100%; align-items: flex-start; justify-content: center">
               <div>{{ 'TaskID: ' + item.TaskID }}</div>
               <div>{{ 'SrcID: ' + item.SrcID }}</div>
               <div>{{ 'label: ' + item.Extend.label }}</div>
               <div>{{ 'Type: ' + item.Type }}</div>
             </div>
+            <a-popover title="Title" trigger="click">
+              <template #content>
+                <p>{{ JSON.stringify(item) }}</p>
+              </template>
+              <a-button type="primary" style="align-self: center">详情</a-button>
+            </a-popover>
           </li>
         </ul>
       </div>
@@ -86,7 +91,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useI18n } from "/@/hooks/web/useI18n";
-import { Divider, Space, Select, Image } from "ant-design-vue";
+import { Divider, Space, Select, Image, Popover } from "ant-design-vue";
 import apis from "./apis.js";
 import mpegts from "mpegts.js";
 import ws from './ws.js';
@@ -95,6 +100,7 @@ const ASelect = Select;
 const ADivider = Divider;
 const ASpace = Space;
 const AImage = Image;
+const APopover = Popover;
 
 const views = ref([])
 
@@ -104,7 +110,7 @@ const videoHeight = ref(600);
 const video = ref();
 let player = null;
 
-const itemList = ref([])
+const itemList = ref([{TaskID: 'taskID', SrcID: 'srcID', Type: 'Type', Extend: {label: 'label'}}])
 const options = ref([]);
 const handleChange = (value) => {
   console.log(`selected ${value}`);
@@ -126,8 +132,8 @@ const handleChange = (value) => {
       console.log(list)
       itemList.value = list
 
-      const box = data[0].AnalyzeEvents[0].Box;
-      drawRect(box.LeftTopX, box.LeftTopY, box.RightBtmX - box.LeftTopX, box.RightBtmY - box.LeftTopY)
+      // const box = data[0].AnalyzeEvents[0].Box;
+      // drawRect(box.LeftTopX, box.LeftTopY, box.RightBtmX - box.LeftTopX, box.RightBtmY - box.LeftTopY)
     })
   })
 
@@ -181,7 +187,6 @@ const drawRect = (x, y, width, height) => {
 
 onMounted(() => {
   console.log('on mounted')
-  drawRect(100, 100, 100, 100)
   apis.videosList().then((res) => {
     options.value = res.map((item) => ({
       value: item.deviceId,
