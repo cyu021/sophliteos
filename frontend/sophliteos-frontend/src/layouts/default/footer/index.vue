@@ -5,7 +5,7 @@
     ref="footerRef"
     style="color: #555555; font-size: 16px"
   >
-    <div>Copyleft <span class="copyleft">&copy;</span> 2023</div>
+    <div>Copyleft <span class="copyleft">&copy;</span> 2024</div>
   </Footer>
 </template>
 
