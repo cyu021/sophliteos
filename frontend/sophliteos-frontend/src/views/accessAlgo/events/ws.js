@@ -1,7 +1,11 @@
 
-const wsUrl = "ws://localhost:3100/ws"
+const wsUrl = "ws://${window.location.host}/ws"
 
-const websocket = new WebSocket(wsUrl);
+let websocket = null;// new WebSocket(wsUrl);
+
+const create = (url) => {
+    websocket = new WebSocket(url);
+}
 
 const connect = () => {
     return new Promise((resolve, reject) => {
@@ -35,6 +39,7 @@ const listen = (callback) => {
 }
 
 const ws = {
+    create,
     connect,
     listen,
 }

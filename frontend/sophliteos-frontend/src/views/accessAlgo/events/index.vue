@@ -260,6 +260,8 @@ const getTitleOfType = (type) => {
 onMounted(() => {
   console.log("on mounted");
 
+  ws.create(`ws://${window.location.host}/ws`)
+
   apis.getAbilitesTypes().then((res) => {
     console.log("===>>>>", res);
     types = res;
