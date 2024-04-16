@@ -1,12 +1,12 @@
 
-const wsUrl = "ws://192.168.0.188:5566/ws"
+const wsUrl = "ws://localhost:3100/ws"
 
 const websocket = new WebSocket(wsUrl);
 
 const connect = () => {
     return new Promise((resolve, reject) => {
         
-        console.log('websocket.onopen', websocket.readyState);
+        console.log('websocket.before state:', websocket.readyState, websocket.url);
 
         if(websocket.readyState === 1) {
             resolve();
