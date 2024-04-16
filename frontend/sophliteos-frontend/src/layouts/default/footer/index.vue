@@ -5,7 +5,7 @@
     ref="footerRef"
     style="color: #555555; font-size: 16px"
   >
-    <div>Copyright &copy;2023 算能</div>
+    <div>Copyleft <span class="copyleft">&copy;</span> 2023</div>
   </Footer>
 </template>
 
@@ -58,6 +58,11 @@
   });
 </script>
 <style lang="less" scoped>
+  .copyleft {
+    display:inline-block;
+    transform: rotate(180deg);
+  }
+
   @prefix-cls: ~'@{namespace}-layout-footer';
 
   @normal-color: rgba(0, 0, 0, 0.45);

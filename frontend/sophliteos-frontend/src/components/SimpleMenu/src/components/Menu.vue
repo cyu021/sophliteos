@@ -1,7 +1,7 @@
 <template>
   <ul :class="getClass">
     <slot></slot>
-    <div><img :src="logImge" /></div>
+    <!-- <div><img :src="logImge" /></div> -->
   </ul>
 </template>
 
