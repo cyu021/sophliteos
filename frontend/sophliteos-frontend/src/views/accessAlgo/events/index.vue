@@ -50,8 +50,6 @@
     <div
       style="flex-grow: 1; display: flex; flex: 1; flex-direction: column; padding: 20px"
     >
-      <div style="font-size: 20px">Events</div>
-      <a-divider />
       <div style="background-color: white; overflow-y: auto; height: 100vh">
         <ul style="list-style: none; padding: 10px">
           <li
@@ -84,7 +82,6 @@
                   width: 120px;
                   max-width: 100%;
                   max-height: 100%;
-                  border: 1px solid red;
                 "
                 :src="`data:image/png;base64,${item.ImageBase64}`"
               />
