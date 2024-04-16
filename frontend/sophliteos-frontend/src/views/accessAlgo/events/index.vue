@@ -143,27 +143,29 @@ let player = null;
 const itemList = ref([]);
 const options = ref([]);
 
-let deviceId = null;
+let deviceName = null;
 
 const handleChange = (value) => {
   console.log(`selected ${value}`);
-  deviceId = value;
+  deviceName = options.value.filter((item) => item.value == value)[0].label;
 
   apis.preview({ deviceId: value }).then((res) => {
     play(res);
 
     ws.connect().then(() => {
       return ws.listen((data) => {
-        console.log("onMounted 收到消息:", data[0].AnalyzeEvents);
+        console.log("onMounted 收到消息:", data, deviceName);
 
-        if (!deviceId) {
+        if (!deviceName) {
           return;
         }
 
         const filterResult = data.filter((item) => {
-          item.SrcID == deviceId;
+          console.log('filter:', item.SrcID, deviceName);
+          return item.SrcID == deviceName;
         });
 
+        console.log('filterResult', filterResult);
         if (filterResult.length == 0) {
           return;
         }
@@ -249,6 +251,7 @@ onMounted(() => {
   });
 
   apis.videosList().then((res) => {
+    console.log('video list:', res)
     options.value = res.map((item) => ({
       value: item.deviceId,
       label: item.name,
