@@ -144,6 +144,8 @@ let deviceName = null;
 
 const handleChange = (value) => {
   console.log(`selected ${value}`);
+  itemList.value = [];
+
   deviceName = options.value.filter((item) => item.value == value)[0].label;
 
   apis.preview({ deviceId: value }).then((res) => {
@@ -167,11 +169,20 @@ const handleChange = (value) => {
           return;
         }
 
-        const newList = filterResult[0].AnalyzeEvents;
-        newList.forEach((element) => {
-          element.SrcID = data[0].SrcID;
-          element.TaskID = data[0].TaskID;
-        });
+        let newList = []
+        for (let i = 0; i < filterResult.length; i++) {
+          const element = filterResult[i];
+
+          if (element.AnalyzeEvents && element.AnalyzeEvents.length > 0) {
+            // 有数据
+            const list = element.AnalyzeEvents;
+            list.forEach((item) => {
+              item.SrcID = element.SrcID;
+              item.TaskID = element.TaskID;
+            })
+            newList = newList.concat(list);
+          }          
+        }
 
         const list = newList.concat(itemList.value);
         console.log(list);
@@ -202,6 +213,13 @@ const adjustVideoSize = () => {
 
 const play = (url) => {
   console.log("play", url);
+  
+  if (player) {
+    player.pause();
+    player.unload();
+    player = null;
+  }
+
   if (mpegts.getFeatureList().mseLivePlayback) {
     console.log("mseLivePlayback");
 
