@@ -1,10 +1,10 @@
 <template>
   <div style="padding: 20px; display: flex; flex-direction: column">
-    <div style="font-size: 20px; padding-bottom: 20px">选择视频流</div>
+    <div style="font-size: 20px; padding-bottom: 20px">选择算法任务</div>
     <a-select
       v-model:value="value"
       show-search
-      placeholder="Select a video stream"
+      placeholder="选择算法任务"
       style="flex-grow: 1"
       :options="options"
       :filter-option="filterOption"
@@ -140,28 +140,56 @@ let player = null;
 const itemList = ref([]);
 const options = ref([]);
 
-let deviceName = null;
+let taskName = null;
+
+const colors = ['red', 'blue', 'green', 'purple', 'orange', 'yellow', 'black', 'white'];
+
+const refreshHotArea = () => {
+  if (!taskName) { return; }
+
+  apis.getRois({ taskId: taskName }).then((res) => {
+    let hotAreas = []
+    res.algorithms.forEach((item) => {
+      item.DetectInfos.forEach((jtem) => {
+        hotAreas.push(jtem.HotArea)
+      })
+    })
+
+    clearRect();
+    hotAreas.forEach((item, index) => {
+      let colorIndex = index
+      if (colorIndex >= colors.length) {
+        colorIndex = colorIndex % colors.length
+      }
+      drawHotArea(item, colors[colorIndex]);
+    });
+
+    console.log("getRois", res, hotAreas);
+  });
+};
 
 const handleChange = (value) => {
   console.log(`selected ${value}`);
   itemList.value = [];
 
-  deviceName = options.value.filter((item) => item.value == value)[0].label;
+  taskName = options.value.filter((item) => item.value == value)[0].label;
+
+  refreshHotArea();
 
   apis.preview({ deviceId: value }).then((res) => {
     play(res);
 
     ws.connect().then(() => {
       return ws.listen((data) => {
-        console.log("onMounted 收到消息:", data, deviceName);
+        console.log("onMounted 收到消息:", data, taskName);
 
-        if (!deviceName) {
+        if (!taskName) {
           return;
         }
 
         const filterResult = data.filter((item) => {
-          console.log('filter:', item.SrcID, deviceName);
-          return item.SrcID == deviceName;
+          console.log('filter:', item.SrcID, taskName);
+          return item.TaskID == taskName;
         });
 
         console.log('filterResult', filterResult);
@@ -207,6 +235,10 @@ const filterOption = (input, option) => {
 const value = ref(undefined);
 
 const adjustVideoSize = () => {
+  canvas.value.width = video.value.videoWidth;
+  canvas.value.height = video.value.videoHeight;
+  refreshHotArea();
+
   videoHeight.value =
     (video.value.videoHeight / video.value.videoWidth) * videoWidth.value;
 };
@@ -234,18 +266,54 @@ const play = (url) => {
   }
 };
 
+const clearRect = () => {
+  const ctx = canvas.value.getContext("2d");
+  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
+};
+
 const canvas = ref();
-const drawRect = (x, y, width, height) => {
+const drawRect = (x, y, width, height, color) => {
   const ctx = canvas.value.getContext("2d");
 
-  ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
-
   ctx.beginPath();
-  ctx.strokeStyle = "red";
-  ctx.lineWidth = 2;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
 
   ctx.rect(x, y, width, height);
   ctx.stroke();
+};
+
+const drawHotArea = (data, color) => {
+  const ctx = canvas.value.getContext("2d");
+
+  ctx.beginPath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
+
+  data.forEach((item, index) => {
+    let x = item.X / 1600 * canvas.value.width;
+    let y = item.Y / 900 * canvas.value.height;
+
+    if (x > canvas.value.width) {
+      x = canvas.value.width;
+    } 
+    if (x < 0) { x = 0; }
+
+    if (y > canvas.value.height) {
+      y = canvas.value.height;
+    }
+    if (y < 0) { y = 0; }
+
+    if (index == 0) {
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+    }
+  })
+  
+  ctx.closePath();
+  ctx.stroke();
+
 };
 
 let types = [];
@@ -267,11 +335,11 @@ onMounted(() => {
     types = res;
   });
 
-  apis.videosList().then((res) => {
-    console.log('video list:', res)
-    options.value = res.map((item) => ({
+  apis.tasks().then((res) => {
+    console.log('task list:', res)
+    options.value = res.items.map((item) => ({
       value: item.deviceId,
-      label: item.name,
+      label: item.taskId,
     }));
   });
 });

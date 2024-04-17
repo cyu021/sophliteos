@@ -1,8 +1,10 @@
-import { getVideosList, LivePreview } from '/@/api/dataSource/index';
+import { LivePreview } from '/@/api/dataSource/index';
 import { getAbilites } from '/@/api/task/index';
+import { getAlgoTaskConfig } from '/@/api/paramConfig/index';
+import { getTaskList } from '/@/api/task';
 
-const videosList = () => {
-  return getVideosList()
+const tasks = () => {
+  return getTaskList({ pageNo: -1, pageSize: -1 });
 };
 
 const preview = (param) => {
@@ -13,10 +15,15 @@ const getAbilitesTypes = () => {
   return getAbilites()
 }
 
+const getRois = (param) => {
+  return getAlgoTaskConfig(param)
+}
+
 const apis = {
-  videosList,
+  tasks,
   preview,
   getAbilitesTypes,
+  getRois,
 };
 
 /**
