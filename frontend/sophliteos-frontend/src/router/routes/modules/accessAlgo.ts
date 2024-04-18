@@ -23,11 +23,27 @@ const accessAlgo: AppRouteModule = {
       },
     },
     {
+      path: 'algorithmsList',
+      name: 'AlgorithmsList',
+      component: () => import('/@/views/accessAlgo/algorithms/index.vue'),
+      meta: {
+        title: t('routes.dashboard.algorithm'),
+      },
+    },
+    {
       path: 'taskList',
       name: 'TaskList',
       component: () => import('/@/views/accessAlgo/task/taskList/index.vue'),
       meta: {
         title: t('routes.dashboard.task'),
+      },
+    },
+    {
+      path: 'eventList',
+      name: 'EvnetList',
+      component: () => import('/@/views/accessAlgo/events/index.vue'),
+      meta: {
+        title: t('routes.dashboard.eventList'),
       },
     },
     {
@@ -61,6 +77,14 @@ const accessAlgo: AppRouteModule = {
         title: t('routes.dashboard.AlgoParamConfig'),
       },
     },
+    // {
+    //   path: 'paramListExt',
+    //   name: 'paramListExt',
+    //   component: () => import('/@/views/accessAlgo/paramConfigExt/paramConfigExt/index.vue'),
+    //   meta: {
+    //     title: t('算法参数配置扩展'),
+    //   },
+    // },
   ],
 };
 
