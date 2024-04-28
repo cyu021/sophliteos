@@ -76,15 +76,7 @@ const accessAlgo: AppRouteModule = {
       meta: {
         title: t('routes.dashboard.AlgoParamConfig'),
       },
-    },
-    {
-      path: 'paramListExt',
-      name: 'paramListExt',
-      component: () => import('/@/views/accessAlgo/paramConfigExt/paramConfigExt/index.vue'),
-      meta: {
-        title: t('算法参数配置扩展'),
-      },
-    },
+    }
   ],
 };
 
