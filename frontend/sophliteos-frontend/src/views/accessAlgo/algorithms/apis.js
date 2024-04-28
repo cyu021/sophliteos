@@ -1,55 +1,60 @@
+import { defHttp } from '/@/utils/http/axios';
 
-const serverUrl = 'http://localhost:38081/dynamic';
+const PATH = {
+  list: '/getDynamicModel',
+  onOff: '/onoffDynamicModel',
+  delete: '/deleteDynamicModel',
+  upload: '/dynamic/uploadDynamicModel',
+}
 
 const list = () => {
-  const url = `${serverUrl}/getDynamicModel`;
-  return fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => res.json());
+  return defHttp
+    .get({ url: PATH.list, }, { apiUrl: '/dynamic', isTransformResponse: false })
+    .then((res) => {
+      return res.data
+    })
 };
 
-const upload = (file) => {
-  const url = `${serverUrl}/uploadDynamicModel`;
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    body: file,
-  }).then((res) => res.json());
+const upload = (params, onUploadProgress) => {
+  return defHttp.uploadFile(
+  {
+    url: PATH.upload,
+    onUploadProgress,
+    timeout: 1000 * 60 * 5,
+    requestOptions: {
+      ignoreCancelToken: false,
+      isTransformResponse: false,
+    }
+  },
+  params,
+  );
 };
 
 const start = (name) => {
-  const url = `${serverUrl}/onoffDynamicModel?annotatorName=${name}&onoff=true`;
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => res.json());
+  return defHttp
+    .post({ url: PATH.onOff, params: {annotatorName: name, onoff: true} }, { apiUrl: '/dynamic', isTransformResponse: false, joinParamsToUrl: true, })
+    .then((res) => {
+      console.log(res)
+      // return res.data
+    })
 };
 
 const stop = (name) => {
-  const url = `${serverUrl}/onoffDynamicModel?annotatorName=${name}&onoff=false`;
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => res.json());
+  return defHttp
+    .post({ url: PATH.onOff, params: {annotatorName: name, onoff: false} }, { apiUrl: '/dynamic', isTransformResponse: false, joinParamsToUrl: true, })
+    .then((res) => {
+      console.log(res)
+      // return res.data
+    })
 };
 
 const deleteFile = (name) => {
-  const url = `${serverUrl}/deleteDynamicModel?annotatorName=${name}`;
-  return fetch(url, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }).then((res) => res.json());
+  return defHttp
+    .delete({ url: PATH.delete, params: { annotatorName: name } }, { apiUrl: '/dynamic', isTransformResponse: false, joinParamsToUrl: true, })
+    .then((res) => {
+      console.log(res)
+      // return res.data
+    })
 };
 
 const apis = {
