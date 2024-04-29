@@ -26,10 +26,4 @@ const apis = {
   getRois,
 };
 
-/**
- * TODO: 
- * 1. 获取视频源列表
- * 2. 
- */
-
 export default apis;
