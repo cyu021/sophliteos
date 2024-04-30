@@ -149,9 +149,12 @@ const refreshHotArea = () => {
 
   apis.getRois({ taskId: taskName }).then((res) => {
     let hotAreas = []
+    let tripWires = []
+
     res.algorithms.forEach((item) => {
       item.DetectInfos.forEach((jtem) => {
         hotAreas.push(jtem.HotArea)
+        tripWires.push(jtem.TripWire)
       })
     })
 
@@ -163,6 +166,10 @@ const refreshHotArea = () => {
       }
       drawHotArea(item, colors[colorIndex]);
     });
+
+    tripWires.forEach((item, index) => {
+      drawTripWire(item)
+    })
 
     console.log("getRois", res, hotAreas);
   });
@@ -283,6 +290,56 @@ const drawRect = (x, y, width, height, color) => {
   ctx.stroke();
 };
 
+const drawTripWire = (data) => {
+  const ctx = canvas.value.getContext("2d");
+
+  const lineStart = { X: data.LineStart.X / 1600 * canvas.value.width, Y: data.LineStart.Y / 900 * canvas.value.height };
+  const lineEnd = { X: data.LineEnd.X / 1600 * canvas.value.width, Y: data.LineEnd.Y / 900 * canvas.value.height };
+
+  const directStart = { X: data.DirectStart.X / 1600 * canvas.value.width, Y: data.DirectStart.Y / 900 * canvas.value.height };
+  const directEnd = { X: data.DirectEnd.X / 1600 * canvas.value.width, Y: data.DirectEnd.Y / 900 * canvas.value.height };
+
+  // line
+  ctx.beginPath();
+  ctx.strokeStyle = 'red';
+  ctx.lineWidth = 5;
+  ctx.setLineDash([50, 20]);
+
+  ctx.moveTo(lineStart.X, lineStart.Y);
+  ctx.lineTo(lineEnd.X, lineEnd.Y);
+
+  ctx.closePath();
+  ctx.stroke();
+
+  // direct
+  ctx.beginPath();
+  ctx.strokeStyle = 'green';
+  ctx.lineWidth = 5;
+  ctx.setLineDash([]);
+
+  ctx.moveTo(directStart.X, directStart.Y);
+  ctx.lineTo(directEnd.X, directEnd.Y);
+
+  ctx.closePath();
+  ctx.stroke();
+
+  // direct arrow 
+  const angle = Math.atan2(directEnd.Y - directStart.Y, directEnd.X - directStart.X);
+
+  const arrowSize = 40;
+  ctx.save();
+  ctx.beginPath();
+  ctx.translate(directEnd.X, directEnd.Y);
+  ctx.rotate(angle);
+  ctx.moveTo(0, 0);
+  ctx.lineTo(-arrowSize, -arrowSize/2);
+  ctx.lineTo(-arrowSize, arrowSize/2);
+  ctx.closePath();
+  ctx.fillStyle = 'green';
+  ctx.fill();
+  ctx.restore();
+}
+
 const drawHotArea = (data, color) => {
   const ctx = canvas.value.getContext("2d");
 
@@ -313,7 +370,6 @@ const drawHotArea = (data, color) => {
   
   ctx.closePath();
   ctx.stroke();
-
 };
 
 let types = [];

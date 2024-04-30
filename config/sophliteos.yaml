@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8088
   www: /var/lib/sophliteos/dist
   admin-password: c3284d0f94606de1fd2af172aba15bf3
   timeout: 12m

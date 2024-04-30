@@ -41,7 +41,7 @@
 <script setup>
   import { ref, onMounted } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { Table, Divider, Button, Space, Upload } from 'ant-design-vue';
+  import { Table, Divider, Button, Space, Upload, message } from 'ant-design-vue';
   import { UploadOutlined } from '@ant-design/icons-vue';
   import apis from './apis.js';
 
@@ -53,45 +53,83 @@
     newFileList.splice(index, 1);
     fileList.value = newFileList;
   };
+
   const beforeUpload = (file) => {
     fileList.value = [...(fileList.value || []), file];
     return false;
   };
+
+  const onUploadProgress = (progressEvent) => {
+    console.log('on upload progress:', progressEvent)
+  }
+
   const handleUpload = () => {
-    const formData = new FormData();
-    fileList.value.forEach((file) => {
-      formData.append('files[]', file);
-    });
+    console.log('handle upload', fileList.value)
+
+    if (!fileList.value.length) {
+      console.log('fileList value length null')
+      return;
+    }
+
     uploading.value = true;
 
-    // You can use any AJAX library you like
-    // request('https://www.mocky.io/v2/5cc8019d300000980a055e76', {
-    //   method: 'post',
-    //   data: formData,
-    // })
-    //   .then(() => {
-    //     fileList.value = [];
-    //     uploading.value = false;
-    //     message.success('upload successfully.');
-    //   })
-    //   .catch(() => {
-    //     uploading.value = false;
-    //     message.error('upload failed.');
-    //   });
+    const file = fileList.value[0];
+    apis.upload({
+      name: 'modelFile',
+      file: file,
+      onUploadProgress,
+    }).then((res) => {
+      uploading.value = false;
+      message.success('upload successfully')
+
+      refresh()
+
+    }).catch((e) => {
+      uploading.value = false;
+      message.error(e.toString())
+    })
   };
 
   const { t } = useI18n();
 
   const handleStart = (record) => {
     console.log('handle start', record);
+    apis
+      .start(record.annotator_name)
+      .then((res) => {
+        message.success('started')
+        refresh()
+      }).catch((e) => {
+        message.error(e.toString())
+      })
   };
 
   const handleStop = (record) => {
     console.log('handle stop', record);
+    apis
+      .stop(record.annotator_name)
+      .then((res) => {
+        message.success('stopped')
+        refresh()
+      }).catch((e) => {
+        message.error(e.toString())
+      })
   };
 
   const handleDelete = (record) => {
     console.log('handle delete', record);
+    apis
+      .deleteFile(record.annotator_name)
+      .then((res) => {
+        if (res.code != 200) {
+          message.error(res.msg)
+          return;
+        }
+        message.success('deleted')
+        refresh()
+      }).catch((e) => {
+        message.error(e.toString())
+      })
   };
 
   const columns = ref([
@@ -112,12 +150,18 @@
     },
   ]);
 
+  const refresh = () => {
+    fileList.value = []
+
+    apis.list().then((res) => {
+      dataSource.value = res;
+    });
+  }
+
   // 声明表格的数据源
   const dataSource = ref([]);
 
   onMounted(() => {
-    apis.list().then((res) => {
-      dataSource.value = res;
-    });
+    refresh()
   });
 </script>
