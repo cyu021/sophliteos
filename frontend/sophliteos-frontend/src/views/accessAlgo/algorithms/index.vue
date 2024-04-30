@@ -85,6 +85,7 @@
       refresh()
 
     }).catch((e) => {
+      uploading.value = false;
       message.error(e.toString())
     })
   };
