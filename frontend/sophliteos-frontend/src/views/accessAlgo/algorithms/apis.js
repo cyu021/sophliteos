@@ -1,4 +1,9 @@
 import { defHttp } from '/@/utils/http/axios';
+import { getTaskList } from '/@/api/task';
+
+const tasks = () => {
+  return getTaskList({ pageNo: -1, pageSize: -1 });
+};
 
 const PATH = {
   list: '/getDynamicModel',
@@ -135,25 +140,40 @@ const start = (name) => {
 };
 
 const stop = (name) => {
+  // prefix: check if task exist 
   // 1. get token 
   // 2. get abilities list -> get ability index 
   // 3. dynamic stop 
   // 4. abilities unset 
   // 5. token release
 
-  return Promise.all([abilitiesGetToken(), abilitiesList()])
-  .then((res) => {
-    const token = res[0]
-    const list = res[1]
-    const index = Object.keys(list).find(key => list[key] === name);
+  return tasks().then((res) => {
+    let existNames = []
+    const exists = res.items.map((item) => {
+      existNames = existNames.concat(item.abilities)
+    })
 
-    return dynamicStop(name)
+    if (existNames.includes(name)) {
+      throw new Error('当前算法包存在任务使用，请先删除对应任务');
+    }
+
+    return true;
+  })
+  .then((res) => {
+    return Promise.all([abilitiesGetToken(), abilitiesList()])
     .then((res) => {
-      return abilitiesUnset({ token: token, [name]: '' + index })
-    })
-    .then((res) => {
-      return abilitiesReleaseToken({ token: token })
-    })
+      const token = res[0]
+      const list = res[1]
+      const index = Object.keys(list).find(key => list[key] === name);
+  
+      return dynamicStop(name)
+      .then((res) => {
+        return abilitiesUnset({ token: token, [name]: '' + index })
+      })
+      .then((res) => {
+        return abilitiesReleaseToken({ token: token })
+      })
+    })  
   })
 };
 

@@ -303,7 +303,8 @@ const drawTripWire = (data) => {
   ctx.beginPath();
   ctx.strokeStyle = 'red';
   ctx.lineWidth = 5;
-  
+  ctx.setLineDash([50, 20]);
+
   ctx.moveTo(lineStart.X, lineStart.Y);
   ctx.lineTo(lineEnd.X, lineEnd.Y);
 
@@ -314,7 +315,8 @@ const drawTripWire = (data) => {
   ctx.beginPath();
   ctx.strokeStyle = 'green';
   ctx.lineWidth = 5;
-  
+  ctx.setLineDash([]);
+
   ctx.moveTo(directStart.X, directStart.Y);
   ctx.lineTo(directEnd.X, directEnd.Y);
 
