@@ -127,7 +127,8 @@ const start = (name) => {
   .then((res) => {
     const token = res[0]
     const list = res[1]
-    const index = Math.max(...Object.keys(list).map(Number)) + 1;
+    const keys = Object.keys(list);
+    const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 0;
 
     return dynamicStart(name)
     .then((res) => {
@@ -149,9 +150,12 @@ const stop = (name) => {
 
   return tasks().then((res) => {
     let existNames = []
-    const exists = res.items.map((item) => {
-      existNames = existNames.concat(item.abilities)
-    })
+
+    if (res.items) {
+      res.items.forEach((item) => {
+        existNames = existNames.concat(item.abilities)
+      })  
+    }
 
     if (existNames.includes(name)) {
       throw new Error('当前算法包存在任务使用，请先删除对应任务');
