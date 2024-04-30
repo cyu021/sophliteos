@@ -79,8 +79,12 @@ const dynamicList = () => {
 const list = () => {
   return Promise.all([abilitiesList(), dynamicList()])
     .then((res) => {
-      const abilities = res[0]
+      let abilities = res[0]
       let data = res[1]
+
+      if(abilities == null) {
+        abilities = {};
+      }
 
       data.forEach(item => {
         const name = item.annotator_name;
@@ -126,7 +130,10 @@ const start = (name) => {
   return Promise.all([abilitiesGetToken(), abilitiesList()])
   .then((res) => {
     const token = res[0]
-    const list = res[1]
+    let list = res[1]
+    if(list == null) {
+      list = {};
+    }
     const keys = Object.keys(list);
     const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 0;
 
