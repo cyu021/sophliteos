@@ -120,6 +120,10 @@
     apis
       .deleteFile(record.annotator_name)
       .then((res) => {
+        if (res.code != 200) {
+          message.error(res.msg)
+          return;
+        }
         message.success('deleted')
         refresh()
       }).catch((e) => {
