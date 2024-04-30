@@ -4,7 +4,7 @@ const wsUrl = "ws://${window.location.host}/ws"
 let websocket = null;// new WebSocket(wsUrl);
 
 const create = (url) => {
-    websocket = new WebSocket(url.replace(":8080", ":5566"));
+    websocket = new WebSocket(url);
 }
 
 const connect = () => {
