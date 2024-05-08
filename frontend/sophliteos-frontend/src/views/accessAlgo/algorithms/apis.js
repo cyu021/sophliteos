@@ -128,7 +128,7 @@ const start = (name) => {
     const token = res[0]
     const list = res[1]
     const keys = Object.keys(list);
-    const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 0;
+    const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 1;
 
     return dynamicStart(name)
     .then((res) => {
