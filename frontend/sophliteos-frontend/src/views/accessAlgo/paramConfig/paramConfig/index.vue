@@ -67,7 +67,13 @@
                 <span style="padding-left: 10px; border-left: 2px solid #0960bdb8"></span>
                 {{ t('paramConfig.param.setAlgoParams') }}
               </div>
-              <BasicForm @register="registerForm" style="width: 450px" />
+              <BasicForm @register="registerForm" style="width: 450px;" />
+              <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
+                <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
+                <Button style="margin-right: 50px;" @click="showFilterRule('taskName', 'aligorithmName')">{{
+                    "配置新规则"
+                  }}</Button>
+              </div>
             </div>
             <div :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16 + 30}px` }">
               <div
@@ -129,6 +135,7 @@
         </div>
       </Card>
     </Card>
+    <FilterRuleModal @register="RegisterFilterRuleModal"/>
   </div>
 </template>
 
@@ -165,6 +172,11 @@
     statusMap,
     protocolMap,
   } from './Data';
+
+  import FilterRuleModal from './FilterRuleModal.vue';
+  import { useModal } from '/@/components/Modal';
+
+  const [RegisterFilterRuleModal, { openModal: openFilterRuleModal }] = useModal();
 
   const { createMessage } = useMessage();
   const { t } = useI18n();
@@ -221,6 +233,8 @@
     });
     getTaskOptions();
     window.addEventListener('resize', computeVideoWidth);
+
+    openFilterRuleModal(true)
   });
 
   onUnmounted(() => {
@@ -467,6 +481,12 @@
         pylogonSubmitPoint.value = [];
       }
     }
+  }
+
+  function showFilterRule(taskName, algorithmName) {
+    console.log('show filter rule editor', taskName, algorithmName)
+    openFilterRuleModal(true);
+
   }
 
   function clearCanvas() {

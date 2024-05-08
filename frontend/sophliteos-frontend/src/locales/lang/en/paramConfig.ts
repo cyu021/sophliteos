@@ -19,6 +19,7 @@ export default {
     minRatio: 'Min Detect Ratio',
     maxRatio: 'Max Detect Ratio',
     setAlgoParams: 'Algorithm Setting',
+    filterRule: 'Event filter',
   },
   draw: {
     clear: 'Clear drawing',
