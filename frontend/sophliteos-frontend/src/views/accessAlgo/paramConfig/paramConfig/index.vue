@@ -71,7 +71,7 @@
               <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
                 <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
                 <Button style="margin-right: 50px;" @click="showFilterRule('taskName', 'aligorithmName')">{{
-                    "配置新规则"
+                  filterName
                   }}</Button>
               </div>
             </div>
@@ -135,12 +135,12 @@
         </div>
       </Card>
     </Card>
-    <FilterRuleModal @register="RegisterFilterRuleModal"/>
+    <FilterRuleModal @register="RegisterFilterRuleModal" :taskName="'1'" :algorithmName="'full_structure'" @success="updateFilterRule"/>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted, nextTick, h, onUnmounted, watch } from 'vue';
+  import { ref, onMounted, nextTick, h, onUnmounted, watch, computed } from 'vue';
   import {
     Button,
     Card,
@@ -251,6 +251,42 @@
     }
   });
 
+  const filterName = computed(() => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        const extend = algorithms[0].Extend;
+        if (extend && extend.FilterName) {
+          return extend.FilterName;
+        }
+      }
+    } 
+
+    return '点击配置新规则'
+  })
+
+  function updateFilterRule(value) {
+    console.log('update filter rule', value)
+
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        algorithms[0].Extend = value;
+      }
+    } 
+  }
+
+  function getCurrentExtend() {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        return algorithms[0].Extend;
+      }
+    } 
+
+    return null;
+  }
+
   function computeVideoWidth() {
     // 只要开始缩放，就关闭canvas
     clearCanvas();
@@ -334,10 +370,14 @@
 
   async function submit() {
     const values = await validate();
+    console.log('submit', values);
     lineSubmitPoint.value.forEach((item) => {
       item.x = Math.round(item.x * pixRatio.value) || 0;
       item.y = Math.round(item.y * pixRatio.value) || 0;
     });
+
+    const extend = getCurrentExtend();
+
     const params: any = {
       taskId: taskId.value,
       Algorithm: {
@@ -375,6 +415,7 @@
             })),
           },
         ],
+        Extend: extend,
       },
     };
     const res = await editAlgoTaskConfig(params);
