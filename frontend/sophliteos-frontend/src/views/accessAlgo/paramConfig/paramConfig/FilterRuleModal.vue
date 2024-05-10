@@ -14,7 +14,7 @@
             <ul>
               <li style="padding: 14px;" v-for="(item, index) in cacheExtend.Filter" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; align-items: center; flex-direction: row;">
-                  <div style="width: 150px; font-size: large; text-align: left;"> {{ item.Label + nameOfKvpLabel(algorithmName, item.Label) }} </div>
+                  <div style="width: 150px; text-align: left;"> {{ nameOfKvpLabel(algorithmName, item.Label) + '(' + item.Label + ')' }} </div>
                   <div style="display: flex; flex-direction: column; flex-grow: 1; padding-left: 48px;">
                     <ul>
                       <li 
@@ -25,13 +25,13 @@
                         </div>
                         <div style="padding: 4px;">
                           <Dropdown :trigger="['click']">
-                            <Button style="width: 100px; ">
+                            <Button style="width: 100px; " @click="opClick(item.Label, jtem.K)">
                               {{ jtem.Op }}
                               <DownOutlined style="opacity: 0.5;"/>
                             </Button>
                             <template #overlay>
                               <Menu>
-                                <MenuItem v-for="(value, index) in jtem.ops" :key="index" @click="updateExtendFilterOp(item.Label, jtem.K, value)">
+                                <MenuItem v-for="(value, index) in ops" :key="index" @click="updateExtendFilterOp(item.Label, jtem.K, value)">
                                   {{ value }}
                                 </MenuItem>
                               </Menu>
@@ -41,13 +41,13 @@
                         <div style="padding: 4px;">
                           <Input v-if="typeof jtem.V === 'number' || typeof jtem.V === 'string' && !isNaN(Number(jtem.V))" style="width: 250px;" v-model:value="jtem.V" />
                           <Dropdown v-else :trigger="['click']">
-                            <Button style="width: 250px; ">
+                            <Button style="width: 250px; " @click="vClick(item.Label, jtem.K)">
                               {{ jtem.V }}
                               <DownOutlined style="opacity: 0.5;"/>
                             </Button>
                             <template #overlay>
                               <Menu>
-                                <MenuItem v-for="(value, index) in jtem.Vs" :key="index" @click="updateExtendFilter(item.Label, jtem.K, value)">
+                                <MenuItem v-for="(value, index) in kVs" :key="index" @click="updateExtendFilter(item.Label, jtem.K, value)">
                                   {{ value }}
                                 </MenuItem>
                               </Menu>
@@ -63,13 +63,13 @@
                     </ul>
                     <div style="display: flex; align-items: center; justify-content: center; padding-top: 24px;">
                       <Dropdown :trigger="['click']">
-                        <Button type="primary" style="width: 150px; ">
+                        <Button type="primary" style="width: 150px; " @click="andClick(item.Label)">
                           AND
                         </Button>
                         <template #overlay>
                           <Menu>
-                            <MenuItem v-for="(value, key) in item.kvps" :key="key" @click="ruleAdd(item.Annotator, item.Label, key)">
-                              {{ key }}
+                            <MenuItem v-for="value in kvps" :key="value" @click="ruleAdd(item.Annotator, item.Label, value)">
+                              {{ value }}
                             </MenuItem>
                           </Menu>
                         </template>
@@ -85,7 +85,6 @@
               </li>
             </ul>
             <div style="padding: 16px;">
-              <!-- <Button type="primary" @click="attrAdd">OR</Button> -->
               <Dropdown :trigger="['click']">
                 <Button type="primary" style="width: 150px;" >
                   OR
@@ -297,8 +296,6 @@
             item.Rule.push({
               Grp: index,
               Op: ops[0],
-              ops: ops,
-              Vs: values,
               K: key,
               V: values.length > 0 ? values[0] : 0,
             })
@@ -327,7 +324,27 @@
       }
     }
 
-    const currentLabelId = ref('');
+    const currentLabelId = ref(''); // 当前label id 数字，比如1420
+    const currentKvp = ref(''); // 当前 kvp key，比如 automobile_angle
+
+    function opClick(labelId, kvp) {
+      currentLabelId.value = labelId;
+      currentKvp.value = kvp;
+    }
+
+    function andClick(labelId) {
+      console.log('and click', labelId)
+      currentLabelId.value = labelId;
+    }
+
+    function vClick(labelId, kvp) {
+      currentLabelId.value = labelId;
+      currentKvp.value = kvp;
+    }
+
+    const kVs = computed(() => {
+      return getOpsOfKvp(props.algorithmName, currentLabelId.value, currentKvp.value);
+    })
     
     const labels = computed(() => {
       if (props.algorithmName && attrList.value && attrList.value[props.algorithmName]) {
@@ -343,6 +360,36 @@
       return []
     })
 
+    const kvps = computed(() => {
+      console.log('kvp computed', attrList.value, currentLabelId.value)
+      if (attrList.value) {
+        if (attrList.value[props.algorithmName] && attrList.value[props.algorithmName][currentLabelId.value]) {
+          const kvp = attrList.value[props.algorithmName] && attrList.value[props.algorithmName][currentLabelId.value].kvp;
+          console.log('kvp computed kvp', Object.keys(kvp))
+
+          return Object.keys(kvp);
+        }
+      }
+
+      return [];
+    })
+
+    const ops = computed(() => {
+      if (attrList.value) {
+        if (attrList.value[props.algorithmName] && attrList.value[props.algorithmName][currentLabelId.value]) {
+          const kvp = attrList.value[props.algorithmName] && attrList.value[props.algorithmName][currentLabelId.value].kvp;
+          if (kvp && kvp[currentKvp.value]) {
+            const k = kvp[currentKvp.value];
+            if (k && k.length <= 0) {
+              return numberOps;
+            }
+          }
+        }
+      }
+
+      return selectOps;
+    })
+
     function attrAdd(labelId) {
       currentLabelId.value = labelId;
       
@@ -350,37 +397,11 @@
         cacheExtend.value.Filter = [];
       }
 
-      const kvps = getKvps(props.algorithmName, labelId);
-      console.log('attrAdd', labelId, kvps);
-
-      const key = Object.keys(kvps)[0]
-      const values = getOpsOfKvp(props.algorithmName, labelId, key)
-      const ops = values.length <=0 ? numberOps : selectOps;
-
-      const ruleCount = cacheExtend.value.Filter.length || 0;
-
       cacheExtend.value.Filter.push({
         Annotator: props.algorithmName,
         Label: labelId,
-        Rule: [{
-          Grp: ruleCount + 1,
-          Op: ops[0],
-          K: key,
-          V: values.length > 0 ? values[0] : 0,
-        }],
+        Rule: [],
       });
-    }
-
-    const filterOps = computed(() => {
-      const annotator = props.algorithmName;
-      const ops = attrList.value[annotator];
-      return ops;
-    });
-
-    function getFilterOps() {
-      const annotator = props.algorithmName;
-      const ops = attrList.value[annotator];
-      return ops;
     }
 
     function nameOfKvpLabel(annotator, label) {
@@ -422,11 +443,10 @@
 
     })
 
-    watch(() => props.extend, () => {
-      console.log('watch props.extend')
-
-      cacheExtend.value = props.extend;
-
+    watch(() => props.extend, async (newValue, oldValue) => {
+      console.log('watch props.extend', props.extend)
+      const value = await newValue;
+      cacheExtend.value = value;
     })
 
     const props = defineProps({
