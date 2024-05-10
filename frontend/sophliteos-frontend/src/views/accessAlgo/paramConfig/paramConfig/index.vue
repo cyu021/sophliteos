@@ -70,9 +70,8 @@
               <BasicForm @register="registerForm" style="width: 450px;" />
               <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
                 <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
-                <Button style="margin-right: 50px;" @click="showFilterRule('taskName', 'aligorithmName')">{{
-                  filterName
-                  }}</Button>
+                <Button style="max-width: 250px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" @click="showFilterRule">{{ filterName }}</Button>
+                <Button type="text" danger @click="deleteExtend"><DeleteOutlined/></Button>
               </div>
             </div>
             <div :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16 + 30}px` }">
@@ -135,7 +134,7 @@
         </div>
       </Card>
     </Card>
-    <FilterRuleModal @register="RegisterFilterRuleModal" :taskName="'1'" :algorithmName="'full_structure'" @success="updateFilterRule"/>
+    <FilterRuleModal :extend="extend" @register="RegisterFilterRuleModal" :taskName="taskId" :algorithmName="'full_structure'" @success="updateFilterRule"/>
   </div>
 </template>
 
@@ -153,7 +152,7 @@
     Space,
     Tooltip,
   } from 'ant-design-vue';
-  import { EditOutlined, ClearOutlined } from '@ant-design/icons-vue';
+  import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
   import mpegts from 'mpegts.js';
   import { fabric } from 'fabric';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -175,6 +174,7 @@
 
   import FilterRuleModal from './FilterRuleModal.vue';
   import { useModal } from '/@/components/Modal';
+import apis from './api';
 
   const [RegisterFilterRuleModal, { openModal: openFilterRuleModal }] = useModal();
 
@@ -233,8 +233,6 @@
     });
     getTaskOptions();
     window.addEventListener('resize', computeVideoWidth);
-
-    openFilterRuleModal(true)
   });
 
   onUnmounted(() => {
@@ -260,14 +258,35 @@
           return extend.FilterName;
         }
       }
-    } 
+    }
 
     return '点击配置新规则'
   })
 
-  function updateFilterRule(value) {
-    console.log('update filter rule', value)
+  const algorithmName = computed(() => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        const algorithm = algorithms[0];
+        return abilitiesMap.value.get(Number(algorithm.Type))
+      }
+    }
 
+    return ''
+  })
+
+  const extend = computed(async () => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        return algorithms[0].Extend || {};
+      }
+    } 
+
+    return {};
+  })
+
+  function updateFilterRule(value) {
     if (algoTaskInfo.value && activeKey.value) {
       const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
       if (algorithms.length > 0) {
@@ -524,10 +543,17 @@
     }
   }
 
-  function showFilterRule(taskName, algorithmName) {
-    console.log('show filter rule editor', taskName, algorithmName)
-    openFilterRuleModal(true);
+  function deleteExtend() {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        algorithms[0].Extend = {};
+      }
+    }
+  }
 
+  function showFilterRule() {
+    openFilterRuleModal(true);
   }
 
   function clearCanvas() {

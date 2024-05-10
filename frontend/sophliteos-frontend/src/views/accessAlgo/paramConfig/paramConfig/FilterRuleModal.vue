@@ -4,17 +4,17 @@
       <Divider />
 
       <div style="padding: 14px; display: flex; flex-direction: row; align-items: center;">
-        <Input v-model:value="extend.FilterName" placeholder="规则名称" />
+        <Input v-model:value="cacheExtend.FilterName" placeholder="规则名称" />
       </div>
 
       <div style="padding: 14px; padding-bottom: 30px;">
         <Collapse v-model:activeKey="attributeActiveKey">
 
-          <CollapsePanel key="1" header="Attribute conditions">
+          <CollapsePanel key="1" header="属性规则">
             <ul>
-              <li style="padding: 14px;" v-for="(item, index) in extend.Filter" :key="index">
+              <li style="padding: 14px;" v-for="(item, index) in cacheExtend.Filter" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; align-items: center; flex-direction: row;">
-                  <div style="width: 150px; font-size: large; text-align: left;"> {{ item.Label + (item.LabelName ? ' - ' + item.LabelName : '') }} </div>
+                  <div style="width: 150px; font-size: large; text-align: left;"> {{ item.Label + nameOfKvpLabel(algorithmName, item.Label) }} </div>
                   <div style="display: flex; flex-direction: column; flex-grow: 1; padding-left: 48px;">
                     <ul>
                       <li 
@@ -87,13 +87,13 @@
             <div style="padding: 16px;">
               <!-- <Button type="primary" @click="attrAdd">OR</Button> -->
               <Dropdown :trigger="['click']">
-                <Button type="primary" style="width: 150px; ">
+                <Button type="primary" style="width: 150px;" >
                   OR
                 </Button>
                 <template #overlay>
                   <Menu>
-                    <MenuItem v-for="(value, key) in extend.FilterOps" :key="key" @click="attrAdd(key)">
-                      {{ value.label }}
+                    <MenuItem v-for="label in labels" :key="label.key" @click="attrAdd(label.key)">
+                      {{ label.value }}
                     </MenuItem>
                   </Menu>
                 </template>
@@ -101,9 +101,9 @@
             </div>
           </CollapsePanel>
 
-          <CollapsePanel key="2" header="Time conditions">
+          <CollapsePanel key="2" header="时间规则">
             <ul>
-              <li style="padding: 14px;" v-for="(item, index) in extend.FilterPeriod" :key="index">
+              <li style="padding: 14px;" v-for="(item, index) in cacheExtend.FilterPeriod" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; flex-direction: row; align-items: center;"> 
                   <div style="flex-grow: 1;">
                     <div style="display: flex; flex-direction: row;">
@@ -153,7 +153,7 @@
     import { Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, Space, CheckboxGroup, Checkbox, TimePicker, DatePicker, } from 'ant-design-vue';
     import { BasicModal, useModalInner } from '/@/components/Modal';
     import { useI18n } from '/@/hooks/web/useI18n';
-    import { onMounted, ref, } from 'vue';
+    import { onMounted, ref, watch, computed, watchEffect, } from 'vue';
     import apis from './api';
     import { DeleteOutlined, DownOutlined, } from '@ant-design/icons-vue';
     import dayjs from 'dayjs';
@@ -204,8 +204,8 @@
     }
 
     function updateExtendFilter(label, key, value) {
-      if (extend.value.Filter) {
-        extend.value.Filter.forEach((item) => {
+      if (cacheExtend.value.Filter) {
+        cacheExtend.value.Filter.forEach((item) => {
           if (label === item.Label) {
             item.Rule.forEach((rule) => {
               if (rule.K === key) {
@@ -218,8 +218,8 @@
     }
 
     function updateExtendFilterOp(label, key, op) {
-      if (extend.value.Filter) {
-        extend.value.Filter.forEach((item) => {
+      if (cacheExtend.value.Filter) {
+        cacheExtend.value.Filter.forEach((item) => {
           if (label === item.Label) {
             item.Rule.forEach((rule) => {
               if (rule.K === key) {
@@ -232,61 +232,67 @@
     }
 
     function periodDelete(index) {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod.splice(index, 1);
+      if (cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod.splice(index, 1);
       }
     }
 
     function periodUpdateWeekday(index, value) {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod[index].Weekday = value.join(',');
+      if (cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod[index].Weekday = value.join(',');
       }
     }
 
     function periodUpdateTimeStart(index, value) {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod[index].TimeStart = value.format('HHmm');
+      if (cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod[index].TimeStart = value.format('HHmm');
       }
     }
 
     function periodUpdateTimeEnd(index, value) {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod[index].TimeEnd = value.format('HHmm');
+      if (cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod[index].TimeEnd = value.format('HHmm');
       }
     }
 
     function periodUpdateDateStart(index, value) {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod[index].DateStart = value.format('YYYYMMDD');
+      if (cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod[index].DateStart = value.format('YYYYMMDD');
       }
     }
 
     function periodUpdateDateEnd(index, value) {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod[index].DateEnd = value.format('YYYYMMDD');
+      if (cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod[index].DateEnd = value.format('YYYYMMDD');
       }
     }
 
     function periodAdd() {
-      if (extend.value.FilterPeriod) {
-        extend.value.FilterPeriod.push({
-          DateStart: '',
-          DateEnd: '',
-          TimeStart: '',
-          TimeEnd: '',
-          Weekday: ''
-        });
+      if (!cacheExtend.value.FilterPeriod) {
+        cacheExtend.value.FilterPeriod = [];
       }
+
+      cacheExtend.value.FilterPeriod.push({
+        DateStart: '',
+        DateEnd: '',
+        TimeStart: '',
+        TimeEnd: '',
+        Weekday: ''
+      });
+
+
     }
 
     function ruleAdd(annotator, label, key) {
-      if (extend.value.Filter) {
-        extend.value.Filter.forEach((item, index) => {
+      if (cacheExtend.value.Filter) {
+        cacheExtend.value.Filter.forEach((item, index) => {
           if (label === item.Label) {
             const values = getOpsOfKvp(annotator, label, key);
             const ops = values.length <=0 ? numberOps : selectOps;
 
             console.log('rule add', ops, values);
+
+            if (!item.Rule) { item.Rule = []; }
 
             item.Rule.push({
               Grp: index,
@@ -302,8 +308,8 @@
     }
 
     function ruleDelete(label, index) {
-      if (extend.value.Filter) {
-        extend.value.Filter.forEach((item) => {
+      if (cacheExtend.value.Filter) {
+        cacheExtend.value.Filter.forEach((item) => {
           if (label === item.Label) {
             item.Rule.splice(index, 1);
           }
@@ -312,70 +318,69 @@
     }
 
     function attrDelete(label) {
-      if (extend.value.Filter) {
-        let index = extend.value.Filter.findIndex(obj => obj.Label === label);
+      if (cacheExtend.value.Filter) {
+        let index = cacheExtend.value.Filter.findIndex(obj => obj.Label === label);
 
         if (index !== -1) {
-          extend.value.Filter.splice(index, 1);
+          cacheExtend.value.Filter.splice(index, 1);
         }
       }
     }
 
-    function attrAdd(label) {
-      if (extend.value.Filter) {
-        const kvps = getKvps(props.algorithmName, label);
-        const key = Object.keys(kvps)[0]
-        const values = getOpsOfKvp(props.algorithmName, label, key)
-        const ops = values.length <=0 ? numberOps : selectOps;
-        const name = nameOfKvpLabel(props.algorithmName, label);
-
-        const ruleCount = extend.value.Filter.length || 0;
-
-        extend.value.Filter.push({
-          Annotator: props.algorithmName,
-          Label: label,
-          LabelName: name,
-          Rtsp: '',
-          kvps: kvps,
-          Rule: [{
-            Grp: ruleCount + 1,
-            Op: ops[0],
-            ops: ops,
-            Vs: values,
-            K: key,
-            V: values.length > 0 ? values[0] : 0,
-          }],
-        });
+    const currentLabelId = ref('');
+    
+    const labels = computed(() => {
+      if (props.algorithmName && attrList.value && attrList.value[props.algorithmName]) {
+        const data = attrList.value[props.algorithmName];
+        return Object.keys(data).map((key) => {
+          return {
+            key: key,
+            value: data[key].label,
+          }
+        })
       }
+
+      return []
+    })
+
+    function attrAdd(labelId) {
+      currentLabelId.value = labelId;
+      
+      if (!cacheExtend.value.Filter) {
+        cacheExtend.value.Filter = [];
+      }
+
+      const kvps = getKvps(props.algorithmName, labelId);
+      console.log('attrAdd', labelId, kvps);
+
+      const key = Object.keys(kvps)[0]
+      const values = getOpsOfKvp(props.algorithmName, labelId, key)
+      const ops = values.length <=0 ? numberOps : selectOps;
+
+      const ruleCount = cacheExtend.value.Filter.length || 0;
+
+      cacheExtend.value.Filter.push({
+        Annotator: props.algorithmName,
+        Label: labelId,
+        Rule: [{
+          Grp: ruleCount + 1,
+          Op: ops[0],
+          K: key,
+          V: values.length > 0 ? values[0] : 0,
+        }],
+      });
     }
+
+    const filterOps = computed(() => {
+      const annotator = props.algorithmName;
+      const ops = attrList.value[annotator];
+      return ops;
+    });
 
     function getFilterOps() {
       const annotator = props.algorithmName;
       const ops = attrList.value[annotator];
       return ops;
-    }
-
-    function updateExtend() {
-      if (extend.value.Filter && attrList.value) {
-        extend.value.Filter.forEach((item) => {
-          const annotator = item.Annotator;
-          const label = item.Label;
-
-          const name = nameOfKvpLabel(annotator, label);
-          item.LabelName = name;
-          item.kvps = getKvps(annotator, label);
-
-          item.Rule.forEach((rule) => {
-            const values = getOpsOfKvp(annotator, label, rule.K);
-            rule.ops = values.length <=0 ? numberOps : selectOps;
-            rule.Vs = values;
-          });
-        });
-      }
-
-      if (extend.value && attrList.value) {
-        extend.value.FilterOps = getFilterOps();
-      }
     }
 
     function nameOfKvpLabel(annotator, label) {
@@ -387,7 +392,7 @@
     }
 
     async function Submit() {
-      const newValue = JSON.parse(JSON.stringify(extend.value))
+      const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
 
       delete newValue.FilterOps;
       newValue.Filter.forEach(filter => {
@@ -403,20 +408,6 @@
       console.log('submit', newValue)
 
       try {
-        // const values = await validate();
-        // setModalProps({ confirmLoading: true });
-        // // TODO custom api
-        // const minBox = { width: 0, height: 0 };
-        // minBox.width = Number(values.width);
-        // minBox.height = Number(values.height);
-        // values.ability = revOption[values.ability];
-        // // console.log(values);
-        // await algoConfigMod({
-        //   ability: values.ability,
-        //   minBox: minBox,
-        //   interval: Number(values.interval),
-        //   threshold: Number(values.threshold),
-        // });
         emit('success', newValue);
         closeModal();
       } finally {
@@ -424,48 +415,18 @@
       }
     }
 
-    const extend = ref({
-      "FilterName": "五一期间晚上出现的老年男子与小萝莉",
-      "FilterPeriod":
-      [
-        {
-          "DateStart": "20240501",
-          "DateEnd": "20240505",
-          "TimeStart": "1800",
-          "TimeEnd": "0800",
-          "Weekday": "0,1,2,3,4,5,6"
-        }
-      ],
-      "Filter":
-      [
-        {
-          "Annotator": "full_structure",
-          "Label": "1420",
-          "Rtsp": "rtsp://192.168.0.158:8554/sample",
-          "Rule":
-          [
-            {
-                "Grp": 1,
-                "Op": "=",
-                "K": "special_vehicle",
-                "V": "common_vehicle"
-            },
-            {
-                "Grp": 1,
-                "Op": "=",
-                "K": "vehicle_color",
-                "V": "yellow"
-            }
-          ]
-        },
-      ]
-    })
-
-    onMounted(async ()=> {
+    onMounted(() => {
       apis.attrList().then((res) => {
         attrList.value = res;
-        updateExtend()
       });
+
+    })
+
+    watch(() => props.extend, () => {
+      console.log('watch props.extend')
+
+      cacheExtend.value = props.extend;
+
     })
 
     const props = defineProps({
@@ -477,7 +438,13 @@
         type: String,
         default: null,
       },
+      extend: {
+        type: Object,
+        default: {},
+      }
     });
+
+    const cacheExtend = ref({});
 
   </script>
   
