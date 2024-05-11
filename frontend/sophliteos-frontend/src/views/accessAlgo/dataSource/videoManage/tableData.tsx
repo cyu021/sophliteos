@@ -48,18 +48,18 @@ export function getBasicColumns(): BasicColumn[] {
       align: 'left',
       ellipsis: true,
     },
-    {
-      title: t('dataSource.videoManage.mediaPull'),
-      dataIndex: 'mediaPull',
-      width: 120,
-      align: 'left',
-    },
-    {
-      title: t('dataSource.videoManage.isNeedDetect'),
-      dataIndex: 'isNeedDetect',
-      width: 120,
-      align: 'left',
-    },
+    // {
+    //   title: t('dataSource.videoManage.mediaPull'),
+    //   dataIndex: 'mediaPull',
+    //   width: 120,
+    //   align: 'left',
+    // },
+    // {
+    //   title: t('dataSource.videoManage.isNeedDetect'),
+    //   dataIndex: 'isNeedDetect',
+    //   width: 120,
+    //   align: 'left',
+    // },
     {
       title: t('dataSource.videoManage.encodeFormat'),
       dataIndex: 'codec',
