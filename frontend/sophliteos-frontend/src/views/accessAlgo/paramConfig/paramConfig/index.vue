@@ -71,7 +71,7 @@
               <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
                 <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
                 <Button style="max-width: 250px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" @click="showFilterRule">{{ filterName }}</Button>
-                <Button type="text" danger @click="deleteExtend"><DeleteOutlined/></Button>
+                <Button v-if="hasExtend" type="text" danger @click="deleteExtend"><DeleteOutlined/></Button>
               </div>
             </div>
             <div :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16 + 30}px` }">
@@ -261,6 +261,20 @@ import apis from './api';
     }
 
     return '点击配置新规则'
+  })
+
+  const hasExtend = computed(() => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        const extend = algorithms[0].Extend;
+        if (extend && extend.FilterName) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   })
 
   const algorithmName = computed(() => {

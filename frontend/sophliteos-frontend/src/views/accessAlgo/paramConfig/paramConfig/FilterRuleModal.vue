@@ -272,14 +272,12 @@
       }
 
       cacheExtend.value.FilterPeriod.push({
-        DateStart: '',
-        DateEnd: '',
-        TimeStart: '',
-        TimeEnd: '',
-        Weekday: ''
+        DateStart: '20240101',
+        DateEnd: '20240131',
+        TimeStart: '0800',
+        TimeEnd: '2000',
+        Weekday: '0,1,2,3,4,5,6',
       });
-
-
     }
 
     function ruleAdd(annotator, label, key) {
@@ -333,7 +331,6 @@
     }
 
     function andClick(labelId) {
-      console.log('and click', labelId)
       currentLabelId.value = labelId;
     }
 
