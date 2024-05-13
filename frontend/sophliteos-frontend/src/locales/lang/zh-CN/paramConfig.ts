@@ -19,6 +19,7 @@ export default {
     minRatio: '检测目标最小像素',
     maxRatio: '检测目标最大像素',
     setAlgoParams: '参数设置',
+    filterRule: '事件过滤规则',
   },
   draw: {
     clear: '清除绘制',

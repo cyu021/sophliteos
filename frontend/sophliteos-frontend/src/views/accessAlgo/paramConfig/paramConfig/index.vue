@@ -67,7 +67,12 @@
                 <span style="padding-left: 10px; border-left: 2px solid #0960bdb8"></span>
                 {{ t('paramConfig.param.setAlgoParams') }}
               </div>
-              <BasicForm @register="registerForm" style="width: 450px" />
+              <BasicForm @register="registerForm" style="width: 450px;" />
+              <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
+                <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
+                <Button style="max-width: 250px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" @click="showFilterRule">{{ filterName }}</Button>
+                <Button v-if="hasExtend" type="text" danger @click="deleteExtend"><DeleteOutlined/></Button>
+              </div>
             </div>
             <div :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16 + 30}px` }">
               <div
@@ -129,11 +134,12 @@
         </div>
       </Card>
     </Card>
+    <FilterRuleModal :extend="extend" @register="RegisterFilterRuleModal" :taskName="taskId" :algorithmName="algorithmName" @success="updateFilterRule"/>
   </div>
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted, nextTick, h, onUnmounted, watch } from 'vue';
+  import { ref, onMounted, nextTick, h, onUnmounted, watch, computed } from 'vue';
   import {
     Button,
     Card,
@@ -146,7 +152,7 @@
     Space,
     Tooltip,
   } from 'ant-design-vue';
-  import { EditOutlined, ClearOutlined } from '@ant-design/icons-vue';
+  import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
   import mpegts from 'mpegts.js';
   import { fabric } from 'fabric';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -165,6 +171,12 @@
     statusMap,
     protocolMap,
   } from './Data';
+
+  import FilterRuleModal from './FilterRuleModal.vue';
+  import { useModal } from '/@/components/Modal';
+import apis from './api';
+
+  const [RegisterFilterRuleModal, { openModal: openFilterRuleModal }] = useModal();
 
   const { createMessage } = useMessage();
   const { t } = useI18n();
@@ -236,6 +248,79 @@
       drawText.value = t('paramConfig.draw.drawLineDetect');
     }
   });
+
+  const filterName = computed(() => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        const extend = algorithms[0].Extend;
+        if (extend && extend.FilterName) {
+          return extend.FilterName;
+        }
+      }
+    }
+
+    return '点击配置新规则'
+  })
+
+  const hasExtend = computed(() => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        const extend = algorithms[0].Extend;
+        if (extend && extend.FilterName) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  })
+
+  const algorithmName = computed(() => {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        const algorithm = algorithms[0];
+        return abilitiesMap.value.get(Number(algorithm.Type))
+      }
+    }
+
+    return ''
+  })
+
+  const extend = computed(async () => {
+    console.log('index extend', algoTaskInfo.value);
+
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        return algorithms[0].Extend || {};
+      }
+    } 
+
+    return {};
+  })
+
+  function updateFilterRule(value) {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        algorithms[0].Extend = value;
+      }
+    } 
+  }
+
+  function getCurrentExtend() {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        return algorithms[0].Extend;
+      }
+    } 
+
+    return null;
+  }
 
   function computeVideoWidth() {
     // 只要开始缩放，就关闭canvas
@@ -320,10 +405,14 @@
 
   async function submit() {
     const values = await validate();
+    console.log('submit', values);
     lineSubmitPoint.value.forEach((item) => {
       item.x = Math.round(item.x * pixRatio.value) || 0;
       item.y = Math.round(item.y * pixRatio.value) || 0;
     });
+
+    const extend = getCurrentExtend();
+
     const params: any = {
       taskId: taskId.value,
       Algorithm: {
@@ -361,6 +450,7 @@
             })),
           },
         ],
+        Extend: extend,
       },
     };
     const res = await editAlgoTaskConfig(params);
@@ -467,6 +557,19 @@
         pylogonSubmitPoint.value = [];
       }
     }
+  }
+
+  function deleteExtend() {
+    if (algoTaskInfo.value && activeKey.value) {
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      if (algorithms.length > 0) {
+        algorithms[0].Extend = {};
+      }
+    }
+  }
+
+  function showFilterRule() {
+    openFilterRuleModal(true);
   }
 
   function clearCanvas() {

@@ -18,7 +18,8 @@ export default {
     checkFrame: "감지 간격",
     minRatio: "최소 감지 비율",
     maxRatio: "최대 감지 비율",
-    setAlgoParams: "알고리즘 설정"
+    setAlgoParams: "알고리즘 설정",
+    filterRule: 'Event filter',
   },
   draw: {
     clear: "그리기 제거",

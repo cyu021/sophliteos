@@ -135,7 +135,7 @@ const start = (name) => {
       list = {};
     }
     const keys = Object.keys(list);
-    const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 0;
+    const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 1;
 
     return dynamicStart(name)
     .then((res) => {
