@@ -108,11 +108,11 @@
                     <div style="display: flex; flex-direction: row;">
                       <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
                         <div style="width: 120px;">开始时间</div>
-                        <TimePicker :value="dayjs(item.TimeStart || '0000', 'HHmm')" @change="periodUpdateTimeStart(index, $event)"/>
+                        <TimePicker format="HH:mm" :value="dayjs(item.TimeStart || '0000', 'HHmm')" @change="periodUpdateTimeStart(index, $event)"/>
                       </div>
                       <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
                         <div style="width: 120px;">结束时间</div>
-                        <TimePicker :value="dayjs(item.TimeEnd || '0000', 'HHmm')" @change="periodUpdateTimeEnd(index, $event)"/>
+                        <TimePicker format="HH:mm" :value="dayjs(item.TimeEnd || '0000', 'HHmm')" @change="periodUpdateTimeEnd(index, $event)"/>
                       </div>
                     </div>
 
