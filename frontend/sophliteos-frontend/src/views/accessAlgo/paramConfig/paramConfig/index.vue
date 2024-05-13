@@ -263,7 +263,7 @@ import apis from './api';
     return '点击配置新规则'
   })
 
-  const hasExtend = computed(() => {
+  const hasExtend = computed(() => {    
     if (algoTaskInfo.value && activeKey.value) {
       const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
       if (algorithms.length > 0) {
@@ -311,11 +311,23 @@ import apis from './api';
     } 
   }
 
-  function getCurrentExtend() {
+  async function getCurrentExtend() {
+    const rtsp = await apis.videoUrl(algoTaskInfo.value.device.name);
+
     if (algoTaskInfo.value && activeKey.value) {
       const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
       if (algorithms.length > 0) {
-        return algorithms[0].Extend;
+        const extend = algorithms[0].Extend;
+
+        if (extend) {
+          if (extend.Filter) {
+            extend.Filter.forEach(element => {
+              element.Rtsp = rtsp;
+            });
+          }
+        }
+
+        return extend;
       }
     } 
 
@@ -405,13 +417,12 @@ import apis from './api';
 
   async function submit() {
     const values = await validate();
-    console.log('submit', values);
     lineSubmitPoint.value.forEach((item) => {
       item.x = Math.round(item.x * pixRatio.value) || 0;
       item.y = Math.round(item.y * pixRatio.value) || 0;
     });
 
-    const extend = getCurrentExtend();
+    const extend = await getCurrentExtend();
 
     const params: any = {
       taskId: taskId.value,

@@ -1,3 +1,5 @@
+import { getVideosList } from '/@/api/dataSource';
+import { getTaskList } from '/@/api/task';
 import { defHttp } from '/@/utils/http/axios';
 
 const attrList = () => {
@@ -8,6 +10,41 @@ const attrList = () => {
         return res.AlgoAttrDict;
     })
 }
+
+const videoUrl = (deviceName) => {
+    return getVideosList().then((res) => {
+        const r = res.filter((i) => i.name === deviceName);
+
+        if (r.length > 0) {
+            return r[0].url;
+        }
+
+        return '';
+    })
+}
+
+
+// const videoUrl = (taskId) => {
+//     return getTaskList({ pageNo: -1, pageSize: -1 }).then((list) => {
+//         const filterResult = list.items.filter((item) => { return item.taskId === taskId });
+//         if (filterResult.length > 0) {
+//             return filterResult[0].deviceName;
+//         }
+//         return '';
+//     }).then((deviceName) => {
+//         return getVideosList().then((res) => {
+//             console.log('video list', res, deviceName);
+//             const r = res.filter((i) => i.name === deviceName);
+//             console.log('video list', res, deviceName, r);
+
+//             if (r.length > 0) {
+//                 return r[0].url;
+//             }
+
+//             return '';
+//         })
+//     })
+// }
 
 const defaultExtend = (annotator) => {
     return attrList().then((aRes) => {
@@ -55,6 +92,7 @@ const defaultExtend = (annotator) => {
 const apis = {
     attrList,
     defaultExtend,
+    videoUrl,
 };
 
 export default apis;

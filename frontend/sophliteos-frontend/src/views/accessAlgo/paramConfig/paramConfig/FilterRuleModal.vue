@@ -31,7 +31,7 @@
                             </Button>
                             <template #overlay>
                               <Menu>
-                                <MenuItem v-for="(value, index) in ops" :key="index" @click="updateExtendFilterOp(item.Label, jtem.K, value)">
+                                <MenuItem v-for="value in ops" :key="value" @click="updateExtendFilterOpByIndex(index, jndex, value)">
                                   {{ value }}
                                 </MenuItem>
                               </Menu>
@@ -47,7 +47,7 @@
                             </Button>
                             <template #overlay>
                               <Menu>
-                                <MenuItem v-for="(value, index) in kVs" :key="index" @click="updateExtendFilter(item.Label, jtem.K, value)">
+                                <MenuItem v-for="value in kVs" :key="value" @click="updateExtendFilterByIndex(index, jndex, value)">
                                   {{ value }}
                                 </MenuItem>
                               </Menu>
@@ -55,7 +55,7 @@
                           </Dropdown>
                         </div>
                         <div>
-                          <Button danger type="text" @click="ruleDelete(item.Label, jndex)">
+                          <Button danger type="text" @click="ruleDeleteByIndex(index, jndex)">
                             <DeleteOutlined/>
                           </Button>
                         </div>
@@ -68,7 +68,7 @@
                         </Button>
                         <template #overlay>
                           <Menu>
-                            <MenuItem v-for="value in kvps" :key="value" @click="ruleAdd(item.Annotator, item.Label, value)">
+                            <MenuItem v-for="value in kvps" :key="value" @click="ruleAdd(item.Annotator, index, value)">
                               {{ value }}
                             </MenuItem>
                           </Menu>
@@ -77,7 +77,7 @@
                     </div>
                   </div>
                   <div style="align-items: center; justify-content: center; ">
-                    <Button danger type="text" @click="attrDelete(item.Label)">
+                    <Button danger type="text" @click="attrDeleteByIndex(index)">
                       <DeleteOutlined/>
                     </Button>
                   </div>
@@ -149,7 +149,7 @@
   </template>
   
   <script lang="ts" setup>
-    import { Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, Space, CheckboxGroup, Checkbox, TimePicker, DatePicker, } from 'ant-design-vue';
+    import { Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, Space, CheckboxGroup, Checkbox, TimePicker, DatePicker, message, } from 'ant-design-vue';
     import { BasicModal, useModalInner } from '/@/components/Modal';
     import { useI18n } from '/@/hooks/web/useI18n';
     import { onMounted, ref, watch, computed, watchEffect, } from 'vue';
@@ -165,8 +165,8 @@
 
     const attrList = ref()
 
-    const numberOps = ['=', '>', '<', '≥', '≤'];
-    const selectOps = ['='];
+    const numberOps = ['=', '!=', '>', '<', ];
+    const selectOps = ['=', '!='];
 
     const weekdays = [
       { label: '日', value: '0' },
@@ -202,31 +202,23 @@
       return [];
     }
 
-    function updateExtendFilter(label, key, value) {
+    function updateExtendFilterByIndex(labelIndex, keyIndex, value) {
       if (cacheExtend.value.Filter) {
-        cacheExtend.value.Filter.forEach((item) => {
-          if (label === item.Label) {
-            item.Rule.forEach((rule) => {
-              if (rule.K === key) {
-                rule.V = value;
-              }
-            });
+        if (cacheExtend.value.Filter.length > labelIndex) {
+          if (cacheExtend.value.Filter[labelIndex] && cacheExtend.value.Filter[labelIndex].Rule.length > keyIndex) {
+            cacheExtend.value.Filter[labelIndex].Rule[keyIndex].V = value;
           }
-        });
+        }
       }
     }
 
-    function updateExtendFilterOp(label, key, op) {
+    function updateExtendFilterOpByIndex(labelIndex, keyIndex, op) {
       if (cacheExtend.value.Filter) {
-        cacheExtend.value.Filter.forEach((item) => {
-          if (label === item.Label) {
-            item.Rule.forEach((rule) => {
-              if (rule.K === key) {
-                rule.Op = op;
-              }
-            });
+        if (cacheExtend.value.Filter.length > labelIndex) {
+          if (cacheExtend.value.Filter[labelIndex] && cacheExtend.value.Filter[labelIndex].Rule.length > keyIndex) {
+            cacheExtend.value.Filter[labelIndex].Rule[keyIndex].Op = op;
           }
-        });
+        }
       }
     }
 
@@ -280,44 +272,37 @@
       });
     }
 
-    function ruleAdd(annotator, label, key) {
+    function ruleAdd(annotator, labelIndex, key) {
       if (cacheExtend.value.Filter) {
-        cacheExtend.value.Filter.forEach((item, index) => {
-          if (label === item.Label) {
-            const values = getOpsOfKvp(annotator, label, key);
-            const ops = values.length <=0 ? numberOps : selectOps;
+        if (cacheExtend.value.Filter.length > labelIndex) {
+          const item = cacheExtend.value.Filter[labelIndex];
+          const values = getOpsOfKvp(annotator, item.Label, key);
+          const ops = values.length <=0 ? numberOps : selectOps;
 
-            console.log('rule add', ops, values);
+          if (!item.Rule) { item.Rule = []; }
 
-            if (!item.Rule) { item.Rule = []; }
-
-            item.Rule.push({
-              Grp: index,
-              Op: ops[0],
-              K: key,
-              V: values.length > 0 ? values[0] : 0,
-            })
-          }
-        });
+          item.Rule.push({
+            Grp: labelIndex,
+            Op: ops[0],
+            K: key,
+            V: values.length > 0 ? values[0] : 0,
+          })
+        }
       }
     }
 
-    function ruleDelete(label, index) {
+    function ruleDeleteByIndex(labelIndex, index) {
       if (cacheExtend.value.Filter) {
-        cacheExtend.value.Filter.forEach((item) => {
-          if (label === item.Label) {
-            item.Rule.splice(index, 1);
-          }
-        });
+        if (cacheExtend.value.Filter.length > labelIndex) {
+          cacheExtend.value.Filter[labelIndex].Rule.splice(index, 1);
+        }
       }
     }
 
-    function attrDelete(label) {
+    function attrDeleteByIndex(labelIndex) {
       if (cacheExtend.value.Filter) {
-        let index = cacheExtend.value.Filter.findIndex(obj => obj.Label === label);
-
-        if (index !== -1) {
-          cacheExtend.value.Filter.splice(index, 1);
+        if (cacheExtend.value.Filter.length > labelIndex) {
+          cacheExtend.value.Filter.splice(labelIndex, 1);
         }
       }
     }
@@ -388,6 +373,14 @@
     })
 
     function attrAdd(labelId) {
+      console.log('attr add', labelId, cacheExtend.value);
+      if (cacheExtend.value && cacheExtend.value.Filter) {
+        if (cacheExtend.value.Filter.some((item) => item.Label === labelId)) {
+          message.error('不可创建重复属性规则');
+          return;
+        }
+      }
+
       currentLabelId.value = labelId;
       
       if (!cacheExtend.value.Filter) {
@@ -411,18 +404,6 @@
 
     async function Submit() {
       const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
-
-      delete newValue.FilterOps;
-      newValue.Filter.forEach(filter => {
-        delete filter.LabelName;
-        delete filter.kvps;
-
-        filter.Rule.forEach(rule => {
-          delete rule.Vs;
-          delete rule.ops;
-        });
-      });
-
       console.log('submit', newValue)
 
       try {
