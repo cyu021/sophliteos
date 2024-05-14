@@ -290,8 +290,6 @@ import apis from './api';
   })
 
   const extend = computed(async () => {
-    console.log('index extend', algoTaskInfo.value);
-
     if (algoTaskInfo.value && activeKey.value) {
       const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
       if (algorithms.length > 0) {

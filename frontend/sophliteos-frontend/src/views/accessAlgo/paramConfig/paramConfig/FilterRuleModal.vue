@@ -439,11 +439,36 @@
     }
 
     function unformat(originExtend) {
+      const origin = JSON.parse(JSON.stringify(originExtend));
+      const filter = origin.Filter;
+      let cache = {};
+      filter.forEach(element => {
+        const label = element.Label;
+        const annotator = element.Annotator;
+        const rule = element.Rule;
 
+        rule.forEach(r => {
+          const key = label + r.Grp;
+
+          if (!cache[key]) {
+            cache[key] = {
+              Annotator: annotator,
+              Label: label,
+              Rule: [],
+            }
+          }
+
+          cache[key].Rule.push(r);
+        });
+      });
+
+      origin.Filter = Object.values(cache);
+      return origin;
     }
 
     async function Submit() {
-      const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
+      // const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
+      const newValue = format();
       console.log('submit', newValue, format());
 
       try {
@@ -462,9 +487,8 @@
     })
 
     watch(() => props.extend, async (newValue, oldValue) => {
-      console.log('watch props.extend', props.extend)
       const value = await newValue;
-      cacheExtend.value = value;
+      cacheExtend.value = unformat(value);
     })
 
     const props = defineProps({
