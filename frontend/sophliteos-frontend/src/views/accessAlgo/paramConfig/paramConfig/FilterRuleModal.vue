@@ -282,7 +282,6 @@
           if (!item.Rule) { item.Rule = []; }
 
           item.Rule.push({
-            Grp: labelIndex,
             Op: ops[0],
             K: key,
             V: values.length > 0 ? values[0] : 0,
@@ -373,18 +372,15 @@
     })
 
     function attrAdd(labelId) {
-      console.log('attr add', labelId, cacheExtend.value);
-      if (cacheExtend.value && cacheExtend.value.Filter) {
-        if (cacheExtend.value.Filter.some((item) => item.Label === labelId)) {
-          message.error('不可创建重复属性规则');
-          return;
-        }
-      }
-
       currentLabelId.value = labelId;
       
       if (!cacheExtend.value.Filter) {
-        cacheExtend.value.Filter = [];
+        cacheExtend.value.Filter = [{
+          Annotator: props.algorithmName,
+          Label: labelId,
+          Rule: [],
+        }];
+        return;
       }
 
       cacheExtend.value.Filter.push({
@@ -402,9 +398,78 @@
       }
     }
 
+    function format() {
+      const cacheE = JSON.parse(JSON.stringify(cacheExtend.value));
+      const filter = cacheE.Filter;
+      let newFilter = {}
+      if (filter && filter.length > 0) {
+        filter.forEach(element => {
+          const label = element.Label;
+          const annotator = element.Annotator;
+          const rule = element.Rule;
+
+          if (!newFilter[label]) {
+            newFilter[label] = {
+              Annotator: annotator,
+              Label: label,
+              Rule: [],
+            }
+          }
+
+          const existFilter = newFilter[label];
+          let grp = -1;
+          existFilter.Rule.forEach(element => {
+            if (element.Grp > grp) {
+              grp = element.Grp;
+            } 
+          });
+
+          grp = grp + 1;
+
+          rule.forEach(element => {
+            element.Grp = grp;
+            existFilter.Rule.push(element);
+          });
+        });
+      }
+
+      cacheE.Filter = Object.values(newFilter);
+
+      return cacheE;
+    }
+
+    function unformat(originExtend) {
+      const origin = JSON.parse(JSON.stringify(originExtend));
+      const filter = origin.Filter;
+      let cache = {};
+      filter.forEach(element => {
+        const label = element.Label;
+        const annotator = element.Annotator;
+        const rule = element.Rule;
+
+        rule.forEach(r => {
+          const key = label + r.Grp;
+
+          if (!cache[key]) {
+            cache[key] = {
+              Annotator: annotator,
+              Label: label,
+              Rule: [],
+            }
+          }
+
+          cache[key].Rule.push(r);
+        });
+      });
+
+      origin.Filter = Object.values(cache);
+      return origin;
+    }
+
     async function Submit() {
-      const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
-      console.log('submit', newValue)
+      // const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
+      const newValue = format();
+      console.log('submit', newValue, format());
 
       try {
         emit('success', newValue);
@@ -422,9 +487,8 @@
     })
 
     watch(() => props.extend, async (newValue, oldValue) => {
-      console.log('watch props.extend', props.extend)
       const value = await newValue;
-      cacheExtend.value = value;
+      cacheExtend.value = unformat(value);
     })
 
     const props = defineProps({

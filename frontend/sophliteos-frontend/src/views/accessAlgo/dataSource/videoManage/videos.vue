@@ -117,7 +117,7 @@
     1: '巡检完成',
     0: '需要巡检',
   };
-  const [registerTable, { getDataSource, reload }] = useTable({
+  const [registerTable, { getDataSource, reload, setLoading, }] = useTable({
     columns: getBasicColumns(),
     api: getVideosList,
     showTableSetting: true,
@@ -169,13 +169,17 @@
   }
   async function oneStart() {
     const deviceIds = getDataSource().map((item) => item.deviceId);
+    setLoading(true);
     await DeviceCheck({ deviceIds: deviceIds });
+    setLoading(false);
     createMessage.success('操作成功');
     reload();
   }
   async function PatrolInsepect(record) {
     const deviceId = [record.deviceId];
+    setLoading(true);
     await DeviceCheck({ deviceIds: deviceId });
+    setLoading(false);
     createMessage.success('操作成功');
     reload();
   }
