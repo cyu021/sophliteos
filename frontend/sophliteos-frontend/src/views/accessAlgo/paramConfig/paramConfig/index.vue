@@ -383,7 +383,7 @@ import apis from './api';
     clearCanvas();
     const algo = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)[0];
     const formData = {
-      Threshold: algo.Extend.Threshold || 0,
+      Threshold: algo.Extend?.Threshold || 0,
       // DetectInterval: algo.DetectInterval,
       // TrackInterval: algo.TrackInterval,
       MinDetect: algo.TargetSize.MinDetect,
