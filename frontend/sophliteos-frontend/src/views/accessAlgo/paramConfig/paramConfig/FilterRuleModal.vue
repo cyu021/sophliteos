@@ -455,7 +455,7 @@
 
     function unformat(originExtend) {
       const origin = JSON.parse(JSON.stringify(originExtend));
-      const filter = origin.Filter;
+      const filter = origin.Filter || [];
       let cache = {};
       filter.forEach(element => {
         const label = element.Label;
@@ -503,7 +503,7 @@
 
     watch(() => props.extend, async (newValue, oldValue) => {
       const value = await newValue;
-      cacheExtend.value = unformat(value);
+      cacheExtend.value = unformat(value || {});
     })
 
     const props = defineProps({
