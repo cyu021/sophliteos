@@ -39,37 +39,6 @@ const accessAlgo: AppRouteModule = {
       },
     },
     {
-      path: 'eventList',
-      name: 'EvnetList',
-      component: () => import('/@/views/accessAlgo/events/index.vue'),
-      meta: {
-        title: t('routes.dashboard.eventList'),
-      },
-    },
-    {
-      path: 'AlarmRetrieval',
-      name: 'AlarmRetrieval',
-      component: () => import('/@/views/accessAlgo/alarmRetrieval/index.vue'),
-      meta: {
-        title: t('routes.dashboard.alarmRetrieval'),
-        hideChildrenInMenu: true,
-      },
-      children: [
-        {
-          path: 'AlarmDetail/:image',
-          name: 'AlarmDetail',
-          component: () => import('/@/views/accessAlgo/alarmRetrieval/alarmDetail.vue'),
-          meta: {
-            title: t('routes.dashboard.alarmDetail'),
-            // hideMenu: true,
-            // hideBreadcrumb: true, // 在隐藏面包屑中，隐藏当前菜单
-            // hideTab: true,
-          },
-        },
-      ],
-    },
-
-    {
       path: 'paramList',
       name: 'paramList',
       component: () => import('/@/views/accessAlgo/paramConfig/paramConfig/index.vue'),
