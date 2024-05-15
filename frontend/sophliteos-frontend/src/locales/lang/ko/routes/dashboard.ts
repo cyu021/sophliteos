@@ -31,6 +31,7 @@ export default {
   taskList: "작업 목록",
   taskSubscribe: "작업 구독",
   accessAlgo: "알고리즘 비즈니스",
+  eventManage: 'Event Manage',
   dataSource: "데이터 소스",
   mediaServers: "스트리밍 서비스",
   videoManage: "영상 리소스",

@@ -83,24 +83,25 @@ const rule: any[] = [
   },
 ];
 
+const floatRule: any[] = [
+  {
+    type: 'number',
+    min: -999,
+    transform(val) {
+      return +val;
+    },
+    message: '可输入小数',
+    trigger: 'blur',
+  },
+];
+
 export const algoFormSchema: FormSchema[] = [
   {
-    field: 'TrackInterval',
-    label: t('paramConfig.param.folowFrame'),
+    field: 'Threshold',
+    label: t('paramConfig.param.algoThreshold'),
     component: 'Input',
-    componentProps: {
-      allowClear: false,
-    },
-    rules: rule,
-  },
-  {
-    field: 'DetectInterval',
-    label: t('paramConfig.param.checkFrame'),
-    component: 'Input',
-    componentProps: {
-      allowClear: false,
-    },
-    rules: rule,
+    componentProps: { },
+    rules: floatRule,
   },
   {
     field: 'MinDetect',

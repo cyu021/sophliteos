@@ -383,8 +383,9 @@ import apis from './api';
     clearCanvas();
     const algo = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)[0];
     const formData = {
-      DetectInterval: algo.DetectInterval,
-      TrackInterval: algo.TrackInterval,
+      Threshold: algo.Extend.Threshold || 0,
+      // DetectInterval: algo.DetectInterval,
+      // TrackInterval: algo.TrackInterval,
       MinDetect: algo.TargetSize.MinDetect,
       MaxDetect: algo.TargetSize.MaxDetect,
     };
@@ -415,20 +416,22 @@ import apis from './api';
 
   async function submit() {
     const values = await validate();
+
     lineSubmitPoint.value.forEach((item) => {
       item.x = Math.round(item.x * pixRatio.value) || 0;
       item.y = Math.round(item.y * pixRatio.value) || 0;
     });
 
     const extend = await getCurrentExtend();
+    extend.Threshold = Number(values.Threshold);
 
     const params: any = {
       taskId: taskId.value,
       Algorithm: {
         ...defaultEditConfigParams,
         Type: activeKey.value,
-        TrackInterval: Number(values.TrackInterval),
-        DetectInterval: Number(values.DetectInterval),
+        // TrackInterval: Number(values.TrackInterval),
+        // DetectInterval: Number(values.DetectInterval),
         TargetSize: {
           MinDetect: Number(values.MinDetect),
           MaxDetect: Number(values.MaxDetect),

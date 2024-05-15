@@ -33,6 +33,7 @@ export default {
   eventList: '实时事件',
   algorithmList: '算法查询',
   accessAlgo: '算法业务',
+  eventManage: '事件管理',
   taskSubscribe: '任务订阅',
   dataSource: '数据源维护',
   mediaServers: '流媒体服务',

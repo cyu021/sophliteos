@@ -12,52 +12,57 @@
 
           <CollapsePanel key="1" header="属性规则">
             <ul>
-              <li style="padding: 14px;" v-for="(item, index) in cacheExtend.Filter" :key="index">
+              <li v-for="(item, index) in cacheExtend.Filter" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; align-items: center; flex-direction: row;">
                   <div style="width: 150px; text-align: left;"> {{ nameOfKvpLabel(algorithmName, item.Label) + '(' + item.Label + ')' }} </div>
                   <div style="display: flex; flex-direction: column; flex-grow: 1; padding-left: 48px;">
                     <ul>
-                      <li 
-                        style="align-items: center; height: 48px; justify-content: center; display: flex; margin: 8px; border: 1px gray dashed; flex-grow: 1; flex-direction: row;" 
-                        v-for="(jtem, jndex) in item.Rule" :key="jndex">
-                        <div style="width: 250px; text-align: center; ">
-                          {{ jtem.K }}
-                        </div>
-                        <div style="padding: 4px;">
-                          <Dropdown :trigger="['click']">
-                            <Button style="width: 100px; " @click="opClick(item.Label, jtem.K)">
-                              {{ jtem.Op }}
-                              <DownOutlined style="opacity: 0.5;"/>
+                      <li v-for="(jtem, jndex) in item.Rule" :key="jndex">
+                        <div style="align-items: center; height: 48px; justify-content: center; display: flex; border: 1px gray dashed; flex-grow: 1; flex-direction: row;">
+                          <div style="width: 250px; text-align: center; ">
+                            {{ jtem.K }}
+                          </div>
+                          <div style="padding: 4px;">
+                            <Dropdown :trigger="['click']">
+                              <Button style="width: 100px; " @click="opClick(item.Label, jtem.K)">
+                                {{ jtem.Op }}
+                                <DownOutlined style="opacity: 0.5;"/>
+                              </Button>
+                              <template #overlay>
+                                <Menu>
+                                  <MenuItem v-for="value in ops" :key="value" @click="updateExtendFilterOpByIndex(index, jndex, value)">
+                                    {{ value }}
+                                  </MenuItem>
+                                </Menu>
+                              </template>
+                            </Dropdown>
+                          </div>
+                          <div style="padding: 4px;">
+                            <Input v-if="typeof jtem.V === 'number' || typeof jtem.V === 'string' && !isNaN(Number(jtem.V))" style="width: 250px;" v-model:value="jtem.V" />
+                            <Dropdown v-else :trigger="['click']">
+                              <Button style="width: 250px; " @click="vClick(item.Label, jtem.K)">
+                                {{ jtem.V }}
+                                <DownOutlined style="opacity: 0.5;"/>
+                              </Button>
+                              <template #overlay>
+                                <Menu>
+                                  <MenuItem v-for="value in kVs" :key="value" @click="updateExtendFilterByIndex(index, jndex, value)">
+                                    {{ value }}
+                                  </MenuItem>
+                                </Menu>
+                              </template>
+                            </Dropdown>
+                          </div>
+                          <div>
+                            <Button danger type="text" @click="ruleDeleteByIndex(index, jndex)">
+                              <DeleteOutlined/>
                             </Button>
-                            <template #overlay>
-                              <Menu>
-                                <MenuItem v-for="value in ops" :key="value" @click="updateExtendFilterOpByIndex(index, jndex, value)">
-                                  {{ value }}
-                                </MenuItem>
-                              </Menu>
-                            </template>
-                          </Dropdown>
+                          </div>
                         </div>
-                        <div style="padding: 4px;">
-                          <Input v-if="typeof jtem.V === 'number' || typeof jtem.V === 'string' && !isNaN(Number(jtem.V))" style="width: 250px;" v-model:value="jtem.V" />
-                          <Dropdown v-else :trigger="['click']">
-                            <Button style="width: 250px; " @click="vClick(item.Label, jtem.K)">
-                              {{ jtem.V }}
-                              <DownOutlined style="opacity: 0.5;"/>
-                            </Button>
-                            <template #overlay>
-                              <Menu>
-                                <MenuItem v-for="value in kVs" :key="value" @click="updateExtendFilterByIndex(index, jndex, value)">
-                                  {{ value }}
-                                </MenuItem>
-                              </Menu>
-                            </template>
-                          </Dropdown>
-                        </div>
-                        <div>
-                          <Button danger type="text" @click="ruleDeleteByIndex(index, jndex)">
-                            <DeleteOutlined/>
-                          </Button>
+                        <div v-if="jndex < item.Rule.length - 1" style="height: 18px; display: flex; justify-content: center; align-items: center;">
+                          <div style="border-radius: 6px; height: 28px; width: 58px; font-size: 16px; background-color: #a0a0a0; text-align: center; display: flex; justify-content: center; align-items: center; color: white;">
+                            <div>AND</div>
+                          </div>
                         </div>
                       </li>
                     </ul>
@@ -82,6 +87,11 @@
                     </Button>
                   </div>
                 </div>
+                <div v-if="index < cacheExtend.Filter.length - 1" style="height: 18px; display: flex; justify-content: flex-start; align-items: center;">
+                  <div style="margin-left: 24px; border-radius: 6px; height: 38px; width: 38px; font-size: 20px; background-color: #a0a0a0; text-align: center; display: flex; justify-content: center; align-items: center; color: white;">
+                    <div>OR</div>
+                  </div>
+                </div>
               </li>
             </ul>
             <div style="padding: 16px;">
@@ -102,7 +112,7 @@
 
           <CollapsePanel key="2" header="时间规则">
             <ul>
-              <li style="padding: 14px;" v-for="(item, index) in cacheExtend.FilterPeriod" :key="index">
+              <li v-for="(item, index) in cacheExtend.FilterPeriod" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; flex-direction: row; align-items: center;"> 
                   <div style="flex-grow: 1;">
                     <div style="display: flex; flex-direction: row;">
@@ -137,6 +147,11 @@
                     </Button>
                   </div>
                 </div>
+                <div v-if="index < cacheExtend.FilterPeriod.length - 1" style="height: 18px; display: flex; justify-content: flex-start; align-items: center;">
+                  <div style="margin-left: 24px; border-radius: 6px; height: 38px; width: 38px; font-size: 20px; background-color: #a0a0a0; text-align: center; display: flex; justify-content: center; align-items: center; color: white;">
+                    <div>OR</div>
+                  </div>
+                </div>
               </li>
             </ul>
             <div style="padding: 16px;">
@@ -154,7 +169,7 @@
     import { useI18n } from '/@/hooks/web/useI18n';
     import { onMounted, ref, watch, computed, watchEffect, } from 'vue';
     import apis from './api';
-    import { DeleteOutlined, DownOutlined, } from '@ant-design/icons-vue';
+    import { DeleteOutlined, DownOutlined, PlusCircleOutlined, } from '@ant-design/icons-vue';
     import dayjs from 'dayjs';
 
     const { t } = useI18n();
