@@ -31,7 +31,7 @@ export default {
     isNeedDetect: "검사 상태",
     encodeFormat: "인코딩 형식",
     resolution: "해상도",
-    addDevice: "장치 추가",
+    addDevice: "장치 추가(1920x1080)",
     editDevice: "장치 편집",
     allCheck: "모든 검사",
     status: "상태",

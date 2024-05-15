@@ -32,7 +32,7 @@ export default {
     isNeedDetect: '巡检状态',
     encodeFormat: '编码格式',
     resolution: '分辨率',
-    addDevice: '新增设备',
+    addDevice: '新增设备(1920x1080)',
     editDevice: '编辑设备',
     allCheck: '全部巡检',
     status: '状态',
