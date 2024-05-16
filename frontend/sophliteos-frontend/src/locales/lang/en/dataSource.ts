@@ -31,7 +31,7 @@ export default {
     isNeedDetect: 'Inspection status',
     encodeFormat: 'Encoding format',
     resolution: 'resolution',
-    addDevice: 'Add Equipment',
+    addDevice: 'Add Equipment(1920x1080)',
     editDevice: 'Edit Equipment',
     allCheck: 'All inspections',
     status: 'status',

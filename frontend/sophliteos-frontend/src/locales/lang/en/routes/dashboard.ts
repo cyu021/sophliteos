@@ -31,6 +31,7 @@ export default {
   taskList: 'Task List',
   taskSubscribe: 'Task Subscribe',
   accessAlgo: 'Algorithm business',
+  eventManage: 'Event Manage',
   dataSource: 'DataSource',
   mediaServers: 'Streaming Services',
   videoManage: 'Video Resource',
