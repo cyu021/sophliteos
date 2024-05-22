@@ -5,7 +5,7 @@
     ref="footerRef"
     style="color: #555555; font-size: 16px"
   >
-    <div>Copyright &copy;2023 算能</div>
+    <!-- <div>Copyright &copy;2024 算能</div> -->
   </Footer>
 </template>
 

@@ -19,7 +19,8 @@ export default {
     minRatio: "최소 감지 비율",
     maxRatio: "최대 감지 비율",
     setAlgoParams: "알고리즘 설정",
-    filterRule: 'Event filter',
+    filterRule: '이벤트 필터',
+    createFilterRule: '새 규칙 생성'
   },
   draw: {
     clear: "그리기 제거",
@@ -31,5 +32,21 @@ export default {
     rectTip: "직사각형을 그리려면 상자를 선택하십시오. 마우스를 누르고, 마우스를 움직인 후, 마우스를 올리면 그리기가 완료됩니다.",
     region: "감지 영역",
     line: "감지선"
+  },
+  filter: {
+    name: '규칙 이름',
+    attributeRule: '속성 규칙',
+    timeRules: '시간 규칙',
+    startTime: '시작 시간',
+    endTime: '종료 시간',
+    startDate: '시작 날짜',
+    endDate: '종료 날짜',
+    monday: '월요일',
+    tuesday: '화요일',
+    wednesday: '수요일',
+    thursday: '목요일',
+    friday: '금요일',
+    saturday: '토요일',
+    sunday: '일요일'
   }
 };

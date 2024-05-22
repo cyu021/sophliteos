@@ -39,6 +39,7 @@ export default {
     exportModalTitle: '导出数据',
     fileType: '文件类型',
     fileName: '文件名',
+    md5: 'MD5值',
   },
   form: {
     putAway: '收起',

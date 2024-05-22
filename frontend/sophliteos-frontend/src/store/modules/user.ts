@@ -127,7 +127,7 @@ export const useUserStore = defineStore({
       const userInfo = {
         userId: '1',
         username: 'admin',
-        realName: '算能科技',
+        realName: 'admin',
         avatar: '',
         desc: 'manager',
         password: 'admin',

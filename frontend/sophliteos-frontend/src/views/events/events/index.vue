@@ -1,10 +1,10 @@
 <template>
   <div style="padding: 20px; display: flex; flex-direction: column">
-    <div style="font-size: 20px; padding-bottom: 20px">选择算法任务</div>
+    <div style="font-size: 20px; padding-bottom: 20px">{{ t('paramConfig.param.selectTask') }}</div>
     <a-select
       v-model:value="value"
       show-search
-      placeholder="选择算法任务"
+      :placeholder="t('paramConfig.param.selectTask')"
       style="flex-grow: 1"
       :options="options"
       :filter-option="filterOption"
@@ -122,6 +122,8 @@ import { Divider, Space, Select, Image, Popover } from "ant-design-vue";
 import apis from "./apis.js";
 import mpegts from "mpegts.js";
 import ws from "./ws.js";
+
+const { t } = useI18n();
 
 const ASelect = Select;
 const ADivider = Divider;
