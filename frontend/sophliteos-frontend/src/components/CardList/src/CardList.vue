@@ -45,10 +45,10 @@
                   :trigger="['hover']"
                   :dropMenuList="[
                     {
-                      text: '删除',
+                      text: t('component.cropper.btn_delete'),
                       event: '1',
                       popConfirm: {
-                        title: '是否确认删除',
+                        title: t('component.cropper.btn_delete') + '?',
                         confirm: handleDelete.bind(null, item.id),
                       },
                     },
@@ -90,6 +90,7 @@
   import { Button } from '/@/components/Button';
   import { isFunction } from '/@/utils/is';
   import { useSlider, grid } from './data';
+import { t } from '/@/hooks/web/useI18n';
   const ListItem = List.Item;
   const CardMeta = Card.Meta;
   const TypographyText = Typography.Text;

@@ -12,5 +12,6 @@ export default {
     upUrl: '上报地址IP',
     on: '运行中',
     off: '已停止',
+    algorithmConfig: '算法设置'
   },
 };

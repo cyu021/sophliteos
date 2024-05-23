@@ -37,7 +37,7 @@ export function getBasicColumns(): BasicColumn[] {
         const status = record.status;
         const enable = status === 'ON';
         const color = enable ? 'green' : 'red';
-        const text = enable ? '在线' : '离线';
+        const text = enable ? t('common.ON') : t('common.OFF');
         return h(Tag, { color: color }, () => text);
       },
     },

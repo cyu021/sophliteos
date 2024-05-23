@@ -54,9 +54,9 @@ export const taskFormSchema: FormSchema[] = [
   },
   {
     field: 'abilities',
-    label: '算法设置',
+    label: t('taskList.taskList.algorithmConfig'),
     component: 'CheckboxGroup',
-    helpMessage: ['算法设置'],
+    helpMessage: [t('taskList.taskList.algorithmConfig')],
     // required: true,
     // componentProps: {
     //   options: options,
@@ -84,9 +84,9 @@ export const addTaskSchema: FormSchema[] = [
   },
   {
     field: 'abilities',
-    label: '算法设置',
+    label: t('taskList.taskList.algorithmConfig'),
     component: 'CheckboxGroup',
-    helpMessage: ['算法设置'],
+    helpMessage: [t('taskList.taskList.algorithmConfig')],
     // required: true,
     // componentProps: {
     //   options: options,
