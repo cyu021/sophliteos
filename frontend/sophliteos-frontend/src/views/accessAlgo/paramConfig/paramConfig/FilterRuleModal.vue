@@ -4,13 +4,13 @@
       <Divider />
 
       <div style="padding: 14px; display: flex; flex-direction: row; align-items: center;">
-        <Input v-model:value="cacheExtend.FilterName" placeholder="规则名称" />
+        <Input v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" />
       </div>
 
       <div style="padding: 14px; padding-bottom: 30px;">
         <Collapse v-model:activeKey="attributeActiveKey">
 
-          <CollapsePanel key="1" header="属性规则">
+          <CollapsePanel key="1" :header="t('paramConfig.filter.attributeRule')">
             <ul>
               <li v-for="(item, index) in cacheExtend.Filter" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; align-items: center; flex-direction: row;">
@@ -110,29 +110,29 @@
             </div>
           </CollapsePanel>
 
-          <CollapsePanel key="2" header="时间规则">
+          <CollapsePanel key="2" :header="t('paramConfig.filter.timeRules')">
             <ul>
               <li v-for="(item, index) in cacheExtend.FilterPeriod" :key="index">
                 <div style="padding: 14px; border: 1px black dashed; display: flex; flex-direction: row; align-items: center;"> 
                   <div style="flex-grow: 1;">
                     <div style="display: flex; flex-direction: row;">
                       <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
-                        <div style="width: 120px;">开始时间</div>
+                        <div style="width: 120px;">{{ t('paramConfig.filter.startTime') }}</div>
                         <TimePicker format="HH:mm" :value="dayjs(item.TimeStart || '0000', 'HHmm')" @change="periodUpdateTimeStart(index, $event)"/>
                       </div>
                       <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
-                        <div style="width: 120px;">结束时间</div>
+                        <div style="width: 120px;">{{ t('paramConfig.filter.endTime') }}</div>
                         <TimePicker format="HH:mm" :value="dayjs(item.TimeEnd || '0000', 'HHmm')" @change="periodUpdateTimeEnd(index, $event)"/>
                       </div>
                     </div>
 
                     <div style="display: flex; flex-direction: row;">
                       <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
-                        <div style="width: 120px;">开始日期</div>
+                        <div style="width: 120px;">{{ t('paramConfig.filter.startDate') }}</div>
                         <DatePicker :value="dayjs(item.DateStart || dayjs(), 'YYYYMMDD')" @change="periodUpdateDateStart(index, $event)"/>
                       </div>
                       <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
-                        <div style="width: 120px;">结束日期</div>
+                        <div style="width: 120px;">{{ t('paramConfig.filter.endDate') }}</div>
                         <DatePicker :value="dayjs(item.DateEnd || dayjs(), 'YYYYMMDD')" @change="periodUpdateDateEnd(index, $event)"/>
                       </div>
                     </div>
@@ -184,13 +184,13 @@
     const selectOps = ['=', '!='];
 
     const weekdays = [
-      { label: '日', value: '0' },
-      { label: '一', value: '1' },
-      { label: '二', value: '2' },
-      { label: '三', value: '3' },
-      { label: '四', value: '4' },
-      { label: '五', value: '5' },
-      { label: '六', value: '6' }]
+      { label: t('paramConfig.filter.sunday'), value: '0' },
+      { label: t('paramConfig.filter.monday'), value: '1' },
+      { label: t('paramConfig.filter.tuesday'), value: '2' },
+      { label: t('paramConfig.filter.wednesday'), value: '3' },
+      { label: t('paramConfig.filter.thursday'), value: '4' },
+      { label: t('paramConfig.filter.friday'), value: '5' },
+      { label: t('paramConfig.filter.saturday'), value: '6' }]
 
     const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
       setModalProps({ confirmLoading: false });

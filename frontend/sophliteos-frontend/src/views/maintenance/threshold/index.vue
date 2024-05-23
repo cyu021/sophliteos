@@ -139,7 +139,7 @@
       field: 'diskRate',
     },
     {
-      label: 'tpu使用率',
+      label: t('overview.tpuUtililizationRate'),
       field: 'tpuRate',
     },
   ];

@@ -20,6 +20,7 @@ export default {
     maxRatio: '检测目标最大像素',
     setAlgoParams: '参数设置',
     filterRule: '事件过滤规则',
+    createFilterRule: '新建规则',
   },
   draw: {
     clear: '清除绘制',
@@ -34,4 +35,20 @@ export default {
     region: '检测区域',
     line: '检测线',
   },
+  filter: {
+    name: '规则名称',
+    attributeRule: '属性规则',
+    timeRules: '时间规则',
+    startTime: '开始时间',
+    endTime: '结束时间',
+    startDate: '开始日期',
+    endDate: '结束日期',
+    monday: '星期一',
+    tuesday: '星期二',
+    wednesday: '星期三',
+    thursday: '星期四',
+    friday: '星期五',
+    saturday: '星期六',
+    sunday: '星期天'
+  }
 };
