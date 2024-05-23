@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
       const status = record.status;
       const enable = ~~status === 1;
       const color = enable ? 'green' : 'red';
-      const text = enable ? '运行中' : '已停止';
+      const text = enable ? t('taskList.taskList.on') : t('taskList.taskList.off');
       return h(Tag, { color: color }, () => text);
     },
   },
