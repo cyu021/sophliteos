@@ -8,6 +8,8 @@ export default {
     message: "알고리즘을 늘리기 위해 하드웨어 리소스를 소비해야 하므로 작업 경로 및 알고리즘 수를 적절하게 설정하십시오.",
     algoConfigTitle: "알고리즘 서비스 구성",
     upUrlConfig: "결과값 주소 구성",
-    upUrl: "결과값 주소"
+    upUrl: "결과값 주소",
+    on: '실행 중',
+    off: '중지됨',
   }
 };

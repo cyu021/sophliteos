@@ -10,5 +10,7 @@ export default {
     algoConfigTitle: 'Algorithm Service Configuration',
     upUrlConfig: 'Result address Configuration',
     upUrl: 'Result address',
+    on: 'Running',
+    off: 'Stopped',
   },
 };
