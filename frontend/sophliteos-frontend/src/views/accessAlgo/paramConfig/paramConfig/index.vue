@@ -260,7 +260,7 @@ import apis from './api';
       }
     }
 
-    return '点击配置新规则'
+    return t('paramConfig.param.createFilterRule')
   })
 
   const hasExtend = computed(() => {    

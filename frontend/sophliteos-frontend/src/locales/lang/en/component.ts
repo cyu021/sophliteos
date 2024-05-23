@@ -37,6 +37,7 @@ export default {
     exportModalTitle: 'Export data',
     fileType: 'File type',
     fileName: 'File name',
+    md5: 'MD5 value',
   },
   form: {
     putAway: 'Put away',

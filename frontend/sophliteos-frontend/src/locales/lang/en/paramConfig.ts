@@ -20,6 +20,7 @@ export default {
     maxRatio: 'Max Detect Ratio',
     setAlgoParams: 'Algorithm Setting',
     filterRule: 'Event filter',
+    createFilterRule: 'Create a new rule',
   },
   draw: {
     clear: 'Clear drawing',
@@ -35,4 +36,20 @@ export default {
     region: 'Detection area',
     line: 'Detection line',
   },
+  filter: {
+    name: 'Rule name',
+    attributeRule: 'Attribute rules',
+    timeRules: 'Time rules',
+    startTime: 'Start time',
+    endTime: 'End time',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    monday: 'Monday',
+    tuesday: 'Tuesday',
+    wednesday: 'Wednesday',
+    thursday: 'Thursday',
+    friday: 'Friday',
+    saturday: 'Saturday',
+    sunday: 'Sunday'
+  }
 };
