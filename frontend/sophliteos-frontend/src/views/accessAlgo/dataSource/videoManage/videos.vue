@@ -41,7 +41,7 @@
                 color: 'error',
                 tooltip: t('component.cropper.btn_delete'),
                 popConfirm: {
-                  title: '是否确认删除',
+                  title: t('component.cropper.btn_delete') + '?',
                   placement: 'left',
                   confirm: handleDelete.bind(null, record.deviceId),
                 },

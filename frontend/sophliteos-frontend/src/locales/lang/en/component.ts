@@ -27,6 +27,7 @@ export default {
     btn_add: 'add',
     btn_action: 'actions',
     btn_play: 'video preview',
+    btn_inspect: 'inspect',
   },
   drawer: {
     loadingText: 'Loading...',
