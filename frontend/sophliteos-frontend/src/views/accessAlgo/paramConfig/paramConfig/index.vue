@@ -80,7 +80,7 @@
                 :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16}px` }"
                 style="position: relative; border: 1px solid #f7faff"
               >
-                <video class="w-full h-full" ref="video" controls></video>
+                <video autoplay class="w-full h-full" ref="video" controls></video>
                 <canvas id="canvasId" v-if="drawRegion || drawLine"></canvas>
               </div>
               <div
@@ -484,11 +484,17 @@
   }
 
   async function play(url: any) {
+    console.log('play', url)
+    if (player.value) {
+      await player.value.unload();
+      player.value.destroy();
+    }
+
     player.value = new WebRTCPlayer({
       video: video.value,
       type: 'whep',
     });
-    player.value.load(new URL(url))
+    await player.value.load(new URL(url))
   }
 
   function initObjectByApi(points, line) {

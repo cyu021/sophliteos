@@ -244,42 +244,19 @@ const filterOption = (input, option) => {
 };
 const value = ref(undefined);
 
-const adjustVideoSize = () => {
-  canvas.value.width = video.value.videoWidth;
-  canvas.value.height = video.value.videoHeight;
-  refreshHotArea();
-
-  videoHeight.value =
-    (video.value.videoHeight / video.value.videoWidth) * videoWidth.value;
-};
-
-const play = (url) => {
+const play = async (url) => {
   console.log("play", url, video.value);
+
+  if (player) {
+    await player.unload();
+    player.destroy();
+  }
 
   player = new WebRTCPlayer({
     video: video.value,
     type: 'whep',
   });
-  player.load(new URL(url))  //'http://192.168.31.207:3100/standard_face/preview'))
-
-  // if (player) {
-  //   player.pause();
-  //   player.unload();
-  //   player = null;
-  // }
-
-  // if (mpegts.getFeatureList().mseLivePlayback) {
-  //   console.log("mseLivePlayback");
-
-  //   player = mpegts.createPlayer({
-  //     type: "mse", // could also be mpegts, m2ts, flv
-  //     isLive: true,
-  //     url: url,
-  //   });
-  //   player.attachMediaElement(video.value);
-  //   player.load();
-  //   player.play();
-  // }
+  await player.load(new URL(url))
 };
 
 const clearRect = () => {

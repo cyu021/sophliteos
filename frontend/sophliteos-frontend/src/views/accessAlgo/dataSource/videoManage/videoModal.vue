@@ -6,13 +6,13 @@
     :showOkBtn="false"
     width="40vw"
     :height="600"
-    @cancel="player.destroy()"
   >
-    <video ref="video" controls></video>
+    <video autoplay ref="video" controls></video>
   </BasicModal>
 </template>
 <script ts setup>
   import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { WebRTCPlayer } from '@eyevinn/webrtc-player';
   import { ref } from 'vue';
   const title = ref('');
   const url = ref();
@@ -21,6 +21,11 @@
   const [registerModal, { setModalProps }] = useModalInner((data) => {
     title.value = data.record.name || data.record.deviceName;
     url.value = data.res;
+
+    if (player) {
+      player.unload();
+      player.destroy();
+    }
 
     player = new WebRTCPlayer({
       video: video.value,
