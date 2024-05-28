@@ -27,7 +27,8 @@
         <video
           id="video"
           ref="video"
-          @loadedmetadata="adjustVideoSize"
+          autoplay
+          muted
           style="position: absolute; top: 0; left: 0"
         ></video>
         <div
@@ -120,8 +121,8 @@ import { ref, onMounted } from "vue";
 import { useI18n } from "/@/hooks/web/useI18n";
 import { Divider, Space, Select, Image, Popover } from "ant-design-vue";
 import apis from "./apis.js";
-import mpegts from "mpegts.js";
 import ws from "./ws.js";
+import { WebRTCPlayer } from "@eyevinn/webrtc-player";
 
 const { t } = useI18n();
 
@@ -253,26 +254,32 @@ const adjustVideoSize = () => {
 };
 
 const play = (url) => {
-  console.log("play", url);
-  
-  if (player) {
-    player.pause();
-    player.unload();
-    player = null;
-  }
+  console.log("play", url, video.value);
 
-  if (mpegts.getFeatureList().mseLivePlayback) {
-    console.log("mseLivePlayback");
+  player = new WebRTCPlayer({
+    video: video.value,
+    type: 'whep',
+  });
+  player.load(new URL(url))  //'http://192.168.31.207:3100/standard_face/preview'))
 
-    player = mpegts.createPlayer({
-      type: "mse", // could also be mpegts, m2ts, flv
-      isLive: true,
-      url: url,
-    });
-    player.attachMediaElement(video.value);
-    player.load();
-    player.play();
-  }
+  // if (player) {
+  //   player.pause();
+  //   player.unload();
+  //   player = null;
+  // }
+
+  // if (mpegts.getFeatureList().mseLivePlayback) {
+  //   console.log("mseLivePlayback");
+
+  //   player = mpegts.createPlayer({
+  //     type: "mse", // could also be mpegts, m2ts, flv
+  //     isLive: true,
+  //     url: url,
+  //   });
+  //   player.attachMediaElement(video.value);
+  //   player.load();
+  //   player.play();
+  // }
 };
 
 const clearRect = () => {

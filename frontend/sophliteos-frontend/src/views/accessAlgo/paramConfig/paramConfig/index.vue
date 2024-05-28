@@ -153,7 +153,6 @@
     Tooltip,
   } from 'ant-design-vue';
   import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
-  import mpegts from 'mpegts.js';
   import { fabric } from 'fabric';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { getTaskList } from '/@/api/task';
@@ -172,9 +171,11 @@
     protocolMap,
   } from './Data';
 
+  import { WebRTCPlayer } from '@eyevinn/webrtc-player';
+
   import FilterRuleModal from './FilterRuleModal.vue';
   import { useModal } from '/@/components/Modal';
-import apis from './api';
+  import apis from './api';
 
   const [RegisterFilterRuleModal, { openModal: openFilterRuleModal }] = useModal();
 
@@ -483,16 +484,11 @@ import apis from './api';
   }
 
   async function play(url: any) {
-    if (mpegts.getFeatureList().mseLivePlayback) {
-      player.value = mpegts.createPlayer({
-        type: 'mse', // could also be mpegts, m2ts, flv
-        isLive: true,
-        url: url,
-      });
-      player.value.attachMediaElement(video.value);
-      await player.value.load();
-      player.value.play();
-    }
+    player.value = new WebRTCPlayer({
+      video: video.value,
+      type: 'whep',
+    });
+    player.value.load(new URL(url))
   }
 
   function initObjectByApi(points, line) {

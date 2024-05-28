@@ -13,7 +13,6 @@
 </template>
 <script ts setup>
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import mpegts from 'mpegts.js';
   import { ref } from 'vue';
   const title = ref('');
   const url = ref();
@@ -23,16 +22,12 @@
     title.value = data.record.name || data.record.deviceName;
     url.value = data.res;
 
-    if (mpegts.getFeatureList().mseLivePlayback) {
-      player = mpegts.createPlayer({
-        type: 'mse', // could also be mpegts, m2ts, flv
-        isLive: true,
-        url: url.value,
-      });
-      player.attachMediaElement(video.value);
-      player.load();
-      player.play();
-    }
+    player = new WebRTCPlayer({
+      video: video.value,
+      type: 'whep',
+    });
+    player.load(new URL(url.value))
+
     setModalProps({ confirmLoading: false });
   });
 </script>
