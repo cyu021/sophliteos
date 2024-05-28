@@ -80,7 +80,7 @@
                 :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16}px` }"
                 style="position: relative; border: 1px solid #f7faff"
               >
-                <video class="w-full h-full" ref="video" controls></video>
+                <video autoplay class="w-full h-full" ref="video" controls></video>
                 <canvas id="canvasId" v-if="drawRegion || drawLine"></canvas>
               </div>
               <div
@@ -153,7 +153,6 @@
     Tooltip,
   } from 'ant-design-vue';
   import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
-  import mpegts from 'mpegts.js';
   import { fabric } from 'fabric';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { getTaskList } from '/@/api/task';
@@ -172,9 +171,11 @@
     protocolMap,
   } from './Data';
 
+  import { WebRTCPlayer } from '@eyevinn/webrtc-player';
+
   import FilterRuleModal from './FilterRuleModal.vue';
   import { useModal } from '/@/components/Modal';
-import apis from './api';
+  import apis from './api';
 
   const [RegisterFilterRuleModal, { openModal: openFilterRuleModal }] = useModal();
 
@@ -483,16 +484,17 @@ import apis from './api';
   }
 
   async function play(url: any) {
-    if (mpegts.getFeatureList().mseLivePlayback) {
-      player.value = mpegts.createPlayer({
-        type: 'mse', // could also be mpegts, m2ts, flv
-        isLive: true,
-        url: url,
-      });
-      player.value.attachMediaElement(video.value);
-      await player.value.load();
-      player.value.play();
+    console.log('play', url)
+    if (player.value) {
+      await player.value.unload();
+      player.value.destroy();
     }
+
+    player.value = new WebRTCPlayer({
+      video: video.value,
+      type: 'whep',
+    });
+    await player.value.load(new URL(url))
   }
 
   function initObjectByApi(points, line) {

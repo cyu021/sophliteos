@@ -27,7 +27,8 @@
         <video
           id="video"
           ref="video"
-          @loadedmetadata="adjustVideoSize"
+          autoplay
+          muted
           style="position: absolute; top: 0; left: 0"
         ></video>
         <div
@@ -120,8 +121,8 @@ import { ref, onMounted } from "vue";
 import { useI18n } from "/@/hooks/web/useI18n";
 import { Divider, Space, Select, Image, Popover } from "ant-design-vue";
 import apis from "./apis.js";
-import mpegts from "mpegts.js";
 import ws from "./ws.js";
+import { WebRTCPlayer } from "@eyevinn/webrtc-player";
 
 const { t } = useI18n();
 
@@ -243,36 +244,19 @@ const filterOption = (input, option) => {
 };
 const value = ref(undefined);
 
-const adjustVideoSize = () => {
-  canvas.value.width = video.value.videoWidth;
-  canvas.value.height = video.value.videoHeight;
-  refreshHotArea();
+const play = async (url) => {
+  console.log("play", url, video.value);
 
-  videoHeight.value =
-    (video.value.videoHeight / video.value.videoWidth) * videoWidth.value;
-};
-
-const play = (url) => {
-  console.log("play", url);
-  
   if (player) {
-    player.pause();
-    player.unload();
-    player = null;
+    await player.unload();
+    player.destroy();
   }
 
-  if (mpegts.getFeatureList().mseLivePlayback) {
-    console.log("mseLivePlayback");
-
-    player = mpegts.createPlayer({
-      type: "mse", // could also be mpegts, m2ts, flv
-      isLive: true,
-      url: url,
-    });
-    player.attachMediaElement(video.value);
-    player.load();
-    player.play();
-  }
+  player = new WebRTCPlayer({
+    video: video.value,
+    type: 'whep',
+  });
+  await player.load(new URL(url))
 };
 
 const clearRect = () => {

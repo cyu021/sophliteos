@@ -5,6 +5,7 @@ export const LOCALE: { [key: string]: LocaleType } = {
   ZH_CN: 'zh_CN',
   EN_US: 'en',
   KO: 'ko',
+  JA: 'ja',
 };
 
 export const localeSetting: LocaleSetting = {
@@ -31,4 +32,8 @@ export const localeList: DropMenu[] = [
     text: '한글',
     event: LOCALE.KO,
   },
+  {
+    text: '日本語',
+    event: LOCALE.JA,
+  }
 ];
