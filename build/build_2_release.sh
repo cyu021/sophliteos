@@ -13,7 +13,7 @@ sh version.sh "V1.1.2"
 mv release_version.txt ../
 
 # rm -rf ../frontend/sophliteos-frontend/dist 
-docker run --rm -i --name node-build -v `pwd`/../frontend/:/home/node node:16 sh -c 'cd /home/node/sophliteos-frontend && yarn && yarn build'
+docker run --rm -i --name node-build -v `pwd`/../frontend/:/home/node node:18 sh -c 'cd /home/node/sophliteos-frontend && yarn && yarn build'
 cp -r ../frontend/sophliteos-frontend/dist ../
 
 cd ..

@@ -21,13 +21,13 @@ export function getBasicColumns(): BasicColumn[] {
       width: 150,
       align: 'left',
     },
-    {
-      title: t('dataSource.videoManage.type'),
-      dataIndex: 'ptzType',
-      width: 100,
-      align: 'left',
-      ellipsis: true,
-    },
+    // {
+    //   title: t('dataSource.videoManage.type'),
+    //   dataIndex: 'ptzType',
+    //   width: 100,
+    //   align: 'left',
+    //   ellipsis: true,
+    // },
     {
       title: t('dataSource.videoManage.status'),
       dataIndex: 'status',
@@ -37,7 +37,7 @@ export function getBasicColumns(): BasicColumn[] {
         const status = record.status;
         const enable = status === 'ON';
         const color = enable ? 'green' : 'red';
-        const text = enable ? '在线' : '离线';
+        const text = enable ? t('common.ON') : t('common.OFF');
         return h(Tag, { color: color }, () => text);
       },
     },
@@ -131,33 +131,33 @@ export const video: FormSchema[] = [
     label: t('dataSource.videoManage.RTSP'),
     required: true,
   },
-  {
-    field: 'ptzType',
-    component: 'Select',
-    componentProps: {
-      options: [
-        {
-          label: '未知',
-          value: 0,
-        },
-        {
-          label: '球机',
-          value: 1,
-        },
-        {
-          label: '半球',
-          value: 2,
-        },
-        {
-          label: '枪机',
-          value: 3,
-        },
-        {
-          label: '遥控枪机',
-          value: 4,
-        },
-      ],
-    },
-    label: t('dataSource.videoManage.type'),
-  },
+  // {
+  //   field: 'ptzType',
+  //   component: 'Select',
+  //   componentProps: {
+  //     options: [
+  //       {
+  //         label: '未知',
+  //         value: 0,
+  //       },
+  //       {
+  //         label: '球机',
+  //         value: 1,
+  //       },
+  //       {
+  //         label: '半球',
+  //         value: 2,
+  //       },
+  //       {
+  //         label: '枪机',
+  //         value: 3,
+  //       },
+  //       {
+  //         label: '遥控枪机',
+  //         value: 4,
+  //       },
+  //     ],
+  //   },
+  //   label: t('dataSource.videoManage.type'),
+  // },
 ];

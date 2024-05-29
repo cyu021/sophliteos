@@ -1,10 +1,10 @@
 <template>
   <div style="padding: 20px; display: flex; flex-direction: column">
-    <div style="font-size: 20px; padding-bottom: 20px">选择算法任务</div>
+    <div style="font-size: 20px; padding-bottom: 20px">{{ t('paramConfig.param.selectTask') }}</div>
     <a-select
       v-model:value="value"
       show-search
-      placeholder="选择算法任务"
+      :placeholder="t('paramConfig.param.selectTask')"
       style="flex-grow: 1"
       :options="options"
       :filter-option="filterOption"
@@ -27,6 +27,8 @@
         <video
           id="video"
           ref="video"
+          autoplay
+          muted
           @loadedmetadata="adjustVideoSize"
           style="position: absolute; top: 0; left: 0"
         ></video>
@@ -116,12 +118,14 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted, } from "vue";
 import { useI18n } from "/@/hooks/web/useI18n";
 import { Divider, Space, Select, Image, Popover } from "ant-design-vue";
 import apis from "./apis.js";
-import mpegts from "mpegts.js";
 import ws from "./ws.js";
+import { WebRTCPlayer } from "@eyevinn/webrtc-player";
+
+const { t } = useI18n();
 
 const ASelect = Select;
 const ADivider = Divider;
@@ -173,6 +177,15 @@ const refreshHotArea = () => {
 
     console.log("getRois", res, hotAreas);
   });
+};
+
+const adjustVideoSize = () => {
+  canvas.value.width = video.value.videoWidth;
+  canvas.value.height = video.value.videoHeight;
+  refreshHotArea();
+
+  videoHeight.value =
+    (video.value.videoHeight / video.value.videoWidth) * videoWidth.value;
 };
 
 const handleChange = (value) => {
@@ -241,36 +254,19 @@ const filterOption = (input, option) => {
 };
 const value = ref(undefined);
 
-const adjustVideoSize = () => {
-  canvas.value.width = video.value.videoWidth;
-  canvas.value.height = video.value.videoHeight;
-  refreshHotArea();
+const play = async (url) => {
+  console.log("play", url, video.value);
 
-  videoHeight.value =
-    (video.value.videoHeight / video.value.videoWidth) * videoWidth.value;
-};
-
-const play = (url) => {
-  console.log("play", url);
-  
   if (player) {
-    player.pause();
-    player.unload();
-    player = null;
+    await player.unload();
+    player.destroy();
   }
 
-  if (mpegts.getFeatureList().mseLivePlayback) {
-    console.log("mseLivePlayback");
-
-    player = mpegts.createPlayer({
-      type: "mse", // could also be mpegts, m2ts, flv
-      isLive: true,
-      url: url,
-    });
-    player.attachMediaElement(video.value);
-    player.load();
-    player.play();
-  }
+  player = new WebRTCPlayer({
+    video: video.value,
+    type: 'whep',
+  });
+  await player.load(new URL(url))
 };
 
 const clearRect = () => {
@@ -380,6 +376,12 @@ const getTitleOfType = (type) => {
 
   return types.filter((item) => item.type == type)[0].name;
 };
+
+onUnmounted(() => {
+  if (player) {
+    player.destroy();
+  }
+});
 
 onMounted(() => {
   console.log("on mounted");

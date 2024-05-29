@@ -26,7 +26,8 @@ export default {
     btn_edit: "수정",
     btn_add: "추가",
     btn_action: "액션",
-    btn_play: "영상 미리보기"
+    btn_play: "영상 미리보기",
+    btn_inspect: '순찰 검사'
   },
   drawer: {
     loadingText: "로딩 중...",
@@ -36,7 +37,8 @@ export default {
   excel: {
     exportModalTitle: "데이터 내보내기",
     fileType: "파일 형식",
-    fileName: "파일명"
+    fileName: "파일명",
+    md5: 'MD5',
   },
   form: {
     putAway: 'Put away',

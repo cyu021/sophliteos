@@ -10,5 +10,8 @@ export default {
     algoConfigTitle: '算法服务配置',
     upUrlConfig: '上报地址配置',
     upUrl: '上报地址IP',
+    on: '运行中',
+    off: '已停止',
+    algorithmConfig: '算法设置'
   },
 };

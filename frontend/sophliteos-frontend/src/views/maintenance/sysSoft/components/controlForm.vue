@@ -109,8 +109,8 @@
       </div>
       <div class="md5Style" v-if="!isSsm && !isSoftware">
         <span class="spanStyle">{{ t('maintenance.upgradePackage') }}</span>
-        <a-input disabled v-model:value="filename" addon-before="文件名" />
-        <a-input disabled v-model:value="md5Name" addon-before="md5值" style="margin-top: 32px" />
+        <a-input disabled v-model:value="filename" :addon-before="t('component.excel.fileName')" />
+        <a-input disabled v-model:value="md5Name" :addon-before="t('component.excel.md5')" style="margin-top: 32px" />
         <span class="tips">{{
           filename ? t('maintenance.updatedFiles') : t('maintenance.UnupdateFiles')
         }}</span>
@@ -119,7 +119,7 @@
           :loading="uploading"
           :disabled="!show || fileLoading || MD5loading"
           @click="handleUpload"
-          style="margin-top: 35px; width: 88px"
+          style="margin-top: 35px;"
           :class="{ isClass: isClass }"
         >
           {{

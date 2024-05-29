@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
       const status = record.status;
       const enable = ~~status === 1;
       const color = enable ? 'green' : 'red';
-      const text = enable ? '运行中' : '已停止';
+      const text = enable ? t('taskList.taskList.on') : t('taskList.taskList.off');
       return h(Tag, { color: color }, () => text);
     },
   },
@@ -54,9 +54,9 @@ export const taskFormSchema: FormSchema[] = [
   },
   {
     field: 'abilities',
-    label: '算法设置',
+    label: t('taskList.taskList.algorithmConfig'),
     component: 'CheckboxGroup',
-    helpMessage: ['算法设置'],
+    helpMessage: [t('taskList.taskList.algorithmConfig')],
     // required: true,
     // componentProps: {
     //   options: options,
@@ -84,9 +84,9 @@ export const addTaskSchema: FormSchema[] = [
   },
   {
     field: 'abilities',
-    label: '算法设置',
+    label: t('taskList.taskList.algorithmConfig'),
     component: 'CheckboxGroup',
-    helpMessage: ['算法设置'],
+    helpMessage: [t('taskList.taskList.algorithmConfig')],
     // required: true,
     // componentProps: {
     //   options: options,

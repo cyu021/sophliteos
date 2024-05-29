@@ -1,11 +1,11 @@
 <template>
   <div style="margin: 20px; display: flex; flex-direction: column">
-    <div style="font-size: 20px; margin-bottom: 20px"> 上传新算法包 </div>
+    <div style="font-size: 20px; margin-bottom: 20px"> {{ t('algorithm.upload') }} </div>
     <Space>
       <Upload :file-list="fileList" :before-upload="beforeUpload" @remove="handleRemove">
         <Button>
           <UploadOutlined />
-          选择文件
+          {{ t('algorithm.select') }}
         </Button>
       </Upload>
       <Button
@@ -24,15 +24,15 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'sts'">
         <Space>
-          <p v-if="record.sts === 1">启用中</p>
-          <p v-else>未启用</p>
+          <p v-if="record.sts === 1">{{ t('algorithm.state_on') }}</p>
+          <p v-else>{{ t('algorithm.state_off') }}</p>
         </Space>
       </template>
       <template v-else-if="column.key === 'action'">
         <Space>
-          <Button v-if="record.sts === 0" type="primary" @click="handleStart(record)">启用</Button>
-          <Button v-if="record.sts === 1" type="primary" @click="handleStop(record)">暂停</Button>
-          <Button type="danger" @click="handleDelete(record)">删除</Button>
+          <Button v-if="record.sts === 0" type="primary" @click="handleStart(record)">{{ t('algorithm.enable') }}</Button>
+          <Button v-if="record.sts === 1" type="primary" @click="handleStop(record)">{{ t('algorithm.disable') }}</Button>
+          <Button type="danger" @click="handleDelete(record)">{{ t('algorithm.delete') }}</Button>
         </Space>
       </template>
     </template>
@@ -134,17 +134,17 @@
 
   const columns = ref([
     {
-      title: '算法包名称',
+      title: t('algorithm.name'),
       dataIndex: 'annotator_name',
       key: 'annotator_name',
     },
     {
-      title: '当前状态',
+      title: t('algorithm.state'),
       dataIndex: 'sts',
       key: 'sts',
     },
     {
-      title: '操作',
+      title: t('algorithm.action'),
       dataIndex: 'action',
       key: 'action',
     },

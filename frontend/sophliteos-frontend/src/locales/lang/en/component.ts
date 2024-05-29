@@ -27,6 +27,7 @@ export default {
     btn_add: 'add',
     btn_action: 'actions',
     btn_play: 'video preview',
+    btn_inspect: 'inspect',
   },
   drawer: {
     loadingText: 'Loading...',
@@ -37,6 +38,7 @@ export default {
     exportModalTitle: 'Export data',
     fileType: 'File type',
     fileName: 'File name',
+    md5: 'MD5 value',
   },
   form: {
     putAway: 'Put away',
