@@ -29,6 +29,7 @@
           ref="video"
           autoplay
           muted
+          @loadedmetadata="adjustVideoSize"
           style="position: absolute; top: 0; left: 0"
         ></video>
         <div
@@ -117,7 +118,7 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted, } from "vue";
 import { useI18n } from "/@/hooks/web/useI18n";
 import { Divider, Space, Select, Image, Popover } from "ant-design-vue";
 import apis from "./apis.js";
@@ -176,6 +177,15 @@ const refreshHotArea = () => {
 
     console.log("getRois", res, hotAreas);
   });
+};
+
+const adjustVideoSize = () => {
+  canvas.value.width = video.value.videoWidth;
+  canvas.value.height = video.value.videoHeight;
+  refreshHotArea();
+
+  videoHeight.value =
+    (video.value.videoHeight / video.value.videoWidth) * videoWidth.value;
 };
 
 const handleChange = (value) => {
@@ -366,6 +376,12 @@ const getTitleOfType = (type) => {
 
   return types.filter((item) => item.type == type)[0].name;
 };
+
+onUnmounted(() => {
+  if (player) {
+    player.destroy();
+  }
+});
 
 onMounted(() => {
   console.log("on mounted");

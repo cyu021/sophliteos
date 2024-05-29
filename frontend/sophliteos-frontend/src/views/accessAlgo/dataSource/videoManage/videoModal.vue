@@ -6,6 +6,7 @@
     :showOkBtn="false"
     width="40vw"
     :height="600"
+    @cancel="cancel"
   >
     <video autoplay ref="video" controls></video>
   </BasicModal>
@@ -22,10 +23,10 @@
     title.value = data.record.name || data.record.deviceName;
     url.value = data.res;
 
-    if (player) {
-      player.unload();
-      player.destroy();
-    }
+    // if (player) {
+    //   player.unload();
+    //   player.destroy();
+    // }
 
     player = new WebRTCPlayer({
       video: video.value,
@@ -35,6 +36,13 @@
 
     setModalProps({ confirmLoading: false });
   });
+
+  const cancel = async () => {
+    if (player) {
+      await player.unload()
+      player.destroy()
+    }
+  }
 </script>
 <style scoped>
   video {
