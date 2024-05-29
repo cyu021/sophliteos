@@ -45,7 +45,7 @@
   //     return { label: `${name}-${deviceId}-${url}`, value: `${name}-${deviceId}-${url}` };
   //   });
   // });
-  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {    
     resetFields();
     algoOptions.value = data.algoOptions;
     setModalProps({ confirmLoading: false });
