@@ -38,10 +38,15 @@ const listen = (callback) => {
     }
 }
 
+const close = () => {
+    websocket.close(1000, 'mannualy close');
+}
+
 const ws = {
     create,
     connect,
     listen,
+    close,
 }
   
 export default ws;
