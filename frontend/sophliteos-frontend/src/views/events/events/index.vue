@@ -381,6 +381,8 @@ onUnmounted(() => {
   if (player) {
     player.destroy();
   }
+
+  ws.close();
 });
 
 onMounted(() => {

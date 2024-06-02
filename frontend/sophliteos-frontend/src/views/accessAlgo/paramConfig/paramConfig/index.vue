@@ -238,7 +238,10 @@
 
   onUnmounted(() => {
     clearCanvas();
-    player.value && player.value.destroy();
+    if (player.value) {
+      player.value.unload()
+      player.value.destroy()
+    }
     window.removeEventListener('resize', computeVideoWidth);
   });
 

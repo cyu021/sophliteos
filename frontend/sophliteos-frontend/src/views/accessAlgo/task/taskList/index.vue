@@ -53,7 +53,7 @@
         </template>
         <template v-if="column.key === 'abilities'">
           <a-tooltip placement="bottom">
-            <span>{{ record.abilities.join('; ') || '无' }}</span>
+            <span>{{ (record.abilities && record.abilities.join('; ')) || '无' }}</span>
           </a-tooltip>
         </template>
       </template>

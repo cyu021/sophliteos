@@ -253,7 +253,7 @@
       height: RightBtmY - LeftTopY,
     };
     try {
-      item.Extend && (item.Extend = JSON.parse(item.Extend));
+      item.Extend && (typeof item.Extend === 'string') && (item.Extend = JSON.parse(item.Extend));
     } catch {
       item.Extend = {};
     }
