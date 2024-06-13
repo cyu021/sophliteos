@@ -135,13 +135,17 @@
   });
   const [registerModal, { openModal }] = useModal();
   async function VideoPreview(record: any) {
-    setLoading(true);
-    const res = await LivePreview({ deviceId: record.deviceId });
-    setLoading(false);
-    openModal(true, {
-      record,
-      res,
-    });
+    try {
+      setLoading(true);
+      const res = await LivePreview({ deviceId: record.deviceId });
+      setLoading(false);
+      openModal(true, {
+        record,
+        res,
+      });
+    } catch {
+      setLoading(false);
+    }
   }
   function handleSuccess() {
     reload();

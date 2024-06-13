@@ -18,6 +18,11 @@ export default {
     checkFrame: "検出の間隔",
     minRatio: "最小検出率",
     maxRatio: "最大検出率",
+    expansionRatio: '検出ボックス拡張比率',
+    retentionTime: '滞留時間',
+    top: '頂点',
+    center: '中心',
+    bottom: '底部',
     setAlgoParams: "アルゴリズムの設定",
     filterRule: "イベント フィルター",
     createFilterRule: "ルールの新規作成"

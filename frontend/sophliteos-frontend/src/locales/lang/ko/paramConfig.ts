@@ -18,6 +18,11 @@ export default {
     checkFrame: "감지 간격",
     minRatio: "최소 감지 비율",
     maxRatio: "최대 감지 비율",
+    expansionRatio: '검출 박스 확장 비율',
+    retentionTime: '체류 시간',
+    top: '정점',
+    center: '중심',
+    bottom: '바닥',
     setAlgoParams: "알고리즘 설정",
     filterRule: '이벤트 필터',
     createFilterRule: '새 규칙 생성'

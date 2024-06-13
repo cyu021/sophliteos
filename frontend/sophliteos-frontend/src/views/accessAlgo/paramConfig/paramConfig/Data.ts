@@ -123,6 +123,47 @@ export const algoFormSchema: FormSchema[] = [
     },
     rules: rule,
   },
+  {
+    field: 'ExpansionRatio',
+    label: t('paramConfig.param.expansionRatio'),
+    component: 'Input',
+    componentProps: {
+      suffix: '',
+      allowClear: false,
+    },
+    rules: [
+      {
+        type: 'number',
+        min: 1.0,
+        transform(val) {
+          return +val;
+        },
+        message: '≥1.0',
+        trigger: 'blur',
+      },
+    ],
+  },
+  {
+    field: 'RetentionTime',
+    label: t('paramConfig.param.retentionTime'),
+    component: 'Input',
+    componentProps: {
+      suffix: 's',
+      allowClear: false,
+    },
+    rules: [
+      {
+        type: 'integer',
+        min: 0,
+        transform(val) {
+          return +val;
+        },
+        message: 'integer',
+        trigger: 'blur',
+      },
+    ],
+  },
+
 ];
 
 export const AlgoTaskInfoDefault = {

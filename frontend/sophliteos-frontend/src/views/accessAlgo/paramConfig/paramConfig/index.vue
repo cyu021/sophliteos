@@ -71,7 +71,7 @@
               <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
                 <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
                 <Button style="max-width: 250px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" @click="showFilterRule">{{ filterName }}</Button>
-                <Button v-if="hasExtend" type="text" danger @click="deleteExtend"><DeleteOutlined/></Button>
+                <Button v-if="hasExtend" type="text" danger @click="deleteExtend"><DeleteOutlined /></Button>
               </div>
             </div>
             <div :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16 + 30}px` }">
@@ -109,7 +109,7 @@
                         color: drawMode ? '#0960bd' : 'black',
                         backgroundColor: drawMode ? '#e4effd' : 'white',
                       }"
-                      >{{ drawText }}</Button
+                    >{{ drawText }}</Button
                     >
                   </Tooltip>
                   <Tooltip :title="t('paramConfig.draw.rectTip')" color="#0960bd">
@@ -121,9 +121,23 @@
                         color: rectMode ? '#0960bd' : 'black',
                         backgroundColor: rectMode ? '#e4effd' : 'white',
                       }"
-                      >{{ t('paramConfig.draw.drawRect') }}</Button
-                    >
+                    >{{ t('paramConfig.draw.drawRect') }}</Button>
                   </Tooltip>
+
+                  <Select
+                    v-if="drawRegion"
+                    v-model:value="roiMode"
+                    :options="modeOptions"
+                    @change="handleRoiModeChange"
+                  />
+
+                  <Select
+                    v-else
+                    v-model:value="crossLineMode"
+                    :options="modeOptions"
+                    @change="handleCrossModeChange"
+                  />
+
                   <Button @click="clearDraw" :icon="h(ClearOutlined)">{{
                     t('paramConfig.draw.clear')
                   }}</Button>
@@ -134,7 +148,7 @@
         </div>
       </Card>
     </Card>
-    <FilterRuleModal :extend="extend" @register="RegisterFilterRuleModal" :taskName="taskId" :algorithmName="algorithmName" @success="updateFilterRule"/>
+    <FilterRuleModal :extend="extend" @register="RegisterFilterRuleModal" :taskName="taskId" :algorithmName="algorithmName" @success="updateFilterRule" />
   </div>
 </template>
 
@@ -227,6 +241,14 @@
   const rectUpPoint = ref(); //绘制矩形-抬起的点
   const activeRect = ref(); //按下之后移动的临时矩形对象
   const drawText = ref('');
+
+  const roiMode = ref(0);
+  const crossLineMode = ref(0);
+  const modeOptions = ref([
+  { value: 0, label: t('paramConfig.param.top'), },
+  { value: 1, label: t('paramConfig.param.bottom'), },
+  { value: 2, label: t('paramConfig.param.center'), }
+  ]);
 
   onMounted(() => {
     algoAbilityStore.setAbilities().then((res) => {
@@ -392,7 +414,13 @@
       // TrackInterval: algo.TrackInterval,
       MinDetect: algo.TargetSize.MinDetect,
       MaxDetect: algo.TargetSize.MaxDetect,
+      ExpansionRatio: algo.Extend?.roiExtendRatio || 1.0,
+      RetentionTime: algo.Extend?.dwellTimeSec || 3,
     };
+
+    roiMode.value = algo.Extend?.detectModeRoi || 0;
+    crossLineMode.value = algo.Extend?.detectModeCrossline || 0;
+
     nextTick(() => {
       setFieldsValue(formData);
       computeVideoWidth();
@@ -418,6 +446,14 @@
     play(url);
   }
 
+  function handleRoiModeChange(val) {
+    roiMode.value = val;
+  }
+
+  function handleCrossModeChange(val) {
+    crossLineMode.value = val;
+  }
+
   async function submit() {
     const values = await validate();
 
@@ -428,6 +464,12 @@
 
     const extend = await getCurrentExtend();
     extend.Threshold = Number(values.Threshold);
+
+    extend.roiExtendRatio = Number(values.ExpansionRatio);
+    extend.dwellTimeSec = Number(values.RetentionTime);
+    
+    extend.detectModeRoi = Number(roiMode.value);
+    extend.detectModeCrossline = Number(crossLineMode.value);
 
     const params: any = {
       taskId: taskId.value,

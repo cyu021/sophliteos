@@ -53,7 +53,7 @@
         </template>
         <template v-if="column.key === 'abilities'">
           <a-tooltip placement="bottom">
-            <span>{{ (record.abilities && record.abilities.join('; ')) || '无' }}</span>
+            <span>{{ (record.abilities && record.abilities.join('; ')) || '-' }}</span>
           </a-tooltip>
         </template>
       </template>
@@ -130,11 +130,11 @@
       setLoading(true);
       if (record.status === 0) {
         await StartTask({ taskId: record.taskId }).then();
-        createMessage.success('任务已启动');
+        createMessage.success(t('maintenance.containers.activated'));
         record.status = 1;
       } else {
         await StopTask({ taskId: record.taskId, deviceName: record.taskId }).then();
-        createMessage.success('任务已停止');
+        createMessage.success(t('maintenance.containers.stop'));
         record.status = 0;
       }
       reload();
@@ -144,7 +144,7 @@
     }
   }
   function handleSuccess() {
-    createMessage.success('操作成功');
+    createMessage.success(t('sys.api.success'));
     reload();
   }
 
