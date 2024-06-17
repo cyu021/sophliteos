@@ -13,6 +13,7 @@ export default {
   maintenance: "유지보수",
   appSoft: "어플리케이션 업그레이드",
   sysSoft: "시스템 업그레이드",
+  prepSpringZip: 'Prep Spring Zip',
   softUpdate: "소프트웨어 업그레이드",
   ssmUpdate: "SSM 업그레이드",
   sysSetting: "시스템 설정",
