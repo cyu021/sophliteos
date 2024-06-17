@@ -5,13 +5,13 @@ export default {
     algoInfo: "アルゴリズムの設定情報",
     status: "タスクステータス",
     addTask: "タスクを追加",
-    editTask: 'Edit Task',
+    editTask: "タスク編集",
     message: "アルゴリズムを増やすためにハードウェアリソースを消費する必要があるため、タスクパスとアルゴリズムの数を適切に設定してください",
     algoConfigTitle: "アルゴリズムサービスの設定",
     upUrlConfig: "結果アドレス設定",
     upUrl: "結果アドレス",
-    on: 'Running',
+    on: "開始",
     off: 'Stopped',
-    algorithmConfig: 'Algorithm config'
+    algorithmConfig: "アルゴリズム設定"
   }
 };

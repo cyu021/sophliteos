@@ -3,7 +3,7 @@ export default {
     baiduMap: "Baiduマップ",
     aMap: "マップ",
     googleMap: "Google マップ",
-    charts: "グラフ",
+    charts: "チャット",
     map: "マップ",
     line: "ライン",
     pie: 'Pie'
