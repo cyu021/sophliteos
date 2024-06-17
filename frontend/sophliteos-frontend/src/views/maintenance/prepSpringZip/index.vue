@@ -2,7 +2,7 @@
   <PageWrapper :title="t('routes.dashboard.prepSpringZip')" content="">
     <div style="display: flex; flex-direction: row; margin-bottom: 20px">
       <div style="background-color: white; width: 100%">
-        <ControlForm :isSysSoft="true" />
+        <ControlForm />
       </div>
     </div>
     <List />

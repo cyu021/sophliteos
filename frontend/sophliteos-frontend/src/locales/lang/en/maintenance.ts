@@ -3,6 +3,15 @@ export default {
   sysSoftUpdate: 'System Upgrade',
   updatedFiles: 'Uploaded File',
   upgradePackage: 'Upgrade Package',
+  prepSpringZip: {
+    selectModel: 'Select model file:',
+    customAlgoName: 'Custom algo name:',
+    pack: 'Pack',
+    customAlgoDownloadLinks: 'Custom algo download links:',
+    createDate: 'Create date',
+    download: 'Download',
+    purge: 'Purge',
+  },
   systemUpdate: {
     uploadFiles: 'Upload Files',
     systemUpdate: 'Control Board',
