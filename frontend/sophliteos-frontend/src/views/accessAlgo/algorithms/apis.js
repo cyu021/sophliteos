@@ -129,7 +129,7 @@ const upload = async (params, onUploadProgress) => {
 
   const needStop =
     taskList.items.find((item) => {
-      return item.abilities.includes(annotatorName) && item.status === 1;
+      return item.abilities && item.abilities.includes(annotatorName) && item.status === 1;
     }) !== undefined;
   if (needStop) {
     throw 'ERROR: please stop the tasks include [' + annotatorName + '] first.';
@@ -172,7 +172,7 @@ const stop = async (name) => {
 
   const needStop =
     taskList.items.find((item) => {
-      return item.abilities.includes(name) && item.status === 1;
+      return item.abilities && item.abilities.includes(name) && item.status === 1;
     }) !== undefined;
   if (needStop) {
     throw 'ERROR: please stop the tasks include [' + name + '] first.';
@@ -199,7 +199,7 @@ const unload = async (name) => {
 
   const needStop =
     taskList.items.find((item) => {
-      return item.abilities.includes(name) && item.status === 1;
+      return item.abilities && item.abilities.includes(name) && item.status === 1;
     }) !== undefined;
   if (needStop) {
     throw 'ERROR: please stop the tasks include [' + name + '] first.';
