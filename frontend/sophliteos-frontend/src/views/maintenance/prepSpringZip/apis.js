@@ -14,14 +14,14 @@ import { getTaskList } from '/@/api/task';
 // curl -H 'Content-Type: multipart/form-data' -F"springZip=spring_detect.zip" -X POST http://10.162.18.26:8080/spring/purge
 
 const PATH = {
-  list: '/packs',
+  list: '',
   purge: '/spring/purge',
   upload: '/spring/pack',
 };
 
 const list = () => {
   return defHttp
-    .get({ url: PATH.list }, { apiUrl: '/spring', isTransformResponse: false })
+    .get({ url: PATH.list }, { apiUrl: '/springpacks', isTransformResponse: false })
     .then((res) => {
       return res.data;
     });
