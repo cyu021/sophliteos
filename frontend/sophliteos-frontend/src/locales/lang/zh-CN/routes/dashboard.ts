@@ -13,6 +13,7 @@ export default {
   maintenance: '设备运维',
   appSoft: '应用升级',
   sysSoft: '系统升级',
+  prepSpringZip: 'Prep Spring Zip',
   sysSetting: '系统配置',
   softUpdate: '软件升级',
   ssmUpdate: 'SSM升级',

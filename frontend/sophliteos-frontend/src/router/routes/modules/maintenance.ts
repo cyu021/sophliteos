@@ -19,6 +19,14 @@ const maintenance: AppRouteModule = {
     // hideMenu: true,
   },
   children: [
+    // {
+    //   path: 'prepSpringZip',
+    //   name: 'PrepSpringZip',
+    //   component: () => import('/@/views/maintenance/prepSpringZip/index.vue'),
+    //   meta: {
+    //     title: t('routes.dashboard.prepSpringZip'),
+    //   },
+    // },
     {
       path: 'sysSoft',
       name: 'SysSoft',
@@ -27,7 +35,6 @@ const maintenance: AppRouteModule = {
         title: t('routes.dashboard.sysSoft'),
       },
     },
-
     {
       path: 'softUpdate',
       name: 'softUpdate',

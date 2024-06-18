@@ -95,7 +95,7 @@ export default {
     reset: "リセット"
   },
   form: {
-    placeholder: "入力してください",
+    placeholder: "入力してください。",
     phNumber: "0から100までの整数を入力してください"
   },
   table: {

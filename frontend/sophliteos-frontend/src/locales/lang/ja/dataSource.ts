@@ -1,10 +1,10 @@
 export default {
   mediaServers: {
     filter: {
-      name: "機能名",
-      people: "操作者",
-      ip: "IP",
-      type: "操作タイプ"
+      name: "機能名：",
+      people: "オペレーター：",
+      ip: "ソースIP：",
+      type: "操作種別："
     },
     title: "配信サービス",
     name: "名前",
