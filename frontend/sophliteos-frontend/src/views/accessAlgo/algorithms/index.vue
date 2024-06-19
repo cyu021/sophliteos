@@ -78,7 +78,7 @@
       name: 'modelFile',
       file: file,
       onUploadProgress,
-    }).then((res) => {      
+    }).then((res) => {
       uploading.value = false;
       message.success('upload successfully')
 
@@ -119,8 +119,12 @@
   const handleDelete = (record) => {
     console.log('handle delete', record);
     apis
-      .unload(record.annotator_name)
+      .deleteFile(record.annotator_name)
       .then((res) => {
+        if (res.code != 200) {
+          message.error(res.msg)
+          return;
+        }
         message.success('deleted')
         refresh()
       }).catch((e) => {
