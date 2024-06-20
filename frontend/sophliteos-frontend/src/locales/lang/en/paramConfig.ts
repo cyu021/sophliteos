@@ -32,6 +32,8 @@ export default {
     drawRegion: 'Draw pylogon area',
     drawRect: 'Draw rectangle area',
     drawLineDetect: 'Draw detection line',
+    regionCountLimit: 'Up to two detetion areas',
+    lineCountLimit: 'Up to two detetion lines',
     regionTip:
       'Click the mouse to draw a point, more than two points to form a line, draw three or more points after clicking the first point to complete the polygon drawing. Double click to cancel the unfinished drawing',
     lineTip:
