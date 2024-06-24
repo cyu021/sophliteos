@@ -5,7 +5,7 @@
         <ControlForm />
       </div>
     </div>
-    <List />
+    <!-- <List /> -->
   </PageWrapper>
 </template>
 <script setup>

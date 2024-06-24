@@ -5,8 +5,8 @@ export default {
   UnupdateFiles: '文件未上传',
   upgradePackage: '已上传升级包',
   prepSpringZip: {
-    selectModel: 'Select model file:',
-    customAlgoName: 'Custom algo name:',
+    selectModel: 'Select model file',
+    customAlgoName: 'Custom algo name',
     pack: 'Pack',
     customAlgoDownloadLinks: 'Custom algo download links',
     createDate: 'Create date',

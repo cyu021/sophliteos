@@ -14,15 +14,18 @@ import { getTaskList } from '/@/api/task';
 // curl -H 'Content-Type: multipart/form-data' -F"springZip=spring_detect.zip" -X POST http://10.162.18.26:8080/spring/purge
 
 const PATH = {
-  list: '',
-  purge: '/spring/purge',
+  prefix: '/spring',
+  list: '/zips',
+  purge: '/purge',
   upload: '/spring/pack',
 };
 
 const list = () => {
   return defHttp
-    .get({ url: PATH.list }, { apiUrl: '/springpacks', isTransformResponse: false })
+    .get({ url: PATH.list }, { apiUrl: PATH.prefix, isTransformResponse: false })
     .then((res) => {
+      console.log('list', res);
+
       return res.data;
     });
 };
@@ -47,7 +50,7 @@ const purge = (name) => {
   return defHttp
     .delete(
       { url: PATH.delete, params: { annotatorName: name } },
-      { apiUrl: '/dynamic', isTransformResponse: false, joinParamsToUrl: true },
+      { apiUrl: PATH.prefix, isTransformResponse: false, joinParamsToUrl: true },
     )
     .then((res) => {
       console.log(res);

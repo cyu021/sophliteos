@@ -11,12 +11,6 @@ export function getBasicColumns(): BasicColumn[] {
       ellipsis: true,
     },
     {
-      title: t('maintenance.prepSpringZip.createDate'),
-      dataIndex: 'createTime',
-      align: 'left',
-      ellipsis: true,
-    },
-    {
       title: t('maintenance.prepSpringZip.action'),
       dataIndex: 'action',
       align: 'left',

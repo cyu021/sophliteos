@@ -28,7 +28,7 @@
     columns: getBasicColumns(),
     showTableSetting: true,
     tableSetting: { fullScreen: true },
-    showIndexColumn: true,
+    showIndexColumn: false,
     indexColumnProps: {
       width: 60,
     },
