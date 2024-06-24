@@ -711,6 +711,7 @@
     if (canvas.value) {
       canvas.value.clear();
       initDraft();
+
       if (drawLine.value) {
         lineObject.value = [];
         lineSubmitPoint.value = [];
@@ -988,8 +989,8 @@
           lineObject.value.forEach((element, index) => {
             canvas.value.add(element);
 
-            const point = element.get('points')[0];
-            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+            const point = lineSubmitPoint.value[index][0];
+            const text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
             canvas.value.add(text);
           });
         }
