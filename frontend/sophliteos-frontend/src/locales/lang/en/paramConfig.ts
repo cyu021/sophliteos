@@ -42,6 +42,7 @@ export default {
       'Select the box to draw rectangle: press the mouse, move the mouse, and lift the mouse to finish drawing',
     region: 'Detection area',
     line: 'Detection line',
+    detectMode: 'Detect Mode',
   },
   filter: {
     name: 'Rule name',

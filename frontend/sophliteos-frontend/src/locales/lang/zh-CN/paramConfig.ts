@@ -41,6 +41,7 @@ export default {
     rectTip: '框选绘制矩形：按下鼠标、移动鼠标、抬起鼠标，完成绘制',
     region: '检测区域',
     line: '检测线',
+    detectMode: '检测模式',
   },
   filter: {
     name: '规则名称',

@@ -124,19 +124,41 @@
                     >{{ t('paramConfig.draw.drawRect') }}</Button>
                   </Tooltip>
 
-                  <Select
+                  <Popover
                     v-if="drawRegion"
-                    v-model:value="roiMode"
-                    :options="modeOptions"
-                    @change="handleRoiModeChange"
-                  />
+                  >
+                    <template #content>
+                      <div>
+                        <div v-if="pylogonObject.length > 0">
+                          0: 
+                          <Radio.Group :options="modeOptions" v-model:value="roiMode[0]" />
+                        </div>
+                        <div v-if="pylogonObject.length > 1">
+                          <Divider />
+                          1:
+                          <Radio.Group :options="modeOptions" v-model:value="roiMode[1]" />
+                        </div>
+                      </div>
+                    </template>
+                    <Button>{{ t('paramConfig.draw.detectMode') }}</Button>
+                  </Popover>
 
-                  <Select
-                    v-else
-                    v-model:value="crossLineMode"
-                    :options="modeOptions"
-                    @change="handleCrossModeChange"
-                  />
+                  <Popover v-else>
+                    <template #content>
+                      <div>
+                        <div v-if="lineObject.length > 0">
+                          0: 
+                          <Radio.Group :options="modeOptions" v-model:value="crossLineMode[0]" />
+                        </div>
+                        <div v-if="lineObject.length > 1">
+                          <Divider />
+                          1:
+                          <Radio.Group :options="modeOptions" v-model:value="crossLineMode[1]" />
+                        </div>
+                      </div>
+                    </template>
+                    <Button>{{ t('paramConfig.draw.detectMode') }}</Button>
+                  </Popover>
 
                   <Button @click="clearDraw" :icon="h(ClearOutlined)">{{
                     t('paramConfig.draw.clear')
@@ -165,6 +187,10 @@
     TabPane,
     Space,
     Tooltip,
+    Popover,
+    RadioGroup,
+    Radio,
+    Divider,
   } from 'ant-design-vue';
   import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
   import { fabric } from 'fabric';
@@ -248,12 +274,12 @@
   const activeRect = ref(); //按下之后移动的临时矩形对象
   const drawText = ref('');
 
-  const roiMode = ref(0);
-  const crossLineMode = ref(0);
+  const roiMode = ref([0, 0]);
+  const crossLineMode = ref([0, 0]);
   const modeOptions = ref([
   { value: 0, label: t('paramConfig.param.top'), },
-  { value: 1, label: t('paramConfig.param.bottom'), },
-  { value: 2, label: t('paramConfig.param.center'), }
+  { value: 1, label: t('paramConfig.param.center'), },
+  { value: 2, label: t('paramConfig.param.bottom'), }
   ]);
 
   onMounted(() => {
@@ -424,8 +450,8 @@
       RetentionTime: algo.Extend?.dwellTimeSec || 3,
     };
 
-    roiMode.value = algo.Extend?.detectModeRoi || 0;
-    crossLineMode.value = algo.Extend?.detectModeCrossline || 0;
+    roiMode.value = Array.isArray(algo.Extend?.detectModeRoi) ? algo.Extend?.detectModeRoi : [0, 0];
+    crossLineMode.value = Array.isArray(algo.Extend?.detectModeCrossline) ? algo.Extend?.detectModeCrossline : [0, 0];
 
     nextTick(() => {
       setFieldsValue(formData);
@@ -480,14 +506,6 @@
     play(url);
   }
 
-  function handleRoiModeChange(val) {
-    roiMode.value = val;
-  }
-
-  function handleCrossModeChange(val) {
-    crossLineMode.value = val;
-  }
-
   async function submit() {
     const values = await validate();
 
@@ -497,8 +515,8 @@
     extend.roiExtendRatio = Number(values.ExpansionRatio);
     extend.dwellTimeSec = Number(values.RetentionTime);
     
-    extend.detectModeRoi = Number(roiMode.value);
-    extend.detectModeCrossline = Number(crossLineMode.value);
+    extend.detectModeRoi = roiMode.value;
+    extend.detectModeCrossline = crossLineMode.value;
 
     lineSubmitPoint.value.forEach((element) => {
       element.forEach(item => {
@@ -758,6 +776,11 @@
         tmpSubmitPoint.push(pylogonPoints.value)
         pylogonSubmitPoint.value = tmpSubmitPoint;
 
+        const index = tmpObject.length - 1;
+        var point = pylogonPoints.value[0];
+        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+        canvas.value.add(text);
+
         clearDraftDraw();
         changeDrawMode();
         return;
@@ -774,6 +797,11 @@
         const lineTmpSubmitPoint = lineSubmitPoint.value || []
         lineTmpSubmitPoint.push([...pylogonPoints.value, lastPoint.value])
         lineSubmitPoint.value = lineTmpSubmitPoint;
+
+        const index = lineTmpObject.length - 1;
+        var point = pylogonPoints.value[0];
+        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+        canvas.value.add(text);
 
         canvas.value.add(lines);
         clearDraftDraw();
@@ -844,6 +872,12 @@
       pylogonObject.value = tmpObject;
 
       canvas.value.add(thisPylogon);
+
+      const index = tmpObject.length - 1;
+      var point = pylogonPoints.value[0];
+      let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+      canvas.value.add(text);
+
       clearDraftDraw();
       rectMode.value = false;
     }
@@ -930,8 +964,12 @@
       nextTick(() => {
         initCanvas();
         if (pylogonObject.value && canvas.value) {
-          pylogonObject.value.forEach(element => {
+          pylogonObject.value.forEach((element, index) => {
             canvas.value.add(element);
+
+            const point = element.get('points')[0];
+            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+            canvas.value.add(text);
           });
         }
       });
@@ -947,8 +985,12 @@
       nextTick(() => {
         initCanvas();
         if (lineObject.value && canvas.value) {
-          lineObject.value.forEach(element => {
+          lineObject.value.forEach((element, index) => {
             canvas.value.add(element);
+
+            const point = element.get('points')[0];
+            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+            canvas.value.add(text);
           });
         }
       });
