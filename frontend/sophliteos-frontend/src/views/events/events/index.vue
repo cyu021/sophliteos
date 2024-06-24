@@ -201,7 +201,7 @@ const handleChange = (value) => {
 
     ws.connect().then(() => {
       return ws.listen((data) => {
-        console.log("onMounted 收到消息:", data, taskName);
+        // console.log("onMounted 收到消息:", data, taskName);
 
         if (!taskName) {
           return;

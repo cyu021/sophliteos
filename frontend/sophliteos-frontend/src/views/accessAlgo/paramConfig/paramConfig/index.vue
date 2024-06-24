@@ -555,6 +555,10 @@
       detectInfos.push(detectInfo);
     }
 
+    if (detectInfos.length > 1) {
+      detectInfos.shift();
+    }
+
     const params: any = {
       taskId: taskId.value,
       Algorithm: {
