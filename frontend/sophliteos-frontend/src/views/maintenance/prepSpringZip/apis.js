@@ -17,28 +17,28 @@ import axios from 'axios';
 const PATH = {
   prefix: '/spring',
   list: '/zips',
-  purge: '/purge',
+  delete: '/purge',
   upload: '/spring/pack',
 };
 
 const list = () => {
   const host = 'http://' + `${window.location.host}`;
-  return axios.get(host + PATH.prefix + PATH.list).then((res) => {
-    console.log('list', res.data);
+  return axios
+    .get(host + PATH.prefix + PATH.list, { headers: { 'Cache-Control': 'no-cache' } })
+    .then((res) => {
+      let tempPre = document.createElement('pre');
+      tempPre.innerHTML = res.data;
 
-    let tempPre = document.createElement('pre');
-    tempPre.innerHTML = res.data;
+      const links = tempPre.querySelectorAll('a[href]');
+      const data = Array.from(links).map((item) => {
+        return {
+          name: item.text,
+          url: host + PATH.prefix + PATH.list + '/' + item.text,
+        };
+      });
 
-    const links = tempPre.querySelectorAll('a[href]');
-    const data = Array.from(links).map((item) => {
-      return {
-        name: item.text,
-        url: host + PATH.prefix + PATH.list + '/' + item.text,
-      };
+      return data;
     });
-
-    return data;
-  });
 };
 
 const upload = (params, onUploadProgress) => {
@@ -57,11 +57,18 @@ const upload = (params, onUploadProgress) => {
   );
 };
 
-const purge = (name) => {
+const deleteFile = (name) => {
+  const formData = new window.FormData();
+  formData.append('springZip', name);
+
   return defHttp
-    .delete(
-      { url: PATH.delete, params: { annotatorName: name } },
-      { apiUrl: PATH.prefix, isTransformResponse: false, joinParamsToUrl: true },
+    .post(
+      {
+        url: PATH.delete,
+        data: formData,
+        headers: { 'Content-type': 'multipart/form-data;charset=UTF-8' },
+      },
+      { apiUrl: PATH.prefix, isTransformResponse: false },
     )
     .then((res) => {
       console.log(res);
@@ -69,15 +76,10 @@ const purge = (name) => {
     });
 };
 
-const download = (name) => {
-  return {};
-};
-
 const apis = {
   list,
   upload,
-  purge,
-  download,
+  deleteFile,
 };
 
 export default apis;
