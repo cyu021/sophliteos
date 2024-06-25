@@ -779,7 +779,7 @@
 
         const index = tmpObject.length - 1;
         var point = pylogonPoints.value[0];
-        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
         canvas.value.add(text);
 
         clearDraftDraw();
@@ -801,7 +801,7 @@
 
         const index = lineTmpObject.length - 1;
         var point = pylogonPoints.value[0];
-        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
         canvas.value.add(text);
 
         canvas.value.add(lines);
@@ -876,7 +876,7 @@
 
       const index = tmpObject.length - 1;
       var point = pylogonPoints.value[0];
-      let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+      let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
       canvas.value.add(text);
 
       clearDraftDraw();
@@ -969,7 +969,7 @@
             canvas.value.add(element);
 
             const point = element.get('points')[0];
-            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
             canvas.value.add(text);
           });
         }
@@ -990,7 +990,7 @@
             canvas.value.add(element);
 
             const point = lineSubmitPoint.value[index][0];
-            const text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x });
+            const text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
             canvas.value.add(text);
           });
         }
