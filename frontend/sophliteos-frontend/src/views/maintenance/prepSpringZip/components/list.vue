@@ -7,7 +7,7 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'action'">
         <Space>
-          <Button type="primary">download</Button>
+          <Button type="primary" :href="record.url">download</Button>
           <Button danger type="primary">purge</Button>
         </Space>
       </template>

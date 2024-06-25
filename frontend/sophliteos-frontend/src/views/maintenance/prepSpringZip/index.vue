@@ -5,14 +5,12 @@
         <ControlForm />
       </div>
     </div>
-    <!-- <List /> -->
+    <List />
   </PageWrapper>
 </template>
 <script setup>
 import { PageWrapper } from '/@/components/Page';
 import ControlForm from './components/controlForm.vue';
 import List from './components/list.vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { ref } from 'vue';
-const { t } = useI18n();
+import { useI18n } from '/@/hooks/web/useI18n';const { t } = useI18n();
 </script>

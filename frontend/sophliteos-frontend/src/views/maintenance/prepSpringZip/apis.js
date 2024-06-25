@@ -1,5 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
 import { getTaskList } from '/@/api/task';
+import axios from 'axios';
 
 // 接口:
 // //用model+annoName打包spring zip, lock直到完成, 强制一次只有一个操作
@@ -21,13 +22,23 @@ const PATH = {
 };
 
 const list = () => {
-  return defHttp
-    .get({ url: PATH.list }, { apiUrl: PATH.prefix, isTransformResponse: false })
-    .then((res) => {
-      console.log('list', res);
+  const host = 'http://' + `${window.location.host}`;
+  return axios.get(host + PATH.prefix + PATH.list).then((res) => {
+    console.log('list', res.data);
 
-      return res.data;
+    let tempPre = document.createElement('pre');
+    tempPre.innerHTML = res.data;
+
+    const links = tempPre.querySelectorAll('a[href]');
+    const data = Array.from(links).map((item) => {
+      return {
+        name: item.text,
+        url: host + PATH.prefix + PATH.list + '/' + item.text,
+      };
     });
+
+    return data;
+  });
 };
 
 const upload = (params, onUploadProgress) => {
