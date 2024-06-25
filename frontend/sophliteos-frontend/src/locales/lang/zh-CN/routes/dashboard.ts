@@ -18,6 +18,7 @@ export default {
   softUpdate: '软件升级',
   ssmUpdate: 'SSM升级',
   liteOsUpdate: 'LiteOS升级',
+  otaDaemonUpdate: 'OTADaemon升级',
   networkSetting: '网络设置',
   sshTerminal: '终端',
   hostComputer: '主机',

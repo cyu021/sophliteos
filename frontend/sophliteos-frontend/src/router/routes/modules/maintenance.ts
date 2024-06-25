@@ -59,6 +59,14 @@ const maintenance: AppRouteModule = {
             title: t('routes.dashboard.liteOsUpdate'),
           },
         },
+        {
+          path: 'OTADaemon',
+          name: 'OTADaemon',
+          component: () => import('/@/views/maintenance/softUpdate/otaDaemonUpdate/index.vue'),
+          meta: {
+            title: t('routes.dashboard.otaDaemonUpdate'),
+          },
+        },
       ],
     },
     {

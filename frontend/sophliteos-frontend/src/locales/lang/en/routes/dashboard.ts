@@ -18,6 +18,7 @@ export default {
   ssmUpdate: 'SSM Upgrade',
   sysSetting: 'System Setting',
   liteOsUpdate: 'LiteOS Upgrade',
+  otaDaemonUpdate: 'OTADaemon Upgrade',
   networkSetting: 'Network Setting',
   sshTerminal: 'SSH Terminal',
   containers: 'Containers',
