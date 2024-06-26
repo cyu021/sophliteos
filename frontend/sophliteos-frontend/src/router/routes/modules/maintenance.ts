@@ -59,6 +59,38 @@ const maintenance: AppRouteModule = {
             title: t('routes.dashboard.liteOsUpdate'),
           },
         },
+        {
+          path: 'OTADaemon',
+          name: 'OTADaemon',
+          component: () => import('/@/views/maintenance/softUpdate/otaDaemonUpdate/index.vue'),
+          meta: {
+            title: t('routes.dashboard.otaDaemonUpdate'),
+          },
+        },
+        {
+          path: 'Adapter',
+          name: 'Adapter',
+          component: () => import('/@/views/maintenance/softUpdate/adapterUpdate/index.vue'),
+          meta: {
+            title: t('routes.dashboard.adapterUpdate'),
+          },
+        },
+        {
+          path: 'VPS',
+          name: 'VPS',
+          component: () => import('/@/views/maintenance/softUpdate/vpsUpdate/index.vue'),
+          meta: {
+            title: t('routes.dashboard.vpsUpdate'),
+          },
+        },
+        {
+          path: 'BMS',
+          name: 'BMS',
+          component: () => import('/@/views/maintenance/softUpdate/bmsUpdate/index.vue'),
+          meta: {
+            title: t('routes.dashboard.bmsUpdate'),
+          },
+        },
       ],
     },
     {
