@@ -20,6 +20,7 @@ export default {
     maxRatio: "最大検出率",
     expansionRatio: '検出ボックス拡張比率',
     retentionTime: '滞留時間',
+    notSaveImage: '画像を保存しない',
     top: '頂点',
     center: '中心',
     bottom: '底部',

@@ -448,6 +448,7 @@
       MaxDetect: algo.TargetSize.MaxDetect,
       ExpansionRatio: algo.Extend?.roiExtendRatio || 1.0,
       RetentionTime: algo.Extend?.dwellTimeSec || 3,
+      NotSaveImage: algo.Extend?.notSaveImage || false,
     };
 
     roiMode.value = Array.isArray(algo.Extend?.detectModeRoi) ? algo.Extend?.detectModeRoi : [0, 0];
@@ -514,7 +515,8 @@
 
     extend.roiExtendRatio = Number(values.ExpansionRatio);
     extend.dwellTimeSec = Number(values.RetentionTime);
-    
+    extend.notSaveImage = values.NotSaveImage;
+
     extend.detectModeRoi = roiMode.value;
     extend.detectModeCrossline = crossLineMode.value;
 

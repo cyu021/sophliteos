@@ -20,6 +20,7 @@ export default {
     maxRatio: "최대 감지 비율",
     expansionRatio: '검출 박스 확장 비율',
     retentionTime: '체류 시간',
+    notSaveImage: '이미지를 저장하지 않습니다',
     top: '정점',
     center: '중심',
     bottom: '바닥',

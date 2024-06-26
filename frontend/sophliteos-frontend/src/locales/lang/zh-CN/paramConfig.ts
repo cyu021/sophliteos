@@ -20,6 +20,7 @@ export default {
     maxRatio: '检测目标最大像素',
     expansionRatio: '检测框外扩比例',
     retentionTime: '滞留时间',
+    notSaveImage: '不保存图片',
     top: '顶点',
     center: '中心',
     bottom: '底部',
