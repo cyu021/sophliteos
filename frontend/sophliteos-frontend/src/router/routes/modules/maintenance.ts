@@ -110,77 +110,77 @@ const maintenance: AppRouteModule = {
         title: t('routes.dashboard.networkSetting'),
       },
     },
-    {
-      path: 'ssh',
-      name: 'ssh',
-      redirect: '/maintenance/ssh',
-      meta: {
-        title: t('routes.dashboard.sshTerminal'),
-      },
-      children: [
-        {
-          path: 'sshTerminal',
-          name: 'sshTerminal',
-          component: () => import('/@/views/maintenance/ssh/sshTerminal.vue'),
-          meta: {
-            title: t('routes.dashboard.sshTerminal'),
-            ignoreKeepAlive: true,
-          },
-        },
-        {
-          path: 'hostComputer',
-          name: 'hostComputer',
-          component: () => import('/@/views/maintenance/ssh/hostComputer.vue'),
-          meta: {
-            title: t('routes.dashboard.hostComputer'),
-            ignoreKeepAlive: true,
-          },
-        },
-        {
-          path: 'quickCommands',
-          name: 'quickCommands',
-          component: () => import('/@/views/maintenance/ssh/quickCommands.vue'),
-          meta: {
-            title: t('routes.dashboard.quickCommands'),
-            ignoreKeepAlive: true,
-          },
-        },
-      ],
-    },
-    {
-      path: 'contain',
-      name: 'contain',
-      redirect: '/maintenance/contain',
-      meta: {
-        title: t('routes.dashboard.DockerContainers'),
-      },
-      children: [
-        {
-          path: 'containers',
-          name: 'containers',
-          component: () => import('/@/views/maintenance/contain/containers.vue'),
-          meta: {
-            title: t('routes.dashboard.containers'),
-          },
-        },
-        {
-          path: 'mirror',
-          name: 'mirror',
-          component: () => import('/@/views/maintenance/contain/mirror.vue'),
-          meta: {
-            title: t('routes.dashboard.mirror'),
-          },
-        },
-        {
-          path: 'store',
-          name: 'store',
-          component: () => import('/@/views/maintenance/contain/store.vue'),
-          meta: {
-            title: t('routes.dashboard.store'),
-          },
-        },
-      ],
-    },
+    // {
+    //   path: 'ssh',
+    //   name: 'ssh',
+    //   redirect: '/maintenance/ssh',
+    //   meta: {
+    //     title: t('routes.dashboard.sshTerminal'),
+    //   },
+    //   children: [
+    //     {
+    //       path: 'sshTerminal',
+    //       name: 'sshTerminal',
+    //       component: () => import('/@/views/maintenance/ssh/sshTerminal.vue'),
+    //       meta: {
+    //         title: t('routes.dashboard.sshTerminal'),
+    //         ignoreKeepAlive: true,
+    //       },
+    //     },
+    //     {
+    //       path: 'hostComputer',
+    //       name: 'hostComputer',
+    //       component: () => import('/@/views/maintenance/ssh/hostComputer.vue'),
+    //       meta: {
+    //         title: t('routes.dashboard.hostComputer'),
+    //         ignoreKeepAlive: true,
+    //       },
+    //     },
+    //     {
+    //       path: 'quickCommands',
+    //       name: 'quickCommands',
+    //       component: () => import('/@/views/maintenance/ssh/quickCommands.vue'),
+    //       meta: {
+    //         title: t('routes.dashboard.quickCommands'),
+    //         ignoreKeepAlive: true,
+    //       },
+    //     },
+    //   ],
+    // },
+    // {
+    //   path: 'contain',
+    //   name: 'contain',
+    //   redirect: '/maintenance/contain',
+    //   meta: {
+    //     title: t('routes.dashboard.DockerContainers'),
+    //   },
+    //   children: [
+    //     {
+    //       path: 'containers',
+    //       name: 'containers',
+    //       component: () => import('/@/views/maintenance/contain/containers.vue'),
+    //       meta: {
+    //         title: t('routes.dashboard.containers'),
+    //       },
+    //     },
+    //     {
+    //       path: 'mirror',
+    //       name: 'mirror',
+    //       component: () => import('/@/views/maintenance/contain/mirror.vue'),
+    //       meta: {
+    //         title: t('routes.dashboard.mirror'),
+    //       },
+    //     },
+    //     {
+    //       path: 'store',
+    //       name: 'store',
+    //       component: () => import('/@/views/maintenance/contain/store.vue'),
+    //       meta: {
+    //         title: t('routes.dashboard.store'),
+    //       },
+    //     },
+    //   ],
+    // },
     {
       path: 'coreContain/:number/:type',
       name: 'coreContain',
