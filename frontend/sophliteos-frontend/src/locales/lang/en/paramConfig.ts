@@ -20,6 +20,7 @@ export default {
     maxRatio: 'Max Detect Ratio',
     expansionRatio: 'Expansion ratio',
     retentionTime: 'Retention time',
+    notSaveImage: 'Do not save image',
     top: 'Top',
     center: 'Center',
     bottom: 'Bottom',

@@ -163,7 +163,11 @@ export const algoFormSchema: FormSchema[] = [
       },
     ],
   },
-
+  {
+    field: 'NotSaveImage',
+    label: t('paramConfig.param.notSaveImage'),
+    component: 'Checkbox',
+  },
 ];
 
 export const AlgoTaskInfoDefault = {
