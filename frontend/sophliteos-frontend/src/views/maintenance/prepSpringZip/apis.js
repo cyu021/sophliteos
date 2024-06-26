@@ -1,5 +1,4 @@
 import { defHttp } from '/@/utils/http/axios';
-import { getTaskList } from '/@/api/task';
 import axios from 'axios';
 
 // 接口:
@@ -42,7 +41,6 @@ const list = () => {
 };
 
 const upload = (params, onUploadProgress) => {
-  console.log('upload', params);
   return defHttp.uploadFile(
     {
       url: PATH.upload,
@@ -71,7 +69,6 @@ const deleteFile = (name) => {
       { apiUrl: PATH.prefix, isTransformResponse: false },
     )
     .then((res) => {
-      console.log(res);
       return res;
     });
 };
