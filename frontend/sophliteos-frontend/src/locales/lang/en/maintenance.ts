@@ -4,8 +4,8 @@ export default {
   updatedFiles: 'Uploaded File',
   upgradePackage: 'Upgrade Package',
   prepSpringZip: {
-    selectModel: 'Select model file:',
-    customAlgoName: 'Custom algo name:',
+    selectModel: 'Select model file',
+    customAlgoName: 'Custom algo name',
     pack: 'Pack',
     customAlgoDownloadLinks: 'Custom algo download links:',
     createDate: 'Create date',

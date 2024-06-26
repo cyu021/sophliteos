@@ -158,8 +158,6 @@
   // 计时器
   let timerId;
   async function uploadFile() {
-    console.log('upload file', formState)
-
     const item = formState.file
     const algoName = formState.algoName
 
@@ -169,8 +167,6 @@
       progressStatus.value = 'normal';
       tip.value = '上传文件中...';
 
-      console.log('upload file', apis);
-
       return apis.upload({
         name: 'model',
         data: dataParams,
@@ -179,8 +175,7 @@
       function onUploadProgress(progressEvent: ProgressEvent) {
           const complete = ((progressEvent.loaded / progressEvent.total) * 99) | 0;
           item.percent = complete;
-        },
-)
+        },)
         .then(async (res) => {
           fileLoading.value = false;
           item.percent = 100;
@@ -188,13 +183,13 @@
           if (res.data.code !== 0) {
             createMessage.error(res.data.msg, 3);
           } else {
-            checkFileFn();
+            createMessage.success(t('component.upload.uploadSuccess'));
           }
         })
         .catch(() => {
           fileLoading.value = false;
           progressStatus.value = 'exception';
-          createMessage.error('上传失败');
+          createMessage.error(t('component.upload.uploadError'));
           clearTimeout(timerId);
         });
       return {

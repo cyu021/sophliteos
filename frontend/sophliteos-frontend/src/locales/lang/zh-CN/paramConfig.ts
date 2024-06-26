@@ -32,6 +32,8 @@ export default {
     drawRegion: '绘制多边形区域',
     drawRect: '绘制矩形区域',
     drawLineDetect: '绘制检测线',
+    regionCountLimit: "最多设置两个检测区域",
+    lineCountLimit: "最多设置两条检测线",  
     regionTip:
       '点击鼠标绘制一个点，两个以上的点连成线，绘制三个及以上的点之后点击第一个点完成多边形绘制。双击取消未完成的绘制',
     lineTip:
@@ -39,6 +41,7 @@ export default {
     rectTip: '框选绘制矩形：按下鼠标、移动鼠标、抬起鼠标，完成绘制',
     region: '检测区域',
     line: '检测线',
+    detectMode: '检测模式',
   },
   filter: {
     name: '规则名称',

@@ -124,19 +124,41 @@
                     >{{ t('paramConfig.draw.drawRect') }}</Button>
                   </Tooltip>
 
-                  <Select
+                  <Popover
                     v-if="drawRegion"
-                    v-model:value="roiMode"
-                    :options="modeOptions"
-                    @change="handleRoiModeChange"
-                  />
+                  >
+                    <template #content>
+                      <div>
+                        <div v-if="pylogonObject.length > 0">
+                          0: 
+                          <Radio.Group :options="modeOptions" v-model:value="roiMode[0]" />
+                        </div>
+                        <div v-if="pylogonObject.length > 1">
+                          <Divider />
+                          1:
+                          <Radio.Group :options="modeOptions" v-model:value="roiMode[1]" />
+                        </div>
+                      </div>
+                    </template>
+                    <Button>{{ t('paramConfig.draw.detectMode') }}</Button>
+                  </Popover>
 
-                  <Select
-                    v-else
-                    v-model:value="crossLineMode"
-                    :options="modeOptions"
-                    @change="handleCrossModeChange"
-                  />
+                  <Popover v-else>
+                    <template #content>
+                      <div>
+                        <div v-if="lineObject.length > 0">
+                          0: 
+                          <Radio.Group :options="modeOptions" v-model:value="crossLineMode[0]" />
+                        </div>
+                        <div v-if="lineObject.length > 1">
+                          <Divider />
+                          1:
+                          <Radio.Group :options="modeOptions" v-model:value="crossLineMode[1]" />
+                        </div>
+                      </div>
+                    </template>
+                    <Button>{{ t('paramConfig.draw.detectMode') }}</Button>
+                  </Popover>
 
                   <Button @click="clearDraw" :icon="h(ClearOutlined)">{{
                     t('paramConfig.draw.clear')
@@ -165,6 +187,10 @@
     TabPane,
     Space,
     Tooltip,
+    Popover,
+    RadioGroup,
+    Radio,
+    Divider,
   } from 'ant-design-vue';
   import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
   import { fabric } from 'fabric';
@@ -232,22 +258,28 @@
   const withArrow = ref(false);
   const draftLines = ref([{}]); //绘制草稿，线对象
   const draftPoints = ref([{}]); //绘制草稿，点对象
-  const pylogonObject = ref(); //当前区域对象
+
+  /**
+   * 增加多个区域和画线支持
+   */
+  const pylogonObject = ref<any>([]); //当前区域对象
   const pylogonSubmitPoint = ref<any>([]); //当前区域的点数组
+  
   const lineObject = ref(); //当前检测线对象
   const lineSubmitPoint = ref(); //当前检测线的点
   const originPaintData = ref();
+
   const rectDownPoint = ref(); //绘制矩形-按下的点
   const rectUpPoint = ref(); //绘制矩形-抬起的点
   const activeRect = ref(); //按下之后移动的临时矩形对象
   const drawText = ref('');
 
-  const roiMode = ref(0);
-  const crossLineMode = ref(0);
+  const roiMode = ref([0, 0]);
+  const crossLineMode = ref([0, 0]);
   const modeOptions = ref([
   { value: 0, label: t('paramConfig.param.top'), },
-  { value: 1, label: t('paramConfig.param.bottom'), },
-  { value: 2, label: t('paramConfig.param.center'), }
+  { value: 1, label: t('paramConfig.param.center'), },
+  { value: 2, label: t('paramConfig.param.bottom'), }
   ]);
 
   onMounted(() => {
@@ -418,8 +450,8 @@
       RetentionTime: algo.Extend?.dwellTimeSec || 3,
     };
 
-    roiMode.value = algo.Extend?.detectModeRoi || 0;
-    crossLineMode.value = algo.Extend?.detectModeCrossline || 0;
+    roiMode.value = Array.isArray(algo.Extend?.detectModeRoi) ? algo.Extend?.detectModeRoi : [0, 0];
+    crossLineMode.value = Array.isArray(algo.Extend?.detectModeCrossline) ? algo.Extend?.detectModeCrossline : [0, 0];
 
     nextTick(() => {
       setFieldsValue(formData);
@@ -427,8 +459,36 @@
       initDrawSelect();
       clearDraftDraw();
       // 绘制的点坐标适配当前canvas
-      const points = algo.DetectInfos[0].HotArea;
-      const line = algo.DetectInfos[0].TripWire;
+
+      const detectInfos = JSON.parse(JSON.stringify(algo.DetectInfos))
+
+      const points = detectInfos.map((item) => item.HotArea).filter((element) => {
+        if (element === null || element === undefined) { return false; }
+
+        if (element.length == 4) {
+          if (element[0].X == 0 && element[0].Y == 0 
+            && element[1].X == 1920 && element[1].Y == 0
+            && element[2].X == 1920 && element[2].Y == 1080
+            && element[3].X == 0 && element[3].Y == 1080
+          ) { return false; }
+        }
+
+        return true;
+      });
+
+      const line = detectInfos.map((item) => item.TripWire).filter((element) => {
+        if (element === null || element === undefined) { return false; }
+
+        if (element.DirectStart.X == 0 && element.DirectStart.Y == 0 
+          && element.DirectEnd.X == 0 && element.DirectEnd.Y == 0
+          && element.LineStart.X == 0 && element.LineStart.Y == 0
+          && element.LineEnd.X == 0 && element.LineEnd.Y == 0
+        ) { return false; }
+        
+        return true;
+      })
+
+
       originPaintData.value = [points, line];
       initObjectByApi(points, line);
     });
@@ -446,21 +506,8 @@
     play(url);
   }
 
-  function handleRoiModeChange(val) {
-    roiMode.value = val;
-  }
-
-  function handleCrossModeChange(val) {
-    crossLineMode.value = val;
-  }
-
   async function submit() {
     const values = await validate();
-
-    lineSubmitPoint.value.forEach((item) => {
-      item.x = Math.round(item.x * pixRatio.value) || 0;
-      item.y = Math.round(item.y * pixRatio.value) || 0;
-    });
 
     const extend = await getCurrentExtend();
     extend.Threshold = Number(values.Threshold);
@@ -468,8 +515,67 @@
     extend.roiExtendRatio = Number(values.ExpansionRatio);
     extend.dwellTimeSec = Number(values.RetentionTime);
     
-    extend.detectModeRoi = Number(roiMode.value);
-    extend.detectModeCrossline = Number(crossLineMode.value);
+    extend.detectModeRoi = roiMode.value;
+    extend.detectModeCrossline = crossLineMode.value;
+
+    lineSubmitPoint.value.forEach((element) => {
+      element.forEach(item => {
+        item.x = Math.round(item.x * pixRatio.value) || 0;
+        item.y = Math.round(item.y * pixRatio.value) || 0;
+      });
+    });
+
+    const detectInfos = [{
+      HotArea: [{X: 0, Y: 0}, {X: 1920, Y: 0}, {X: 1920, Y: 1080}, {X: 0, Y: 1080}],
+      TripWire: {
+        LineStart: {X: 0, Y: 0},
+        LineEnd: {X: 0, Y: 0},
+        DirectStart: {X: 0, Y: 0},
+        DirectEnd: {X: 0, Y: 0}
+      }
+    }]
+
+    const maxLength = lineSubmitPoint.value.length > pylogonSubmitPoint.value.length ? lineSubmitPoint.value.length : pylogonSubmitPoint.value.length;
+
+    for (let i = 0; i < maxLength; i++) {
+      const lineTmpSubmitPoint = lineSubmitPoint.value[i];
+
+      const detectInfo = {};
+
+      if (lineTmpSubmitPoint && lineTmpSubmitPoint.length >= 4) {
+        detectInfo.TripWire = {
+          LineStart: {
+            X: lineTmpSubmitPoint?.[0].x,
+            Y: lineTmpSubmitPoint?.[0].y,
+          },
+          LineEnd: {
+            X: lineTmpSubmitPoint?.[1].x,
+            Y: lineTmpSubmitPoint?.[1].y,
+          },
+          DirectStart: {
+            X: lineTmpSubmitPoint?.[3].x,
+            Y: lineTmpSubmitPoint?.[3].y,
+          },
+          DirectEnd: {
+            X: lineTmpSubmitPoint?.[2].x,
+            Y: lineTmpSubmitPoint?.[2].y,
+          }
+        }
+      }
+
+      const pylogonTmpSubmitPoint = pylogonSubmitPoint.value[i];
+
+      detectInfo.HotArea = pylogonTmpSubmitPoint?.map((item) => ({
+        X: Math.round(item.x * pixRatio.value),
+        Y: Math.round(item.y * pixRatio.value),
+      }))
+
+      detectInfos.push(detectInfo);
+    }
+
+    if (detectInfos.length > 1) {
+      detectInfos.shift();
+    }
 
     const params: any = {
       taskId: taskId.value,
@@ -482,32 +588,7 @@
           MinDetect: Number(values.MinDetect),
           MaxDetect: Number(values.MaxDetect),
         },
-        DetectInfos: [
-          {
-            TripWire: {
-              LineStart: {
-                X: lineSubmitPoint.value?.[0].x,
-                Y: lineSubmitPoint.value?.[0].y,
-              },
-              LineEnd: {
-                X: lineSubmitPoint.value?.[1].x,
-                Y: lineSubmitPoint.value?.[1].y,
-              },
-              DirectStart: {
-                X: lineSubmitPoint.value?.[3].x,
-                Y: lineSubmitPoint.value?.[3].y,
-              },
-              DirectEnd: {
-                X: lineSubmitPoint.value?.[2].x,
-                Y: lineSubmitPoint.value?.[2].y,
-              },
-            },
-            HotArea: pylogonSubmitPoint.value.map((item) => ({
-              X: Math.round(item.x * pixRatio.value),
-              Y: Math.round(item.y * pixRatio.value),
-            })),
-          },
-        ],
+        DetectInfos: detectInfos,
         Extend: extend,
       },
     };
@@ -542,25 +623,48 @@
     await player.value.load(new URL(url))
   }
 
-  function initObjectByApi(points, line) {
-    if (points.length) {
-      const convertPoints = points.map((item) => ({
-        x: item.X / pixRatio.value,
-        y: item.Y / pixRatio.value,
-      }));
-      pylogonObject.value = makePylogon(convertPoints);
-      pylogonSubmitPoint.value = convertPoints;
-    }
-    if (line) {
-      const p1 = { x: line.LineStart.X / pixRatio.value, y: line.LineStart.Y / pixRatio.value };
-      const p2 = { x: line.LineEnd.X / pixRatio.value, y: line.LineEnd.Y / pixRatio.value };
-      const p3 = { x: line.DirectStart.X / pixRatio.value, y: line.DirectStart.Y / pixRatio.value };
-      const p4 = { x: line.DirectEnd.X / pixRatio.value, y: line.DirectEnd.Y / pixRatio.value };
-      const line1 = makeLine([p1, p2]);
-      const line2 = makeLine([p3, p4], {}, true);
-      lineObject.value = makeGroup([line1, line2]);
-      lineSubmitPoint.value = [p1, p2, p4, p3];
-    }
+  function initObjectByApi(pointsArray, lineArray) {
+    pylogonObject.value = []
+    pylogonSubmitPoint.value = []
+
+    pointsArray.forEach(points => {
+      if (points && points.length > 0) {
+        const convertPoints = points.map((item) => ({
+          x: item.X / pixRatio.value,
+          y: item.Y / pixRatio.value,
+        }));
+
+        const tmpObject = pylogonObject.value || []
+        tmpObject.push(makePylogon(convertPoints));
+        pylogonObject.value = tmpObject;
+
+        const tmpSubmitPoint = pylogonSubmitPoint.value || [];
+        tmpSubmitPoint.push(convertPoints)
+        pylogonSubmitPoint.value = tmpSubmitPoint;
+      }
+    });
+
+    lineObject.value = []
+    lineSubmitPoint.value = []
+
+    lineArray.forEach(line => {
+      if (line) {
+        const p1 = { x: line.LineStart.X / pixRatio.value, y: line.LineStart.Y / pixRatio.value };
+        const p2 = { x: line.LineEnd.X / pixRatio.value, y: line.LineEnd.Y / pixRatio.value };
+        const p3 = { x: line.DirectStart.X / pixRatio.value, y: line.DirectStart.Y / pixRatio.value };
+        const p4 = { x: line.DirectEnd.X / pixRatio.value, y: line.DirectEnd.Y / pixRatio.value };
+        const line1 = makeLine([p1, p2]);
+        const line2 = makeLine([p3, p4], {}, true);
+
+        const lineTmpObject = lineObject.value || [];
+        lineTmpObject.push(makeGroup([line1, line2]));
+        lineObject.value = lineTmpObject;
+
+        const lineSubmitTmpPoint = lineSubmitPoint.value || [];
+        lineSubmitTmpPoint.push([p1, p2, p4, p3]);
+        lineSubmitPoint.value = lineSubmitTmpPoint;
+      }
+    });
   }
 
   function initDrawSelect() {
@@ -607,12 +711,13 @@
     if (canvas.value) {
       canvas.value.clear();
       initDraft();
+
       if (drawLine.value) {
-        lineObject.value = null;
+        lineObject.value = [];
         lineSubmitPoint.value = [];
       }
       if (drawRegion.value) {
-        pylogonObject.value = null;
+        pylogonObject.value = [];
         pylogonSubmitPoint.value = [];
       }
     }
@@ -662,9 +767,21 @@
         pylogonPoints.value.pop();
         const thisPylogon = makePylogon(pylogonPoints.value);
         canvas.value.add(thisPylogon);
-        pylogonObject.value && canvas.value.remove(pylogonObject.value);
-        pylogonObject.value = thisPylogon;
-        pylogonSubmitPoint.value = pylogonPoints.value;
+        // pylogonObject.value && canvas.value.remove(pylogonObject.value);
+
+        const tmpObject = pylogonObject.value || []
+        tmpObject.push(thisPylogon);
+        pylogonObject.value = tmpObject;
+
+        const tmpSubmitPoint = pylogonSubmitPoint.value || [];
+        tmpSubmitPoint.push(pylogonPoints.value)
+        pylogonSubmitPoint.value = tmpSubmitPoint;
+
+        const index = tmpObject.length - 1;
+        var point = pylogonPoints.value[0];
+        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+        canvas.value.add(text);
+
         clearDraftDraw();
         changeDrawMode();
         return;
@@ -672,9 +789,21 @@
       // 完成检测线绘制
       if (drawLine.value && withArrow.value) {
         const lines = makeGroup([...draftLines.value]);
-        lineObject.value && canvas.value.remove(lineObject.value);
-        lineObject.value = lines;
-        lineSubmitPoint.value = [...pylogonPoints.value, lastPoint.value];
+        // lineObject.value && canvas.value.remove(lineObject.value);
+
+        const lineTmpObject = lineObject.value || []
+        lineTmpObject.push(lines);
+        lineObject.value = lineTmpObject;
+
+        const lineTmpSubmitPoint = lineSubmitPoint.value || []
+        lineTmpSubmitPoint.push([...pylogonPoints.value, lastPoint.value])
+        lineSubmitPoint.value = lineTmpSubmitPoint;
+
+        const index = lineTmpObject.length - 1;
+        var point = pylogonPoints.value[0];
+        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+        canvas.value.add(text);
+
         canvas.value.add(lines);
         clearDraftDraw();
         changeDrawMode();
@@ -733,12 +862,25 @@
     if (rectMode.value) {
       rectUpPoint.value = event.pointer;
       getRectPoints(rectDownPoint.value, rectUpPoint.value);
-      pylogonSubmitPoint.value = pylogonPoints.value;
-      pylogonObject.value && canvas.value.remove(pylogonObject.value);
+
+      const tmpSubmitPoint = pylogonSubmitPoint.value || [];
+      tmpSubmitPoint.push(pylogonPoints.value)
+      pylogonSubmitPoint.value = tmpSubmitPoint;
+
+      const tmpObject = pylogonObject.value || []
       const thisPylogon = makePylogon(pylogonPoints.value);
-      pylogonObject.value = thisPylogon;
+      tmpObject.push(thisPylogon);
+      pylogonObject.value = tmpObject;
+
       canvas.value.add(thisPylogon);
+
+      const index = tmpObject.length - 1;
+      var point = pylogonPoints.value[0];
+      let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+      canvas.value.add(text);
+
       clearDraftDraw();
+      rectMode.value = false;
     }
   }
 
@@ -753,42 +895,57 @@
     if (!canvas.value) return;
     drawMode.value = !drawMode.value;
     if (drawMode.value) {
-      rectMode.value && drawRect();
-      // 开启绘制
-      clearDraftDraw(); //初始化草稿
-      canvas.value.defaultCursor = 'crosshair'; // 画布光标样式设置为十字
-      canvas.value
-        .on('mouse:down', onMouseDown)
-        .on('mouse:move', onMousemove)
-        .on('mouse:dblclick', onDbclick); //开启鼠标监听
-    } else {
-      canvas.value
-        .off('mouse:down', onMouseDown)
-        .off('mouse:move', onMousemove)
-        .off('mouse:dblclick', onDbclick);
-      canvas.value.defaultCursor = 'auto';
+      if (drawRegion.value && pylogonObject.value && pylogonObject.value.length >= 2) {
+        createMessage.error(t('paramConfig.draw.regionCountLimit'));
+        drawMode.value = false;
+      } else if (drawLine.value && lineObject.value && lineObject.value.length >= 2) {
+        createMessage.error(t('paramConfig.draw.lineCountLimit'));
+        drawMode.value = false;
+      } else {
+        rectMode.value && drawRect();
+        // 开启绘制
+        clearDraftDraw(); //初始化草稿
+        canvas.value.defaultCursor = 'crosshair'; // 画布光标样式设置为十字
+        canvas.value
+          .on('mouse:down', onMouseDown)
+          .on('mouse:move', onMousemove)
+          .on('mouse:dblclick', onDbclick); //开启鼠标监听
+        return;
+      }
     }
+    canvas.value
+      .off('mouse:down', onMouseDown)
+      .off('mouse:move', onMousemove)
+      .off('mouse:dblclick', onDbclick);
+    canvas.value.defaultCursor = 'auto';
   }
 
   // 快捷绘制-矩形
   function drawRect() {
     rectMode.value = !rectMode.value;
+
     if (rectMode.value) {
-      clearDraftDraw();
-      drawMode.value && changeDrawMode();
-      //监听鼠标down和up
-      canvas.value
-        .on('mouse:down', onMouseDownRect)
-        .on('mouse:up', onMouseUpRect)
-        .on('mouse:move', onMouseMoveRect);
-      canvas.value.defaultCursor = 'crosshair'; // 画布光标样式设置为十字
-    } else {
-      canvas.value
-        .off('mouse:down', onMouseDownRect)
-        .off('mouse:up', onMouseUpRect)
-        .off('mouse:move', onMouseMoveRect);
-      canvas.value.defaultCursor = 'auto'; // 画布光标样式设置为十字
+      if (pylogonObject.value && pylogonObject.value.length >= 2) {
+        createMessage.error(t('paramConfig.draw.regionCountLimit'));
+        rectMode.value = false;
+      } else {
+        clearDraftDraw();
+        drawMode.value && changeDrawMode();
+        //监听鼠标down和up
+        canvas.value
+          .on('mouse:down', onMouseDownRect)
+          .on('mouse:up', onMouseUpRect)
+          .on('mouse:move', onMouseMoveRect);
+        canvas.value.defaultCursor = 'crosshair'; // 画布光标样式设置为十字
+        return;
+      }
     }
+
+    canvas.value
+      .off('mouse:down', onMouseDownRect)
+      .off('mouse:up', onMouseUpRect)
+      .off('mouse:move', onMouseMoveRect);
+    canvas.value.defaultCursor = 'auto'; // 画布光标样式设置为十字
   }
 
   /**
@@ -808,7 +965,13 @@
       nextTick(() => {
         initCanvas();
         if (pylogonObject.value && canvas.value) {
-          canvas.value.add(pylogonObject.value);
+          pylogonObject.value.forEach((element, index) => {
+            canvas.value.add(element);
+
+            const point = element.get('points')[0];
+            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+            canvas.value.add(text);
+          });
         }
       });
     }
@@ -823,7 +986,13 @@
       nextTick(() => {
         initCanvas();
         if (lineObject.value && canvas.value) {
-          canvas.value.add(lineObject.value);
+          lineObject.value.forEach((element, index) => {
+            canvas.value.add(element);
+
+            const point = lineSubmitPoint.value[index][0];
+            const text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+            canvas.value.add(text);
+          });
         }
       });
     }
