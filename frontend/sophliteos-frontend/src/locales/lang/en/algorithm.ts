@@ -1,8 +1,8 @@
 export default {
-    upload: 'Upload a new algorithm',
-    select: 'Select a file',
+    upload: 'Upload a new AI model',
+    select: 'Upload Model',
     name: 'Name',
-    state: 'State',
+    state: 'Status',
     action: 'Actions',
     state_on: 'Enabled',
     state_off: 'Disabled',

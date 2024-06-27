@@ -1,18 +1,18 @@
 export default {
   taskList: {
-    id: 'Task Number',
-    videoSource: 'video source',
-    algoInfo: 'Algorithm configuration information',
+    id: 'Task Name',
+    VideoSource: 'Video Source',
+    algoInfo: 'Algo Configuration Info',
     status: ' Task Status',
     addTask: 'Add Task',
     editTask: 'Edit Task',
     message:
       'Due to the need to consume hardware resources to increase algorithms, please set the number of task paths and algorithms as appropriate',
-    algoConfigTitle: 'Algorithm Service Configuration',
-    upUrlConfig: 'Result address Configuration',
-    upUrl: 'Result address',
+    algoConfigTitle: 'Algo Service Endpoint',
+    upUrlConfig: 'Notification Push Endpoint',
+    upUrl: 'Endpoint Url Address',
     on: 'Running',
     off: 'Stopped',
-    algorithmConfig: 'Algorithm config'
+    algorithmConfig: 'Algo Service Endpoint'
   },
 };

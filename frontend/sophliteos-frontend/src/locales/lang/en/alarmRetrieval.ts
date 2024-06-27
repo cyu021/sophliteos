@@ -1,11 +1,11 @@
 export default {
   alarm: {
-    channel: 'Channel Select',
+    channel: 'Stream Select',
     search: 'Alarm Type',
-    startTime: 'Time-on',
+    startTime: 'Start Time',
     EndTime: 'End Time',
     totalNumber: 'Total number of alarm images',
-    images: 'images',
+    images: ' images',
     setSpace: 'Set maximum space',
     setting: 'Current settings',
     notice:
@@ -14,7 +14,7 @@ export default {
       'The maximum space you have set is less than the storage space you currently occupy. After setting, your earliest data will be automatically deleted. Are you sure you want to do this?',
     saveSetting: 'Continue setting',
     useSpace: 'Used Space',
-    maxSpace: 'Max Space',
+    maxSpace: 'Maximum Space',
     alarmDetail: 'Alarm Detail',
     detailInfo: 'Detail Information',
     alarmType: 'Alarm Type',
@@ -26,6 +26,6 @@ export default {
     notKown: 'Notkown',
     taskId: 'Task',
     srcId: 'VideoSource',
-    taskSelect: 'Task',
+    taskSelect: 'Task Select',
   },
 };
