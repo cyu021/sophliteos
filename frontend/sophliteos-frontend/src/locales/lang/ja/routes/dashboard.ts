@@ -46,6 +46,7 @@ export default {
   coreBoardMap: "コアボードマップ",
   logDownload: "ログダウンロード",
   algoModel: 'Analysis Model',
+  alarmThreshold: 'Resource Alarm',
   content: {
     sysContent: "システムOTAのアップグレードは、バージョンアップに適しており、ダウングレードおよびクロスバージョンアップをサポートしていません。それ以外の場合はシステムの損傷を引き起こす可能性があります。",
     Content: `システムSDKのOTAアップグレードは、3.0バージョンを超えるアップグレードをサポートしていません。

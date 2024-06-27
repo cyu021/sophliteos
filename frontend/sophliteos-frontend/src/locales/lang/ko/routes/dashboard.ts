@@ -46,6 +46,7 @@ export default {
   coreBoardMap: "코어 보드 포트 맵",
   logDownload: "로그 다운로드",
   algoModel: 'Analysis Model',
+  alarmThreshold: 'Resource Alarm',
   content: {
     sysContent: "버전 업그레이드에 적합한 시스템 OTA 업그레이드는 다운그레이드 및 버전 간 업그레이드를 지원하지 않습니다. 그렇지 않을 경우 시스템이 손상이 발생할 수 있습니다.",
     Content: `시스템 SDK OTA 업그레이드는 3.0 버전 간 업그레이드를 지원하지 않습니다. 그렇지 않으면 시스템이 손상될 수 있습니다.

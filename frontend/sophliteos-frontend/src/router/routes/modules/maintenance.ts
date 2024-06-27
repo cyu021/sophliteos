@@ -38,7 +38,7 @@ const maintenance: AppRouteModule = {
     {
       path: 'softUpdate',
       name: 'softUpdate',
-      redirect: '/maintenance/softUpdate/ssmUpdate',
+      redirect: '/maintenance/softUpdate/LiteOSUpdate',
       meta: {
         title: t('routes.dashboard.softUpdate'),
       },
@@ -107,7 +107,8 @@ const maintenance: AppRouteModule = {
       name: 'NetworkSetting',
       component: () => import('../../../views/maintenance/networkSetting/index.vue'),
       meta: {
-        title: t('routes.dashboard.networkSetting'),
+        title: t('routes.dashboard.sysSetting'),
+        // title: t('routes.dashboard.networkSetting'),
       },
     },
     // {
@@ -193,14 +194,14 @@ const maintenance: AppRouteModule = {
         realPath: '/maintenance/coreContain',
       },
     },
-    {
-      path: 'threshold',
-      name: 'Threshold',
-      component: () => import('/@/views/maintenance/threshold/index.vue'),
-      meta: {
-        title: t('routes.dashboard.sysSetting'),
-      },
-    },
+    // {
+    //   path: 'threshold',
+    //   name: 'Threshold',
+    //   component: () => import('/@/views/maintenance/threshold/index.vue'),
+    //   meta: {
+    //     title: t('routes.dashboard.sysSetting'),
+    //   },
+    // },
   ],
 };
 
