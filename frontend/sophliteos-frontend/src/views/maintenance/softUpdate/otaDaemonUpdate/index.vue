@@ -94,7 +94,7 @@ import type { UnwrapRef } from 'vue';
 import { Upload } from 'ant-design-vue';
 import { UploadOutlined } from '@ant-design/icons-vue';
 
-import apis from './apis.js';
+import apisOtaDaemon from './apis.js';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 
@@ -111,7 +111,7 @@ onMounted(async () => {
 });
 
 const fetchVersion = async () => {
-  const version = await apis.currentVersion();
+  const version = await apisOtaDaemon.currentVersion();
   currentVersion.value = version;
 }
 
@@ -161,7 +161,7 @@ async function handleUpload() {
 }
 
 const handleRestart = async () => {
-  const res = await apis.restart();
+  const res = await apisOtaDaemon.restart();
   if (res.code === 0) {
     createMessage.success('重启成功');
   } else {
@@ -172,7 +172,7 @@ const handleRestart = async () => {
 const handleUpgrade = async () => {
   console.log('handle upgrade')
 
-  const res = await apis.upgrade();
+  const res = await apisOtaDaemon.upgrade();
   if (res.code === 0) {
     createMessage.success('升级成功');
     await fetchVersion();
@@ -187,7 +187,7 @@ const uploadFile = async () => {
     fileUploaded.value = false;
     fileLoading.value = true;
 
-    return apis
+    return apisOtaDaemon
       .upload({ name: 'otadaemonZip', file: item, },
         function onUploadProgress(progressEvent: ProgressEvent) {
           const complete = ((progressEvent.loaded / progressEvent.total) * 99) | 0;
@@ -267,4 +267,4 @@ const uploadFile = async () => {
     bottom: 1rem;
   }
 
-</style>
+</style>./apisOtaDaemon.js/index.js

@@ -34,7 +34,7 @@
         </a-form>
       </a-skeleton>
     </a-tab-pane>
-    <!-- <a-tab-pane key="cloud" :tab="t('maintenance.threshold.cloud')">
+    <a-tab-pane key="cloud" :tab="t('maintenance.threshold.cloud')">
       <a-form
         :model="CloudModel"
         v-bind="formItemLayout"
@@ -54,7 +54,7 @@
           }}</a-button>
         </a-form-item>
       </a-form>
-    </a-tab-pane> -->
+    </a-tab-pane>
   </a-tabs>
 </template>
 <script lang="ts" setup>

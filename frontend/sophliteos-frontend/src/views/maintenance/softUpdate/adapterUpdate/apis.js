@@ -46,7 +46,7 @@ const PATH = {
   restart: '/restart',
 };
 
-const apis = {
+const apisAdapter = {
   upload,
   upgrade,
   restart,
@@ -54,4 +54,4 @@ const apis = {
   deleteCache,
 };
 
-export default apis;
+export default apisAdapter;
