@@ -1,7 +1,7 @@
 export default {
   taskList: {
     id: 'Task Name',
-    VideoSource: 'Video Source',
+    videoSource: 'Video Source',
     algoInfo: 'Algo Configuration Info',
     status: ' Task Status',
     addTask: 'Add Task',

@@ -13,20 +13,20 @@ const maintenance: AppRouteModule = {
   component: LAYOUT,
   redirect: '/maintenance/sysSoft',
   meta: {
-    orderNo: 2,
+    orderNo: 5,
     icon: 'bx:server',
     title: t('routes.dashboard.maintenance'),
     // hideMenu: true,
   },
   children: [
-    {
-      path: 'prepSpringZip',
-      name: 'PrepSpringZip',
-      component: () => import('/@/views/maintenance/prepSpringZip/index.vue'),
-      meta: {
-        title: t('routes.dashboard.prepSpringZip'),
-      },
-    },
+    // {
+    //   path: 'prepSpringZip',
+    //   name: 'PrepSpringZip',
+    //   component: () => import('/@/views/maintenance/prepSpringZip/index.vue'),
+    //   meta: {
+    //     title: t('routes.dashboard.prepSpringZip'),
+    //   },
+    // },
     {
       path: 'sysSoft',
       name: 'SysSoft',
@@ -43,14 +43,14 @@ const maintenance: AppRouteModule = {
         title: t('routes.dashboard.softUpdate'),
       },
       children: [
-        {
-          path: 'ssmUpdate',
-          name: 'ssmUpdate',
-          component: () => import('/@/views/maintenance/softUpdate/ssmUpdate/index.vue'),
-          meta: {
-            title: t('routes.dashboard.ssmUpdate'),
-          },
-        },
+        // {
+        //   path: 'ssmUpdate',
+        //   name: 'ssmUpdate',
+        //   component: () => import('/@/views/maintenance/softUpdate/ssmUpdate/index.vue'),
+        //   meta: {
+        //     title: t('routes.dashboard.ssmUpdate'),
+        //   },
+        // },
         {
           path: 'LiteOSUpdate',
           name: 'LiteOSUpdate',

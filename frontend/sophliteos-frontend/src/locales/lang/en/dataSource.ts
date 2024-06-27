@@ -23,7 +23,7 @@ export default {
     deviceName: 'Stream name',
     mediaServerName: 'Streaming Services',
     type: 'Device Type',
-    protocol: 'Device Protocol',
+    protocol: 'Stream Protocol',
     type2: 'Video recording devices',
     isEdge: 'Edge devices',
     transmit: 'Forward or not',

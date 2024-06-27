@@ -8,7 +8,7 @@ const events: AppRouteModule = {
   component: LAYOUT,
   redirect: '/events/events',
   meta: {
-    orderNo: 10,
+    orderNo: 3,
     // hideChildrenInMenu: true,
     icon: 'tdesign:task',
     title: t('routes.dashboard.eventManage'),

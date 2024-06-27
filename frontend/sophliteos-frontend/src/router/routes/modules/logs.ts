@@ -9,7 +9,7 @@ const logs: AppRouteModule = {
   component: LAYOUT,
   redirect: '/logs/warning',
   meta: {
-    orderNo: 3,
+    orderNo: 6,
     icon: 'icon-park-outline:upload-logs',
     title: t('routes.dashboard.logs'),
     // hideMenu: true,

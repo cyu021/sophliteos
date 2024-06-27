@@ -8,7 +8,7 @@ const accessAlgo: AppRouteModule = {
   component: LAYOUT,
   redirect: '/accessAlgo/videos',
   meta: {
-    orderNo: 10,
+    orderNo: 2,
     // hideChildrenInMenu: true,
     icon: 'tdesign:task',
     title: t('routes.dashboard.accessAlgo'),
@@ -22,14 +22,14 @@ const accessAlgo: AppRouteModule = {
         title: t('routes.dashboard.videoManage'),
       },
     },
-    {
-      path: 'algorithmsList',
-      name: 'AlgorithmsList',
-      component: () => import('/@/views/accessAlgo/algorithms/index.vue'),
-      meta: {
-        title: t('routes.dashboard.algorithm'),
-      },
-    },
+    // {
+    //   path: 'algorithmsList',
+    //   name: 'AlgorithmsList',
+    //   component: () => import('/@/views/accessAlgo/algorithms/index.vue'),
+    //   meta: {
+    //     title: t('routes.dashboard.algorithm'),
+    //   },
+    // },
     {
       path: 'taskList',
       name: 'TaskList',

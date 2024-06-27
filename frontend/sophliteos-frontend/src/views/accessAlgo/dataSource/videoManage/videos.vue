@@ -8,9 +8,9 @@
         <a-button type="primary" @click="oneStart">{{
           t('dataSource.videoManage.allCheck')
         }}</a-button>
-        <a-button type="primary" @click="mediaServer">{{
+        <!-- <a-button type="primary" @click="mediaServer">{{
           t('dataSource.mediaServers.configService')
-        }}</a-button>
+        }}</a-button> -->
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">

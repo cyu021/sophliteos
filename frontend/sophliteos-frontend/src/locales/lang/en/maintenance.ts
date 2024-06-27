@@ -154,7 +154,7 @@ export default {
     tpuScale: 'TPU Memory Usage',
     // externalHardDiskRate: '外挂存储使用率',
     diskRate: 'Disk Usage',
-    title: 'Alarm Threshold',
+    title: 'Resource Alarm Threshold',
     cloud: 'Cloud Platform Config',
   },
 };

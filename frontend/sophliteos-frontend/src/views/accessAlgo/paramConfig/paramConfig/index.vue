@@ -23,9 +23,9 @@
         <DescriptionsItem :label="t('paramConfig.param.channel')">{{
           algoTaskInfo.device.name
         }}</DescriptionsItem>
-        <DescriptionsItem :label="t('paramConfig.param.media')">{{
+        <!-- <DescriptionsItem :label="t('paramConfig.param.media')">{{
           algoTaskInfo.device.mediaServer
-        }}</DescriptionsItem>
+        }}</DescriptionsItem> -->
         <DescriptionsItem :label="t('paramConfig.param.channelStatus')">{{
           statusMap.get(algoTaskInfo.device.status)
         }}</DescriptionsItem>

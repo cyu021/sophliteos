@@ -45,6 +45,7 @@ export default {
   alarmDetail: 'Alarm Detail',
   coreBoardMap: 'Core Board port Map',
   logDownload: 'logs Export',
+  algoModel: 'Analysis Model',
   content: {
     sysContent:
       'System OTA upgrade, suitable for version upgrade, does not support downgrade and cross version upgrade, otherwise it may cause system damage.',
