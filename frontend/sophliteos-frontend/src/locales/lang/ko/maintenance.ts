@@ -50,7 +50,11 @@ export default {
     strategy: {
       flash: "플래시",
       reboot: "재시작"
-    }
+    },
+    portal: 'Portal',
+    otaDaemon: 'Daemon',
+    adapter: 'Biz Module',
+    core: 'Plugin Module'
   },
   ssmUpdate: {
     serverUsername: "서버 유저 이름",

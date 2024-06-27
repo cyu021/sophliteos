@@ -60,6 +60,10 @@ export default {
       flash: 'Flash',
       reboot: 'Reboot',
     },
+    portal: 'Portal',
+    otaDaemon: 'Daemon',
+    adapter: 'Biz Module',
+    core: 'Plugin Module'
   },
   ssmUpdate: {
     serverUsername: 'Server Username',

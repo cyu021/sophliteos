@@ -5,7 +5,7 @@
       <a-tab-pane key="control" :tab="controlText">
         <ControlForm :isSoftware="true" />
       </a-tab-pane>
-      <a-tab-pane key="otadaemon" :tab="t('maintenance.systemUpdate.otadaemon')">
+      <a-tab-pane key="otaDaemon" :tab="t('maintenance.systemUpdate.otaDaemon')">
         <div style="display: flex; flex-direction: row; margin-bottom: 20px">
           <div style="background-color: white">
             <div style="font-size: 16px; margin: 20px 0 0 20px; font-weight: 550">{{
@@ -178,6 +178,90 @@
         </div>
       </a-tab-pane>
       <a-tab-pane key="core" :tab="t('maintenance.systemUpdate.core')">
+        <div style="display: flex; flex-direction: row; margin-bottom: 20px">
+          <div style="background-color: white">
+            <div style="font-size: 16px; margin: 20px 0 0 20px; font-weight: 550">{{
+              t('maintenance.systemUpdate.localUpdate1')
+            }}</div>
+            <div class="formStyle">
+              <div style="margin-left: 20px; min-width: 650px; margin-right: 20px">
+                <a-form
+                  :model="formState"
+                  v-bind="formItemLayout"
+                  class="!my-4"
+                  labelAlign="left"
+                >
+                  <a-form-item
+                    :label="t('maintenance.systemUpdate.updateType')"
+                    :rules="[{ required: true }]"
+                  >
+                    {{ t('maintenance.systemUpdate.localUpdate') }}
+                  </a-form-item>
+
+                  <a-form-item
+                    :label="t('maintenance.systemUpdate.currentSoftVersion')"
+                    :rules="[{ required: true }]"
+                  >
+                    <span>{{
+                      currentVersionCore
+                    }}</span>
+                  </a-form-item>
+
+                  <a-form-item
+                    name="file"
+                    required
+                    :label="t('maintenance.systemUpdate.selectFile')"
+                    v-model:value="formState.file"
+                  >
+                    <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                      <a-upload
+                        :file-list="fileListCore"
+                        @remove="handleRemoveCore"
+                        :before-upload="beforeUploadCore"
+                        name="coreZip"
+                      >
+                        <a-button>
+                          <a-upload-outlined />
+                          {{ t('maintenance.systemUpdate.selectFile') }}
+                        </a-button>
+                      </a-upload>
+
+                      <a-button
+                        type="primary"
+                        style="margin-right: 4.5vw"
+                        @click="handleUploadCore"
+                        :loading="fileLoadingCore"
+                        :disabled="fileLoadingCore || fileListCore.length < 1"
+                      >{{
+                        t('component.upload.startUpload')
+                      }}</a-button>
+                    </div>
+
+                  </a-form-item>
+                </a-form>
+
+                <div style="padding: 14px;">
+                  <a-button
+                    type="primary"
+                    style="margin-right: 4.5vw"
+                    @click="handleUpgradeCore"
+                    :disabled="!fileUploadedCore"
+                  >
+                    {{ t('maintenance.systemUpdate.startUpdate') }}
+                  </a-button>
+                  <a-button
+                    type="primary"
+                    danger
+                    style="margin-right: 4.5vw"
+                    @click="handleRestartCore"
+                  >{{
+                    t('overview.restart')
+                  }}</a-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </PageWrapper>
@@ -425,6 +509,113 @@ const uploadFileAdapter = async () => {
       })
       .catch(() => {
         fileLoadingAdapter.value = false;
+        createMessage.error(t('component.upload.uploadError'));
+      });
+  } catch (e) {
+    item.status = 'error';
+    return {
+      success: false,
+      error: e,
+    };
+  }
+}
+
+///////////////////////////////////////////////////////////////////////
+
+import apisCore from './coreUpdate/apis.js';
+
+const currentVersionCore = ref<string>('');
+
+onMounted(async () => {
+  console.log('on mounted')
+  await fetchVersionCore();
+
+  fileUploadedCore.value = false;
+});
+
+const fetchVersionCore = async () => {
+  const version = await apisCore.currentVersion();
+  currentVersionCore.value = version;
+}
+
+interface FormState {
+  file: any;
+}
+
+const fileLoadingCore = ref(false);
+const fileUploadedCore = ref(false);
+
+const fileListCore = ref<any>([]);
+
+const handleRemoveCore = (file) => {
+  const index = fileListCore.value.indexOf(file);
+  const newFileList = fileListCore.value.slice();
+  newFileList.splice(index, 1);
+  fileListCore.value = newFileList;
+
+  fileUploadedCore.value = false;
+};
+
+const beforeUploadCore = (file) => {
+  fileListCore.value = [file];
+  formState.file = file;
+  return false;
+};
+
+async function handleUploadCore() {
+  if (fileListCore.value.length <= 0) {
+    createMessage.error('请先选择文件');
+  } else {
+    await uploadFileCore();
+  }
+}
+
+const handleRestartCore = async () => {
+  const res = await apisCore.restart();
+  if (res.code === 0) {
+    createMessage.success('重启成功');
+  } else {
+    createMessage.error(res.msg);
+  }
+}
+
+const handleUpgradeCore = async () => {
+  console.log('handle upgrade')
+
+  const res = await apisCore.upgrade();
+  if (res.code === 0) {
+    createMessage.success('升级成功');
+    await fetchVersionCore();
+  } else {
+    createMessage.error(res.msg);
+  }
+}
+
+const uploadFileCore = async () => {
+  const item = formState.file
+  try {
+    fileUploadedCore.value = false;
+    fileLoadingCore.value = true;
+
+    return apisCore
+      .upload({ name: 'coreZip', file: item, },
+        function onUploadProgress(progressEvent: ProgressEvent) {
+          const complete = ((progressEvent.loaded / progressEvent.total) * 99) | 0;
+          item.percent = complete;
+        }
+      )
+      .then(async (res) => {
+        fileLoadingCore.value = false;
+        item.percent = 100;
+        if (res.data.code !== 0) {
+          createMessage.error(res.data.msg, 3);
+        } else {
+          fileUploadedCore.value = true;
+          createMessage.success(t('component.upload.uploadSuccess'));
+        }
+      })
+      .catch(() => {
+        fileLoadingCore.value = false;
         createMessage.error(t('component.upload.uploadError'));
       });
   } catch (e) {

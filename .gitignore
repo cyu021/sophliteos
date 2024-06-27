@@ -9,3 +9,5 @@ build/release*
 build/sophliteos/data/sophliteos/*
 
 test
+
+dist/

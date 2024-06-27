@@ -63,6 +63,10 @@ export default {
       flash: '初始阶段',
       reboot: '重启阶段',
     },
+    portal: 'Portal',
+    otaDaemon: 'Daemon',
+    adapter: 'Biz Module',
+    core: 'Plugin Module'
   },
   ssmUpdate: {
     serverUsername: '服务器用户名',
