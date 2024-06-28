@@ -153,7 +153,7 @@
   async function handleDelete(id) {
     const device = [id];
     await DelDevice({ device: device });
-    createMessage.success('操作成功');
+    createMessage.success('Delete stream success');
     reload();
   }
   const [DeviceModal, { openModal: OpenVideoModal }] = useModal();
@@ -161,7 +161,7 @@
     OpenVideoModal(true, { record });
   }
   function VideoSuccess() {
-    createMessage.success('操作成功');
+    createMessage.success('Create stream success');
     reload();
   }
   const [mediaModal, { openModal: OpenMediaModal }] = useModal();
@@ -170,7 +170,7 @@
     OpenMediaModal(true, { res });
   }
   function configSuccess() {
-    createMessage.success('操作成功');
+    createMessage.success('Config stream sucess');
     reload();
   }
   async function oneStart() {
@@ -178,7 +178,7 @@
     setLoading(true);
     await DeviceCheck({ deviceIds: deviceIds });
     setLoading(false);
-    createMessage.success('操作成功');
+    createMessage.success('Check stream success');
     reload();
   }
   async function PatrolInsepect(record) {
@@ -186,7 +186,7 @@
     setLoading(true);
     await DeviceCheck({ deviceIds: deviceId });
     setLoading(false);
-    createMessage.success('操作成功');
+    createMessage.success('Check stream success');
     reload();
   }
 </script>

@@ -14,6 +14,9 @@ export default {
     localUpdate: "ローカルアップロード",
     currentVersion: "システムバージョン",
     currentSoftVersion: "ソフトウェアバージョン",
+    currentSoVersion: 'SO version',
+    currentVpsVersion: 'VPS version',
+    currentBmsVersion: 'BMS version',
     currentSsmVersion: "SSMバージョン",
     selectCoreBoard: "コアボードを選択:",
     selectUpgradeCoreBoard: "コアボードを選択してください",
@@ -134,7 +137,9 @@ export default {
     copyAddress: "アドレスをコピー",
     reOpenPage: "このページを再表示",
     dynIpDialogContent: "送信後, デバイスは再起動されます. 変更が成功した後, ルーティングシステムに応じてデバイスのIPを決定してください.",
-    msg: "この SDK バージョンではネットワーク設定の変更は対応されていません"
+    msg: "この SDK バージョンではネットワーク設定の変更は対応されていません",
+    inputPort: 'Please enter port',
+    serverPort: 'ServerPort'
   },
   threshold: {
     fanSpeed: "ファン回転速度",

@@ -14,7 +14,7 @@
             ><slot name="header"></slot>
             <Tooltip>
               <template #title>
-                <div class="w-50">每行显示数量</div
+                <div class="w-50"># per page</div
                 ><Slider
                   id="slider"
                   v-bind="sliderProp"
@@ -24,7 +24,7 @@
               <Button><TableOutlined /></Button>
             </Tooltip>
             <Tooltip @click="fetch">
-              <template #title>刷新</template>
+              <template #title>Fetch</template>
               <Button><RedoOutlined /></Button>
             </Tooltip>
           </div>
@@ -157,7 +157,7 @@ import { t } from '/@/hooks/web/useI18n';
     pageSize,
     current: page,
     total,
-    showTotal: (total) => `总 ${total} 条`,
+    showTotal: (total) => `Total ${total}`,
     onChange: pageChange,
     onShowSizeChange: pageSizeChange,
   });

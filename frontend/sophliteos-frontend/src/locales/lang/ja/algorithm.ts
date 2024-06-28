@@ -8,5 +8,6 @@ export default {
   state_off: "無効化",
   enable: "有効化",
   disable: "無効化",
-  delete: "削除"
+  delete: "削除",
+  version: 'Version',
 };

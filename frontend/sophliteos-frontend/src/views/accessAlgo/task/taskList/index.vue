@@ -3,12 +3,12 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="primary" @click="addTask">{{ t('taskList.taskList.addTask') }}</a-button>
-        <a-button type="primary" @click="algoConfig">{{
+        <!-- <a-button type="primary" @click="algoConfig">{{
           t('taskList.taskList.algoConfigTitle')
         }}</a-button>
         <a-button type="primary" @click="upUrlConfig">{{
           t('taskList.taskList.upUrlConfig')
-        }}</a-button>
+        }}</a-button> -->
       </template>
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">

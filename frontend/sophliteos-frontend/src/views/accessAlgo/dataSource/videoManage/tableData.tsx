@@ -15,12 +15,12 @@ export function getBasicColumns(): BasicColumn[] {
       align: 'center',
       ellipsis: true,
     },
-    {
-      title: t('dataSource.videoManage.mediaServerName'),
-      dataIndex: 'mediaServer',
-      width: 150,
-      align: 'left',
-    },
+    // {
+    //   title: t('dataSource.videoManage.mediaServerName'),
+    //   dataIndex: 'mediaServer',
+    //   width: 150,
+    //   align: 'left',
+    // },
     // {
     //   title: t('dataSource.videoManage.type'),
     //   dataIndex: 'ptzType',

@@ -26,6 +26,9 @@ export default {
     localUpdate: '本地上传',
     currentVersion: '当前系统版本：',
     currentSoftVersion: '当前软件版本：',
+    currentSoVersion: 'SO version',
+    currentVpsVersion: 'VPS version',
+    currentBmsVersion: 'BMS version',
     currentSsmVersion: '当前SSM版本：',
     selectCoreBoard: '选择核心板：',
     selectUpgradeCoreBoard: '请选择核心板',
@@ -186,6 +189,8 @@ export default {
     reOpenPage: '，重新访问本页面',
     dynIpDialogContent: '提交后，设备会重启，修改成功后，请根据路由系统确定本设备IP',
     msg: '该SDK版本不支持修改网络设置',
+    inputPort: 'Please enter port',
+    serverPort: 'ServerPort'
   },
   coreBoardMap: {
     sysMap: '系统映射',

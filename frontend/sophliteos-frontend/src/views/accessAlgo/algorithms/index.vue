@@ -139,6 +139,11 @@
       key: 'annotator_name',
     },
     {
+      title: t('algorithm.version'),
+      dataIndex: 'version',
+      key: 'version',
+    },
+    {
       title: t('algorithm.state'),
       dataIndex: 'sts',
       key: 'sts',
@@ -155,11 +160,17 @@
 
     apis.list().then((res) => {
       dataSource.value = res;
+      // console.info("model list = " + JSON.stringify(res));
+      for(let i=0; i < dataSource.value.length; i++) {
+        let jstr = dataSource.value[i]["flock_config"].replaceAll('\n', '').replaceAll('\\', '');
+        let flockCfg = JSON.parse(jstr);
+        dataSource.value[i]["version"] = flockCfg["version"];
+      }
     });
   }
 
   // 声明表格的数据源
-  const dataSource = ref([]);
+  var dataSource = ref([]);
 
   onMounted(() => {
     refresh()

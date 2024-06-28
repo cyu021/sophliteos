@@ -5,7 +5,7 @@ const currentVersion = () => {
     .get({ url: PATH.currentVersion }, { apiUrl: PATH.prefix, isTransformResponse: false })
     .then((res) => {
       if (res.code == 0) {
-        return res.data.vps;
+        return res.data;
       }
 
       return '-';

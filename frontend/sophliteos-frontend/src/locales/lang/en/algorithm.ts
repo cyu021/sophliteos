@@ -9,5 +9,6 @@ export default {
     enable: 'Enable',
     disable: 'Disable',
     delete: 'Delete',
+    version: 'Version',
 };
   

@@ -23,6 +23,9 @@ export default {
     localUpdate: 'Local Upload',
     currentVersion: 'System Version',
     currentSoftVersion: 'Software Version',
+    currentSoVersion: 'SO version',
+    currentVpsVersion: 'VPS version',
+    currentBmsVersion: 'BMS version',
     currentSsmVersion: 'SSM Version',
     selectCoreBoard: 'Select Core Board:',
     selectUpgradeCoreBoard: 'Please Select Core Board',
@@ -146,6 +149,8 @@ export default {
     dynIpDialogContent:
       'After submission, the device will restart. After the modification is successful, please determine the device IP according to the routing system.',
     msg: 'This SDK version does not support modifying network settings',
+    inputPort: 'Please enter port',
+    serverPort: 'ServerPort'
   },
   threshold: {
     fanSpeed: 'Fan Speed',

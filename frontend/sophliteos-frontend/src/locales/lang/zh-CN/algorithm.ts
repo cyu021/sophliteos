@@ -8,6 +8,7 @@ export default {
   state_off: '未启用',
   enable: '启用',
   disable: '停用',
-  delete: '删除'
+  delete: '删除',
+  version: 'Version',
 };
   

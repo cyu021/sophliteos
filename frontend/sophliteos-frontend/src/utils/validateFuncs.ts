@@ -57,6 +57,21 @@ export const dnsCheck = (_rule, value) => {
   }
 };
 
+export const portCheck = (_rule, value) => {
+  console.log("portCheck on "+value);
+  const portRegex = /[1-6]?[0-9]*[0-5]/;
+  if(!portRegex.test(value)) {
+    return Promise.reject(t('maintenance.newworkSettings.inputPort'));
+  } else {
+    var port2Check = Number(value)
+    if (port2Check < 1 || port2Check > 65535) {
+      return Promise.reject(t('maintenance.newworkSettings.validateWrong'));
+    } else {
+      return Promise.resolve();
+    }
+  }
+};
+
 // multi IP check，
 export const IpDoubleCheck = (_rule, value) => {
   if (value.trim() === '') {

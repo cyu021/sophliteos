@@ -80,6 +80,68 @@
     <!-- <a-tab-pane key="core" :tab="t('maintenance.newworkSettings.core')" disabled>
       {{ t('maintenance.newworkSettings.core') }}
     </a-tab-pane> -->
+    <a-tab-pane key="algoConfig" :tab="t('taskList.taskList.algoConfigTitle')">
+      <a-skeleton :loading="pageLoading" active>
+        <a-form
+          :model="algoConfig"
+          v-bind="formItemLayout"
+          size="large"
+          class="w-1/2 !mx-auto"
+          :rules="algoConfigRules"
+          @finish="submitFormAlgoConfig"
+          v-show="!pageLoading"
+        >
+          <a-form-item
+            v-for="item of formItemListAlgoConfig"
+            :key="item.field"
+            :label="item.label"
+            :name="item.field"
+          >
+            <a-input
+              v-if="item.type === 'input'"
+              v-model:value="algoConfig[item.field]"
+              :placeholder="item.placeholder"
+            />
+          </a-form-item>
+          <a-form-item class="!pl-1/6">
+            <a-button type="primary" html-type="submit" :loading="loading">{{
+              t('sys.btn.confirm')
+            }}</a-button>
+          </a-form-item>
+        </a-form>
+      </a-skeleton>
+    </a-tab-pane>
+    <a-tab-pane key="upUrlConfig" :tab="t('taskList.taskList.upUrlConfig')">
+      <a-skeleton :loading="pageLoading" active>
+        <a-form
+          :model="upUrlConfig"
+          v-bind="formItemLayout"
+          size="large"
+          class="w-1/2 !mx-auto"
+          :rules="upUrlConfigRules"
+          @finish="submitFormUpUrlConfig"
+          v-show="!pageLoading"
+        >
+          <a-form-item
+            v-for="item of formItemListUpUrlConfig"
+            :key="item.field"
+            :label="item.label"
+            :name="item.field"
+          >
+            <a-input
+              v-if="item.type === 'input'"
+              v-model:value="upUrlConfig[item.field]"
+              :placeholder="item.placeholder"
+            />
+          </a-form-item>
+          <a-form-item class="!pl-1/6">
+            <a-button type="primary" html-type="submit" :loading="loading">{{
+              t('sys.btn.confirm')
+            }}</a-button>
+          </a-form-item>
+        </a-form>
+      </a-skeleton>
+    </a-tab-pane>
   </a-tabs>
 </template>
 <script lang="ts" setup>
@@ -311,5 +373,208 @@
     } else {
       init();
     }
+    initAlgoConfig();
+    initUpUrlConfig();
   });
+
+  ////////////////////////////////////////////////
+  
+  import { AlgoConfigSetParams } from '/@/api/maintenance/model/index';
+  import { portCheck } from '/@/utils/validateFuncs';
+  import {
+    getAlgorithm,
+    addAlgorithm
+  } from '/@/api/task/index';
+  
+  const algoConfig: UnwrapRef<AlgoConfigSetParams> = reactive({
+    ip: '',
+    port: '',
+  });
+
+  const algoConfigRules = computed(() => {
+    return {
+          ip: [
+            {
+              required: true,
+              validator: IpCheck,
+              trigger: 'blur',
+            },
+          ],
+          port: [
+            {
+              required: true,
+              validator: portCheck,
+              trigger: 'blur',
+            },
+          ],
+        };
+  });
+
+  const algoConfigMap = {
+    algoConfig,
+  };
+
+  const formItemListAlgoConfig = [
+    {
+      label: t('maintenance.newworkSettings.ip'),
+      field: 'ip',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.newworkSettings.serverPort'),
+      field: 'port',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+  ];
+  
+  const ipDataAlgoConfig = reactive({
+    algoConfig: [],
+  });
+  const initAlgoConfig = async () => {
+    const result = await getAlgorithm();
+    pageLoading.value = false;
+    console.info('initAlgoConfig result='+JSON.stringify(result))
+    if (result) {
+      ipDataAlgoConfig.algoConfig = result;
+      algoConfig.ip = result.ip;
+      algoConfig.port = result.port.toString();
+    }
+  };
+  
+  const submitFormAlgoConfig = () => {
+    loading.value = true;
+    var params = {}
+    params["ip"] = algoConfigMap["algoConfig"].ip;
+    params["port"] = Number(algoConfigMap["algoConfig"].port);
+    console.info('addAlgorithm params = '+JSON.stringify(params));
+    const result = addAlgorithm(params);
+    console.info('addAlgorithm result = '+JSON.stringify(result));
+    if(JSON.stringify(result) === '{}') {
+      createMessage.success('update success');
+    } else {
+      createMessage.error('invalid operation');
+    }
+    loading.value = false;
+    // const content =
+    //   wan.ipType === 1
+    //     ? h('div', { style: { 'text-align': 'center', color: '#000', margin: '30px 0 0 -30px' } }, [
+    //         h('p', {}, t('maintenance.newworkSettings.ipRightOrNotNetword')),
+    //         h('p', {}, t('maintenance.newworkSettings.restartAfterSubmit')),
+    //         h('p', {}, [
+    //           h('span', {}, `${t('maintenance.newworkSettings.useAddress') + wan.ip}:8080 `),
+    //           h(CopyOutlined, {
+    //             title: t('maintenance.newworkSettings.copyAddress'),
+    //             style: { color: '#0960BC', cursor: 'pointer' },
+    //             onClick: copyAddress,
+    //           }),
+    //           h('span', {}, t('maintenance.newworkSettings.reOpenPage')),
+    //         ]),
+    //       ])
+    //     : h(
+    //         'div',
+    //         { style: { 'text-align': 'center', color: '#000', margin: '30px 0 0 -30px' } },
+    //         t('maintenance.newworkSettings.dynIpDialogContent'),
+    //       );
+    // Modal.confirm({
+    //   title: t('sys.tips'),
+    //   icon: h(ExclamationCircleOutlined),
+    //   width: 600,
+    //   content,
+    //   onOk() {
+    //     try {
+    //       loading.value = true;
+    //       const params = {
+    //         ...netMap[activeKey.value],
+    //       };
+    //       ipSet(params)
+    //         .then((res) => {
+    //           createMessage.success(res.msg);
+    //         })
+    //         .catch(() => {
+    //           createMessage.error('不支持修改ip');
+    //         });
+
+    //       // console.log(params);
+    //     } catch (error) {
+    //     } finally {
+    //       loading.value = false;
+    //     }
+    //   },
+    //   onCancel() {},
+    // });
+  };
+
+  // onMounted(() => {
+  //   initAlgoConfig();
+  // });
+
+  /////////////////////////////////////////////////////
+
+  import { UpUrlConfigSetParams } from '/@/api/maintenance/model/index';
+  import {
+    getUpUrl,
+    addUpUrl
+  } from '/@/api/task/index';
+
+  import { upUrlParams } from '/@/api/task/model/index';
+  
+  const upUrlConfig: UnwrapRef<UpUrlConfigSetParams> = reactive({
+    ip: ''
+  });
+
+const upUrlConfigRules = computed(() => {
+  return {
+        ip: [
+          {
+            required: true,
+            validator: IpCheck,
+            trigger: 'blur',
+          },
+        ],
+      };
+});
+
+const upUrlConfigMap = {
+  upUrlConfig,
+};
+
+const formItemListUpUrlConfig = [
+  {
+    label: t('maintenance.newworkSettings.ip'),
+    field: 'ip',
+    placeholder: t('sys.form.placeholder'),
+    type: 'input',
+  },
+];
+  
+  const ipDataUpUrlConfig = reactive({
+    upUrlConfig: [],
+  });
+  const initUpUrlConfig = async () => {
+    const result = await getUpUrl();
+    pageLoading.value = false;
+    console.info('initUpUrlConfig result='+JSON.stringify(result))
+    if (result) {
+      ipDataUpUrlConfig.upUrlConfig['ip'] = result;
+      upUrlConfig.ip = ipDataUpUrlConfig.upUrlConfig['ip'];
+    }
+  };
+  
+  const submitFormUpUrlConfig = () => {
+    loading.value = true;
+    var params : upUrlParams = { ip: ''} ;
+    params.ip = upUrlConfigMap["upUrlConfig"].ip;
+    console.info('addUpUrl params = '+JSON.stringify(params));
+    const result = addUpUrl(params);
+    console.info('addUpUrl result = '+JSON.stringify(result));
+    if(JSON.stringify(result) === '{}') {
+      createMessage.success('update success');
+    } else {
+      createMessage.error('invalid operation');
+    }
+    loading.value = false;
+};
+
 </script>

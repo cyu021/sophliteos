@@ -14,6 +14,9 @@ export default {
     localUpdate: "로컬 업데이트",
     currentVersion: "시스템 버전",
     currentSoftVersion: "소프트웨어 버전",
+    currentSoVersion: 'SO version',
+    currentVpsVersion: 'VPS version',
+    currentBmsVersion: 'BMS version',
     currentSsmVersion: "SSM 버전",
     selectCoreBoard: "코어 보드 선택",
     selectUpgradeCoreBoard: "코어 보드를 선택해주세요.",
@@ -134,7 +137,9 @@ export default {
     copyAddress: "주소 복사",
     reOpenPage: ", 해당 페이지 재방문",
     dynIpDialogContent: "제출 후 장치가 다시 시작됩니다. 수정이 성공한 후 라우팅 시스템에 따라 장치 IP를 결정하십시오.",
-    msg: "이 SDK 버전은 네트워크 설정 수정을 지원하지 않습니다."
+    msg: "이 SDK 버전은 네트워크 설정 수정을 지원하지 않습니다.",
+    inputPort: 'Please enter port',
+    serverPort: 'ServerPort'
   },
   threshold: {
     fanSpeed: "팬 속도",

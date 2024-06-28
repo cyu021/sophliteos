@@ -7,6 +7,15 @@ export interface IpSetParams {
   dns: string; // dns
 }
 
+export interface AlgoConfigSetParams {
+  ip: string; // ip地址
+  port: string; // port
+}
+
+export interface UpUrlConfigSetParams {
+  ip: string; // ip地址
+}
+
 export interface AlarmParams {
   fanSpeed: number; // 风扇转速
   boardTemperature: number; // 主板温度

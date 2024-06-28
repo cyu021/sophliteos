@@ -8,6 +8,7 @@ export default {
   state_off: '비활성화',
   enable: '활성화',
   disable: '비활성화',
-  delete: '삭제'
+  delete: '삭제',
+  version: 'Version',
 };
   

@@ -122,6 +122,15 @@
                   </a-form-item>
 
                   <a-form-item
+                    :label="t('maintenance.systemUpdate.currentSoVersion')"
+                    :rules="[{ required: true }]"
+                  >
+                    <span>{{
+                      currentSoVersionAdapter
+                    }}</span>
+                  </a-form-item>
+
+                  <a-form-item
                     name="file"
                     required
                     :label="t('maintenance.systemUpdate.selectFile')"
@@ -199,11 +208,20 @@
                   </a-form-item>
 
                   <a-form-item
-                    :label="t('maintenance.systemUpdate.currentSoftVersion')"
+                    :label="t('maintenance.systemUpdate.currentVpsVersion')"
                     :rules="[{ required: true }]"
                   >
                     <span>{{
-                      currentVersionCore
+                      currentVpsVersionCore
+                    }}</span>
+                  </a-form-item>
+
+                  <a-form-item
+                    :label="t('maintenance.systemUpdate.currentBmsVersion')"
+                    :rules="[{ required: true }]"
+                  >
+                    <span>{{
+                      currentBmsVersionCore
                     }}</span>
                   </a-form-item>
 
@@ -418,6 +436,7 @@ const uploadFileDaemon = async () => {
 import apisAdapter from './adapterUpdate/apis.js';
 
 const currentVersionAdapter = ref<string>('');
+const currentSoVersionAdapter = ref<string>('');
 
 onMounted(async () => {
   console.log('on mounted')
@@ -428,7 +447,8 @@ onMounted(async () => {
 
 const fetchVersionAdapter = async () => {
   const version = await apisAdapter.currentVersion();
-  currentVersionAdapter.value = version;
+  currentVersionAdapter.value = version["adapter"];
+  currentSoVersionAdapter.value = version["adapter-lib"];
 }
 
 interface FormState {
@@ -524,7 +544,8 @@ const uploadFileAdapter = async () => {
 
 import apisCore from './coreUpdate/apis.js';
 
-const currentVersionCore = ref<string>('');
+const currentVpsVersionCore = ref<string>('');
+const currentBmsVersionCore = ref<string>('');
 
 onMounted(async () => {
   console.log('on mounted')
@@ -535,7 +556,8 @@ onMounted(async () => {
 
 const fetchVersionCore = async () => {
   const version = await apisCore.currentVersion();
-  currentVersionCore.value = version;
+  currentVpsVersionCore.value = version["vps"];
+  currentBmsVersionCore.value = version["bms"];
 }
 
 interface FormState {
