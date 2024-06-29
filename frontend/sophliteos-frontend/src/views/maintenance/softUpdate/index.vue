@@ -477,7 +477,7 @@ const beforeUploadAdapter = (file) => {
 
 async function handleUploadAdapter() {
   if (fileListAdapter.value.length <= 0) {
-    createMessage.error('请先选择文件');
+    createMessage.error('Select adapter-ota.zip first');
   } else {
     await uploadFileAdapter();
   }
@@ -486,7 +486,7 @@ async function handleUploadAdapter() {
 const handleRestartAdapter = async () => {
   const res = await apisAdapter.restart();
   if (res.code === 0) {
-    createMessage.success('重启成功');
+    createMessage.success('Restart success');
   } else {
     createMessage.error(res.msg);
   }
@@ -496,8 +496,9 @@ const handleUpgradeAdapter = async () => {
   console.log('handle upgrade')
 
   const res = await apisAdapter.upgrade();
+  console.info("adapter upgrade res = " + JSON.stringify(res));
   if (res.code === 0) {
-    createMessage.success('升级成功');
+    createMessage.success('Upgrade success');
     await fetchVersionAdapter();
   } else {
     createMessage.error(res.msg);
