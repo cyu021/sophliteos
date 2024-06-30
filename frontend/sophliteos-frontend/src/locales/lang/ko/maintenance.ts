@@ -139,7 +139,9 @@ export default {
     dynIpDialogContent: "제출 후 장치가 다시 시작됩니다. 수정이 성공한 후 라우팅 시스템에 따라 장치 IP를 결정하십시오.",
     msg: "이 SDK 버전은 네트워크 설정 수정을 지원하지 않습니다.",
     inputPort: 'Please enter port',
-    serverPort: 'ServerPort'
+    serverPort: 'ServerPort',
+    protocol: "Protocol",
+    inputProtocol: "Please enter one of: http, https"
   },
   threshold: {
     fanSpeed: "팬 속도",

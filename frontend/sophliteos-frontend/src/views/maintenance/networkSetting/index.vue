@@ -520,16 +520,34 @@
 
   import { upUrlParams } from '/@/api/task/model/index';
   
+  import { protocolCheck } from '/@/utils/validateFuncs';
+  
   const upUrlConfig: UnwrapRef<UpUrlConfigSetParams> = reactive({
-    ip: ''
+    ip: '',
+    port: '',
+    protocol: ''
   });
 
 const upUrlConfigRules = computed(() => {
   return {
+        protocol: [
+          {
+            required: true,
+            validator: protocolCheck,
+            trigger: 'blur',
+          },
+        ],
         ip: [
           {
             required: true,
             validator: IpCheck,
+            trigger: 'blur',
+          },
+        ],
+        port: [
+          {
+            required: true,
+            validator: portCheck,
             trigger: 'blur',
           },
         ],
@@ -542,8 +560,20 @@ const upUrlConfigMap = {
 
 const formItemListUpUrlConfig = [
   {
+    label: t('maintenance.newworkSettings.protocol'),
+    field: 'protocol',
+    placeholder: t('sys.form.placeholder'),
+    type: 'input',
+  },
+  {
     label: t('maintenance.newworkSettings.ip'),
     field: 'ip',
+    placeholder: t('sys.form.placeholder'),
+    type: 'input',
+  },
+  {
+    label: t('maintenance.newworkSettings.serverPort'),
+    field: 'port',
     placeholder: t('sys.form.placeholder'),
     type: 'input',
   },
@@ -557,15 +587,23 @@ const formItemListUpUrlConfig = [
     pageLoading.value = false;
     console.info('initUpUrlConfig result='+JSON.stringify(result))
     if (result) {
-      ipDataUpUrlConfig.upUrlConfig['ip'] = result;
+      let resultEles = result.split('://');
+      let resultEles2 = resultEles[1].split(':');
+      ipDataUpUrlConfig.upUrlConfig['protocol'] = resultEles[0];
+      ipDataUpUrlConfig.upUrlConfig['ip'] = resultEles2[0];
+      ipDataUpUrlConfig.upUrlConfig['port'] = resultEles2[1];
       upUrlConfig.ip = ipDataUpUrlConfig.upUrlConfig['ip'];
+      upUrlConfig.port = ipDataUpUrlConfig.upUrlConfig['port'];
+      upUrlConfig.protocol = ipDataUpUrlConfig.upUrlConfig['protocol'];
     }
   };
   
   const submitFormUpUrlConfig = () => {
     loading.value = true;
-    var params : upUrlParams = { ip: ''} ;
+    var params : upUrlParams = { protocol: '', ip: '', port: ''} ;
+    params.protocol = upUrlConfigMap["upUrlConfig"].protocol;
     params.ip = upUrlConfigMap["upUrlConfig"].ip;
+    params.port = upUrlConfigMap["upUrlConfig"].port;
     console.info('addUpUrl params = '+JSON.stringify(params));
     const result = addUpUrl(params);
     console.info('addUpUrl result = '+JSON.stringify(result));

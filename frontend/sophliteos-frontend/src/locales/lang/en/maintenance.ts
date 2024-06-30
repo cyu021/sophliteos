@@ -150,7 +150,9 @@ export default {
       'After submission, the device will restart. After the modification is successful, please determine the device IP according to the routing system.',
     msg: 'This SDK version does not support modifying network settings',
     inputPort: 'Please enter port',
-    serverPort: 'ServerPort'
+    serverPort: 'ServerPort',
+    protocol: "Protocol",
+    inputProtocol: "Please enter one of: http, https"
   },
   threshold: {
     fanSpeed: 'Fan Speed',

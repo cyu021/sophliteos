@@ -57,6 +57,16 @@ export const dnsCheck = (_rule, value) => {
   }
 };
 
+export const protocolCheck = (_rule, value) => {
+  console.log("protocolCheck on "+value);
+  const protocolRegex = /^http[s]?$/;
+  if(!protocolRegex.test(value)) {
+    return Promise.reject(t('maintenance.newworkSettings.inputProtocol'));
+  } else {
+    return Promise.resolve();
+  }
+};
+
 export const portCheck = (_rule, value) => {
   console.log("portCheck on "+value);
   const portRegex = /[1-6]?[0-9]*[0-5]/;

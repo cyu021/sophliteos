@@ -14,6 +14,8 @@ export interface AlgoConfigSetParams {
 
 export interface UpUrlConfigSetParams {
   ip: string; // ip地址
+  port: string;
+  protocol: string; //http|https
 }
 
 export interface AlarmParams {
