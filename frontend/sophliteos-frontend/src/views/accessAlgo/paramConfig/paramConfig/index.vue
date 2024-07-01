@@ -83,9 +83,10 @@
                 <video autoplay class="w-full h-full" ref="video" controls></video>
                 <canvas id="canvasId" v-if="drawRegion || drawLine"></canvas>
               </div>
-              <div
+              <Space
                 class="flex justify-between pb-1 video"
                 style="background-color: #f7faff; border: 1px solid #f7faff; width: 100%"
+                wrap
               >
                 <Space>
                   <Button :type="drawRegion ? 'primary' : 'default'" @click="drawPolygon">{{
@@ -95,7 +96,7 @@
                     t('paramConfig.draw.line')
                   }}</Button>
                 </Space>
-                <Space v-if="drawRegion || drawLine">
+                <Space v-if="drawRegion || drawLine" wrap>
                   <Tooltip
                     :title="
                       drawRegion ? t('paramConfig.draw.regionTip') : t('paramConfig.draw.lineTip')
@@ -130,12 +131,12 @@
                     <template #content>
                       <div>
                         <div v-if="pylogonObject.length > 0">
-                          0: 
+                          ROI 0: 
                           <Radio.Group :options="modeOptions" v-model:value="roiMode[0]" />
                         </div>
                         <div v-if="pylogonObject.length > 1">
                           <Divider />
-                          1:
+                          ROI 1:
                           <Radio.Group :options="modeOptions" v-model:value="roiMode[1]" />
                         </div>
                       </div>
@@ -147,12 +148,12 @@
                     <template #content>
                       <div>
                         <div v-if="lineObject.length > 0">
-                          0: 
+                          Line 0: 
                           <Radio.Group :options="modeOptions" v-model:value="crossLineMode[0]" />
                         </div>
                         <div v-if="lineObject.length > 1">
                           <Divider />
-                          1:
+                          Line 1:
                           <Radio.Group :options="modeOptions" v-model:value="crossLineMode[1]" />
                         </div>
                       </div>
@@ -164,7 +165,7 @@
                     t('paramConfig.draw.clear')
                   }}</Button>
                 </Space>
-              </div>
+              </Space>
             </div>
           </div>
         </div>
@@ -781,7 +782,7 @@
 
         const index = tmpObject.length - 1;
         var point = pylogonPoints.value[0];
-        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+        let text = new fabric.Text('ROI ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
         canvas.value.add(text);
 
         clearDraftDraw();
@@ -803,7 +804,7 @@
 
         const index = lineTmpObject.length - 1;
         var point = pylogonPoints.value[0];
-        let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+        let text = new fabric.Text('Line ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
         canvas.value.add(text);
 
         canvas.value.add(lines);
@@ -878,7 +879,7 @@
 
       const index = tmpObject.length - 1;
       var point = pylogonPoints.value[0];
-      let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+      let text = new fabric.Text('ROI ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
       canvas.value.add(text);
 
       clearDraftDraw();
@@ -971,7 +972,7 @@
             canvas.value.add(element);
 
             const point = element.get('points')[0];
-            let text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+            let text = new fabric.Text('ROI ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
             canvas.value.add(text);
           });
         }
@@ -992,7 +993,7 @@
             canvas.value.add(element);
 
             const point = lineSubmitPoint.value[index][0];
-            const text = new fabric.Text(index + '', { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+            const text = new fabric.Text('Line ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
             canvas.value.add(text);
           });
         }
