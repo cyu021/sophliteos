@@ -23,7 +23,7 @@
         <a-p v-else
           >{{ t('alarmRetrieval.alarm.totalNumber') + ': 0' + t('alarmRetrieval.alarm.images') }}
         </a-p>
-        <a-p style="margin-left: 20px" v-if="maxSize"
+        <!-- <a-p style="margin-left: 20px" v-if="maxSize"
           >{{
             t('alarmRetrieval.alarm.useSpace') +
             ' : ' +
@@ -33,13 +33,13 @@
             ' : ' +
             maxSize
           }}
-        </a-p>
-        <a-button
+        </a-p> -->
+        <!-- <a-button
           v-if="usedSize"
           style="margin-left: 20px; color: blue; outline: none; border: none"
           @click="settingSpace()"
           >[{{ t('alarmRetrieval.alarm.setSpace') }}]
-        </a-button>
+        </a-button> -->
       </div>
       <div style="width: 100%">
         <div style="min-height: calc(100vh - 325px); max-height: max-content">

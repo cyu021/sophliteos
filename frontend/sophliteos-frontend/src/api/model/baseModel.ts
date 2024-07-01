@@ -20,6 +20,12 @@ export interface BasicResponse<T> {
   result?: T;
 }
 
+export interface BasicResponseCap<T> {
+  Code: number;
+  Msg: string;
+  result?: T;
+}
+
 export interface VideoApiResponse {
   code: number;
   msg: string;

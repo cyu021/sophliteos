@@ -190,7 +190,9 @@ export default {
     dynIpDialogContent: '提交后，设备会重启，修改成功后，请根据路由系统确定本设备IP',
     msg: '该SDK版本不支持修改网络设置',
     inputPort: 'Please enter port',
-    serverPort: 'ServerPort'
+    serverPort: 'ServerPort',
+    protocol: "Protocol",
+    inputProtocol: "Please enter one of: http, https"
   },
   coreBoardMap: {
     sysMap: '系统映射',

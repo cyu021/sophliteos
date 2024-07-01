@@ -1,4 +1,4 @@
-import { BasicResponse } from '../../model/baseModel';
+import { BasicResponse, BasicResponseCap } from '../../model/baseModel';
 
 export interface MediaServerParams {
   pageNo: number;
@@ -12,11 +12,13 @@ export interface AbilityItem {
 
 export interface upUrlParams {
   ip: string;
+  port: string;
+  protocol: string;
 }
 
 /**
  * @description: Request list return value
  */
 export type AbilityListGetResultModel = BasicResponse<Array<AbilityItem>>;
-export type UpUrlGetResultModal = BasicResponse<string>;
-export type UpUrlAddResultModal = BasicResponse<any>;
+export type UpUrlGetResultModal = BasicResponseCap<string>;
+export type UpUrlAddResultModal = BasicResponseCap<any>;

@@ -64,8 +64,14 @@ export const getUpUrl = () =>
       url: Api.getUpUrl,
     },
     {
-      apiUrl: 'algorithm',
+      apiUrl: 'algorithm', isTransformResponse: false
     },
+  ).then((res) => {
+    if (res.Code == 0) {
+      return res.result;
+    }
+    return 'http://127.0.0.1:8081';
+  }
   );
 
 export const addUpUrl = (params: upUrlParams) =>
@@ -75,6 +81,6 @@ export const addUpUrl = (params: upUrlParams) =>
       params,
     },
     {
-      apiUrl: 'algorithm',
+      apiUrl: 'algorithm', isTransformResponse: false
     },
   );
