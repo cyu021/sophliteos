@@ -48,8 +48,8 @@ export default {
   alarmDetail: '告警详情',
   coreBoardMap: '核心板端口映射',
   logDownload: '日志下载',
-  algoModel: 'Analysis Model',
-  alarmThreshold: 'Resource Alarm',
+  algoModel: '模型管理',
+  alarmThreshold: '设备设置',
   content: {
     sysContent: '系统OTA升级,适用于版本升级,不支持降级和跨版本升级,否则可能导致系统损坏。',
     Content: `系统SDK OTA升级，不支持跨3.0版本升级,否则可能导致系统损坏。  
