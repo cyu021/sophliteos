@@ -85,7 +85,7 @@
                   max-width: 100%;
                   max-height: 100%;
                 "
-                :src="`data:image/png;base64,${item.ImageBase64}`"
+                :src="`data:image/png;base64,${item.SceneImageBase64}`"
               />
             </div>
             <div
@@ -227,6 +227,7 @@ const handleChange = (value) => {
             list.forEach((item) => {
               item.SrcID = element.SrcID;
               item.TaskID = element.TaskID;
+              item.SceneImageBase64 = element.SceneImageBase64;
             })
             newList = newList.concat(list);
           }          
