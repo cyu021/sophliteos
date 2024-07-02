@@ -25,7 +25,6 @@
     "btn_delete": "删除",
     "btn_edit": "编辑",
     "btn_add": "新增",
-    "btn_save": "保存",
     "btn_action": "操作",
     "btn_play": "视频预览",
     "btn_inspect": "巡检"
@@ -74,9 +73,9 @@
     "settingFixedLeft": "固定到左侧",
     "settingFixedRight": "固定到右侧",
     "settingFullScreen": "全屏",
+    "index": "序号",
     "start": "启用",
     "stop": "停用",
-    "index": "序号",
     "total": "共 {total} 条数据"
   },
   "time": {
@@ -122,9 +121,7 @@
     "uploadError": "上传失败",
     "uploading": "上传中",
     "uploadWait": "请等待文件上传结束后操作",
-    "reUploadFailed": "重新上传失败文件",
-    "updating": "升级中",
-    "startUpdate": "开始升级"
+    "reUploadFailed": "重新上传失败文件"
   },
   "verify": {
     "error": "验证失败！",
