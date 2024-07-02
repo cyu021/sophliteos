@@ -10,7 +10,8 @@
     "customAlgoDownloadLinks": "定制算法下载链接：",
     "createDate": "创建日期",
     "download": "下载",
-    "purge": "移除"
+    "purge": "移除",
+    "action": "操作"
   },
   "systemUpdate": {
     "uploadFiles": "上传文件",

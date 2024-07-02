@@ -10,7 +10,8 @@
     "customAlgoDownloadLinks": "Custom Algorithm Download Links:",
     "createDate": "Create Date",
     "download": "Download",
-    "purge": "Purge"
+    "purge": "Purge",
+    "action": "Action"
   },
   "systemUpdate": {
     "uploadFiles": "Upload Files",
