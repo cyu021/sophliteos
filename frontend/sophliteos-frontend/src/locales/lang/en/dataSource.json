@@ -1,0 +1,42 @@
+{
+  "mediaServers": {
+    "filter": {
+      "name": "Function Name:",
+      "people": "Operator:",
+      "ip": "Operation IP:",
+      "type": "Operation Type:"
+    },
+    "title": "Streaming Services",
+    "name": "Name",
+    "serverIp": "IP",
+    "serverPort": "Server Port",
+    "remark": "Remark",
+    "actions": "Actions",
+    "edit": "Edit Streaming Services",
+    "add": "Add Streaming Services",
+    "configService": "Streaming Media Configuration",
+    "save": "Save",
+    "platform": "Streaming Media Management Platform"
+  },
+  "videoManage": {
+    "livePreview": "Live Preview",
+    "deviceName": "Stream Name",
+    "mediaServerName": "Streaming Services",
+    "type": "Device Type",
+    "protocol": "Stream Protocol",
+    "type2": "Video Recording Devices",
+    "isEdge": "Edge Devices",
+    "transmit": "Forward or Not",
+    "mediaPull": "Pull Flow State",
+    "isNeedDetect": "Inspection Status",
+    "encodeFormat": "Encoding Format",
+    "resolution": "Resolution",
+    "addDevice": "Add Stream (1920x1080)",
+    "editDevice": "Edit Equipment",
+    "allCheck": "Stream Check",
+    "status": "Status",
+    "flowType": "Protocol Type",
+    "deviceType": "Device Name",
+    "RTSP": "RTSP Address"
+  }
+}

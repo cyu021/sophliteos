@@ -13,6 +13,7 @@ export function setLoadLocalePool(cb: (loadLocalePool: LocaleType[]) => void) {
 }
 
 export function genMessage(langs: Record<string, Record<string, any>>, prefix = 'lang') {
+  console.log('gen message', langs);
   const obj: Recordable = {};
 
   Object.keys(langs).forEach((key) => {
@@ -35,3 +36,7 @@ export function genMessage(langs: Record<string, Record<string, any>>, prefix = 
   });
   return obj;
 }
+
+// export function genMessageFromJSON(langs) {
+
+// }

@@ -1,0 +1,17 @@
+{
+  "taskList": {
+    "id": "Task Name",
+    "videoSource": "Stream Source",
+    "algoInfo": "Algorithm Configuration Info",
+    "status": "Task Status",
+    "addTask": "Add Task",
+    "editTask": "Edit Task",
+    "message": "Due to the need to consume hardware resources for additional algorithms, please set the number of task paths and algorithms appropriately.",
+    "algoConfigTitle": "Algorithm Service Endpoint",
+    "upUrlConfig": "Notification Push Endpoint",
+    "upUrl": "Endpoint URL Address",
+    "on": "Running",
+    "off": "Stopped",
+    "algorithmConfig": "Algorithm Service Endpoint"
+  }
+}

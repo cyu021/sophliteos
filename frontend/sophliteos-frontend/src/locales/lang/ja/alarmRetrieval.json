@@ -1,0 +1,29 @@
+{
+  "alarm": {
+    "channel": "チャンネル選択",
+    "search": "アラームタイプ",
+    "startTime": "開始時間",
+    "endTime": "終了時間",
+    "totalNumber": "総アラーム数",
+    "images": "画像",
+    "setSpace": "最大スペースを設定",
+    "setting": "現在の設定",
+    "notice": "重要事項: 使用されたスペースが設定した最大スペースを超えると、システムは自動的に最も古いデータを削除し、それを復元することはできません。ご注意ください。",
+    "alarmNotice": "設定した最大容量は、現在使用しているストレージ容量よりも少ないです。設定後、初期のデータは自動的に削除されます。よろしいですか？",
+    "saveSetting": "設定を保存",
+    "useSpace": "使用済みスペース",
+    "maxSpace": "最大スペース",
+    "alarmDetail": "アラーム詳細",
+    "detailInfo": "詳細情報",
+    "alarmType": "アラームタイプ",
+    "captureTime": "キャプチャ時間",
+    "confidenceLevel": "信頼度レベル",
+    "total": "合計",
+    "inputMsg": "整数を入力してください",
+    "blank": "該当なし",
+    "notKnown": "不明",
+    "taskId": "タスクID",
+    "srcId": "ビデオソースID",
+    "taskSelect": "タスク選択"
+  }
+}

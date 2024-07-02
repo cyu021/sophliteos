@@ -1,0 +1,51 @@
+{
+  "operate": {
+    "filter": {
+      "name": "Name:",
+      "people": "Operator:",
+      "ip": "IP:",
+      "type": "Type:"
+    },
+    "title": "Operation Logs",
+    "id": "ID",
+    "type1": "Type",
+    "funcName": "Name",
+    "people": "Operator",
+    "ip": "IP",
+    "time": "Time",
+    "content": "Content",
+    "operateType": {
+      "login": "Login",
+      "logout": "Logout",
+      "alarm": "Alarm",
+      "basic": "Basic Setting",
+      "ip": "IP Setting",
+      "controlUpgrade": "Control Upgrade",
+      "coreUpgrade": "Core Upgrade",
+      "systemUpdate": "System Update",
+      "rollback": "Rollback"
+    }
+  },
+  "warning": {
+    "title": "Resource Alarm List",
+    "type": "Resource Type:",
+    "module": "Module:",
+    "id": "ID",
+    "type1": "Type",
+    "module1": "Module",
+    "time": "Time",
+    "description": "Description",
+    "code": "Code",
+    "deviceSn": "SN"
+  },
+  "logloading": {
+    "sysLog": "System Log Export",
+    "loading": "Export"
+  },
+  "cpu": "CPU",
+  "memory": "Memory",
+  "disk": "Disk",
+  "netCard": "Network Card",
+  "board": "Board",
+  "chip": "Chip"
+}

@@ -1,0 +1,130 @@
+{
+  "api": {
+    "operationFailed": "Operation Failed",
+    "errorTip": "Error Tip",
+    "errorMessage": "The operation failed. The system is abnormal!",
+    "timeoutMessage": "Login timed out. Please log in again!",
+    "apiTimeoutMessage": "The interface request timed out. Please refresh the page and try again!",
+    "apiRequestFailed": "The interface request failed. Please try again later!",
+    "networkException": "Network Anomaly",
+    "networkExceptionMsg": "Please check if your network connection is normal! The network is abnormal.",
+
+    "errMsg401": "The user does not have permission (token, username, password error)!",
+    "errMsg403": "The user is authorized, but access is forbidden!",
+    "errMsg404": "Network request error. The resource was not found!",
+    "errMsg405": "Network request error. Request method not allowed!",
+    "errMsg408": "Network request timed out!",
+    "errMsg500": "Server error. Please contact the administrator!",
+    "errMsg501": "The network is not implemented!",
+    "errMsg502": "Network Error!",
+    "errMsg503": "The service is unavailable. The server is temporarily overloaded or maintained!",
+    "errMsg504": "Network timeout!",
+    "errMsg505": "The HTTP version does not support the request!"
+  },
+  "app": {
+    "logoutTip": "Reminder",
+    "logoutMessage": "Confirm to exit the system?",
+    "menuLoading": "Menu Loading..."
+  },
+  "errorLog": {
+    "tableTitle": "Error Log List",
+    "tableColumnType": "Type",
+    "tableColumnDate": "Time",
+    "tableColumnFile": "File",
+    "tableColumnMsg": "Error Message",
+    "tableColumnStackMsg": "Stack Info",
+
+    "tableActionDesc": "Details",
+
+    "modalTitle": "Error Details",
+
+    "fireVueError": "Fire Vue Error",
+    "fireResourceError": "Fire Resource Error",
+    "fireAjaxError": "Fire Ajax Error",
+
+    "enableMessage": "Only effective when useErrorHandle=true in `/src/settings/projectSetting.ts`."
+  },
+  "exception": {
+    "backLogin": "Back to Login",
+    "backHome": "Back to Home",
+    "subTitle403": "Sorry, you don't have access to this page.",
+    "subTitle404": "Sorry, the page you visited does not exist.",
+    "subTitle500": "Sorry, the server is reporting an error.",
+    "noDataTitle": "No Data on the Current Page.",
+    "networkErrorTitle": "Network Error",
+    "networkErrorSubTitle": "Sorry, your network connection has been disconnected. Please check your network!"
+  },
+  "lock": {
+    "unlock": "Click to Unlock",
+    "alert": "Lock Screen Password Error",
+    "backToLogin": "Back to Login",
+    "entry": "Enter the System",
+    "placeholder": "Please enter the lock screen password or user password"
+  },
+  "login": {
+    "backSignIn": "Back to Sign In",
+    "mobileSignInFormTitle": "Mobile Sign In",
+    "qrSignInFormTitle": "QR Code Sign In",
+    "signInFormTitle": "Sign In",
+    "signUpFormTitle": "Sign Up",
+    "forgetFormTitle": "Reset Password",
+
+    "signInTitle": "GENIE",
+    "signInDesc": "Enter your personal details and get started!",
+    "policy": "I agree to the xxx Privacy Policy",
+    "scanSign": "Scanning the code to complete the login",
+
+    "loginButton": "Sign In",
+    "registerButton": "Sign Up",
+    "rememberMe": "Remember Me",
+    "forgetPassword": "Forget Password?",
+    "otherSignIn": "Sign In With",
+
+    "loginSuccessTitle": "Login Successful",
+    "loginSuccessDesc": "Welcome Back",
+
+    "accountPlaceholder": "Please input username",
+    "passwordPlaceholder": "Please input password",
+    "smsPlaceholder": "Please input SMS code",
+    "mobilePlaceholder": "Please input mobile",
+    "policyPlaceholder": "Register after checking",
+    "diffPwd": "The two passwords are inconsistent",
+
+    "userName": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "email": "Email",
+    "smsCode": "SMS Code",
+    "mobile": "Mobile"
+  },
+  "btn": {
+    "confirm": "Confirm",
+    "clear": "Clear",
+    "reset": "Reset"
+  },
+  "form": {
+    "placeholder": "Please Enter",
+    "phNumber": "Please Fill in an Integer from 0 to 100"
+  },
+  "table": {
+    "selectAll": "Check All",
+    "selected": "Selected",
+    "records": "records (cross-page)",
+    "unSelect": "No Item Selected",
+    "getTableData": "Get Table Data",
+    "startTime": "Start Time",
+    "endTime": "End Time"
+  },
+  "boardStatus": {
+    "error": "Failure",
+    "running": "Running"
+  },
+  "uploadFile": {
+    "btnText": "Upload File: ",
+    "update": "Upgrade",
+    "upload": "Upload",
+    "upPackage": "Upgrade Package"
+  },
+  "copySuccess": "Copy Success",
+  "tips": "Warning"
+}
