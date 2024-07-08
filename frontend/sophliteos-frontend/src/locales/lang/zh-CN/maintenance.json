@@ -3,6 +3,12 @@
   "sysSoftUpdate": "系统软件升级",
   "updatedFiles": "文件已就绪",
   "upgradePackage": "已上传升级包",
+  "rotateConfig": {
+    "rotateConfig": "Rotate Config",
+    "inputRotateRetention": "Must between 1 and 180",
+    "record": "Record",
+    "serviceLog": "ServiceLog"
+  },
   "prepSpringZip": {
     "selectModel": "选择模型文件",
     "customAlgoName": "定制算法名称",

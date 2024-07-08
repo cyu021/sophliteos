@@ -19,6 +19,8 @@ enum Api {
   getAbilites = '/task/abilities',
   getUpUrl = '/alarm/upload/get',
   addUpUrl = '/alarm/upload/mod',
+  getRotateCfg = '/rotate/config/get',
+  modRotateCfg = '/rotate/config/mod'
 }
 
 export function getTaskList(params?: MediaServerParams) {
@@ -84,3 +86,10 @@ export const addUpUrl = (params: upUrlParams) =>
       apiUrl: 'algorithm', isTransformResponse: false
     },
   );
+
+  export function getRotateCfg() {
+    return defHttp.get({ url: Api.getRotateCfg }, { apiUrl: '/algorithm', isTransformResponse: false });
+  }
+  export function modRotateCfg(params: any) {
+    return defHttp.post({ url: Api.modRotateCfg, params }, { apiUrl: '/algorithm', isTransformResponse: false });
+  }

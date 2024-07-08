@@ -67,6 +67,15 @@ export const protocolCheck = (_rule, value) => {
   }
 };
 
+export const rotateRetentionCheck = (_rule, value) => {
+  console.log("rotateRetentionCheck on "+value);
+  if(value < 1 || value > 180) {
+    return Promise.reject(t('maintenance.rotateConfig.inputRotateRetention'));
+  } else {
+    return Promise.resolve();
+  }
+};
+
 export const portCheck = (_rule, value) => {
   console.log("portCheck on "+value);
   const portRegex = /[1-6]?[0-9]*[0-5]/;

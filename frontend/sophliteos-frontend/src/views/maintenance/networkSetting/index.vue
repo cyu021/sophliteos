@@ -142,6 +142,37 @@
         </a-form>
       </a-skeleton>
     </a-tab-pane>
+    <a-tab-pane key="rotateConfig" :tab="t('maintenance.rotateConfig.rotateConfig')">
+      <a-skeleton :loading="pageLoading" active>
+        <a-form
+          :model="rotateCfgConfig"
+          v-bind="formItemLayout"
+          size="large"
+          class="w-1/2 !mx-auto"
+          :rules="rotateCfgConfigRules"
+          @finish="submitFormRotateCfgConfig"
+          v-show="!pageLoading"
+        >
+          <a-form-item
+            v-for="item of formItemListRotateCfgConfig"
+            :key="item.field"
+            :label="item.label"
+            :name="item.field"
+          >
+            <a-input
+              v-if="item.type === 'input'"
+              v-model:value="rotateCfgConfig[item.field]"
+              :placeholder="item.placeholder"
+            />
+          </a-form-item>
+          <a-form-item class="!pl-1/6">
+            <a-button type="primary" html-type="submit" :loading="loading">{{
+              t('sys.btn.confirm')
+            }}</a-button>
+          </a-form-item>
+        </a-form>
+      </a-skeleton>
+    </a-tab-pane>
   </a-tabs>
 </template>
 <script lang="ts" setup>
@@ -375,6 +406,7 @@
     }
     initAlgoConfig();
     initUpUrlConfig();
+    initRotateCfgConfig();
   });
 
   ////////////////////////////////////////////////
@@ -607,6 +639,96 @@ const formItemListUpUrlConfig = [
     console.info('addUpUrl params = '+JSON.stringify(params));
     const result = addUpUrl(params);
     console.info('addUpUrl result = '+JSON.stringify(result));
+    if(JSON.stringify(result) === '{}') {
+      createMessage.success('update success');
+    } else {
+      createMessage.error('invalid operation');
+    }
+    loading.value = false;
+};
+
+/////////////////////////////////////////////////////
+
+  import { RotateCfgSetParams } from '/@/api/maintenance/model/index';
+  import {
+    getRotateCfg,
+    modRotateCfg
+  } from '/@/api/task/index';
+
+  import { rotateCfgParams } from '/@/api/task/model/index';
+  
+  import { rotateRetentionCheck } from '/@/utils/validateFuncs';
+  
+  const rotateCfgConfig: UnwrapRef<RotateCfgSetParams> = reactive({
+    record: 180,
+    serviceLog: 180
+  });
+
+const rotateCfgConfigRules = computed(() => {
+  return {
+        record: [
+          {
+            required: true,
+            validator: rotateRetentionCheck,
+            trigger: 'blur',
+          },
+        ],
+        serviceLog: [
+          {
+            required: true,
+            validator: rotateRetentionCheck,
+            trigger: 'blur',
+          },
+        ]
+      };
+});
+
+const rotateCfgConfigMap = {
+  rotateCfgConfig,
+};
+
+const formItemListRotateCfgConfig = [
+  {
+    label: t('maintenance.rotateConfig.record'),
+    field: 'record',
+    placeholder: t('sys.form.placeholder'),
+    type: 'input',
+  },
+  {
+    label: t('maintenance.rotateConfig.serviceLog'),
+    field: 'serviceLog',
+    placeholder: t('sys.form.placeholder'),
+    type: 'input',
+  },
+];
+  
+  const ipDataRotateCfgConfig = reactive({
+    rotateCfgConfig: [],
+  });
+  const initRotateCfgConfig = async () => {
+    const result = await getRotateCfg();
+    pageLoading.value = false;
+    console.info('initRotateCfgConfig result='+JSON.stringify(result))
+    if (result) {
+      ipDataRotateCfgConfig.rotateCfgConfig['record'] = result["data"]["record"];
+      ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'] = result["data"]["serviceLog"];
+      rotateCfgConfig.record = ipDataRotateCfgConfig.rotateCfgConfig['record'];
+      rotateCfgConfig.serviceLog = ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'];
+      // console.info('ipDataRotateCfgConfig = '+JSON.stringify(ipDataRotateCfgConfig));
+      // console.info('rotateCfgConfig = '+JSON.stringify(rotateCfgConfig));
+      // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
+    }
+  };
+  
+  const submitFormRotateCfgConfig = () => {
+    loading.value = true;
+    var params : rotateCfgParams = { record: 180, serviceLog: 180} ;
+    params.record = parseInt(rotateCfgConfigMap["rotateCfgConfig"].record, 10);
+    params.serviceLog = parseInt(rotateCfgConfigMap["rotateCfgConfig"].serviceLog, 10);
+    // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
+    console.info('modRotateCfg params = '+JSON.stringify(params));
+    const result = modRotateCfg(params);
+    console.info('modRotateCfg result = '+JSON.stringify(result));
     if(JSON.stringify(result) === '{}') {
       createMessage.success('update success');
     } else {

@@ -18,6 +18,11 @@ export interface UpUrlConfigSetParams {
   protocol: string; //http|https
 }
 
+export interface RotateCfgSetParams {
+  record: number; //days, 1-180
+  serviceLog: number; //days, 1-180
+}
+
 export interface AlarmParams {
   fanSpeed: number; // 风扇转速
   boardTemperature: number; // 主板温度
