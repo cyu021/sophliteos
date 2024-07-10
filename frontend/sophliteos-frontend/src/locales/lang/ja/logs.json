@@ -7,11 +7,11 @@
       "type": "タイプ"
     },
     "title": "操作ログ",
-    "id": "",
+    "id": "ID",
     "type1": "タイプ",
     "funcName": "名前",
     "people": "オペレータ",
-    "ip": "",
+    "ip": "IP",
     "time": "時間",
     "content": "コンテンツ",
     "operateType": {
@@ -42,7 +42,7 @@
     "sysLog": "システムログのダウンロード",
     "loading": "ダウンロード"
   },
-  "cpu": "",
+  "cpu": "CPU",
   "memory": "メモリ",
   "disk": "ディスク",
   "netCard": "ネットカード",

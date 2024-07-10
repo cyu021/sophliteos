@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="CommandTable" :title="t('routes.dashboard.quickCommands')">
+    <BasicTable @register="CommandTable" :title="t('dashboard.quickCommands')">
       <template #toolbar>
         <a-button type="primary" @click="addCommandForm" class="addCommandButt">{{
           t('maintenance.ssh.addCommand')

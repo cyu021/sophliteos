@@ -2,7 +2,7 @@
   <div class="p-4">
     <BasicTable
       @register="register"
-      :title="`${t('overview.coreBoard')} ${$props.number} ${t('routes.dashboard.mirror')}`"
+      :title="`${t('overview.coreBoard')} ${$props.number} ${t('dashboard.mirror')}`"
     >
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">

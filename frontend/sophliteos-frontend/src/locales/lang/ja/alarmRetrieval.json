@@ -3,7 +3,7 @@
     "channel": "チャンネル選択",
     "search": "アラームタイプ",
     "startTime": "開始時間",
-    "endTime": "終了時間",
+    "EndTime": "終了時間",
     "totalNumber": "総アラーム数",
     "images": "画像",
     "setSpace": "最大スペースを設定",
@@ -21,7 +21,7 @@
     "total": "合計",
     "inputMsg": "整数を入力してください",
     "blank": "該当なし",
-    "notKnown": "不明",
+    "notKown": "不明",
     "taskId": "タスクID",
     "srcId": "ビデオソースID",
     "taskSelect": "タスク選択"

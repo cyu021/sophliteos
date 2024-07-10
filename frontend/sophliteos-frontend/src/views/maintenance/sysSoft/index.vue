@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper :title="t('routes.dashboard.sysSoft')" :content="content">
+  <PageWrapper :title="t('dashboard.sysSoft')" :content="content">
     <div style="display: flex; flex-direction: row; margin-bottom: 20px">
       <div style="background-color: white; padding-bottom: 10px" v-if="!deviceStore.isSingleBoard">
         <ControlForm :isSysSoft="true" />
@@ -29,8 +29,8 @@
   const content = ref('');
   const { t } = useI18n();
   if (deviceStore.isSingleBoard) {
-    content.value = t('routes.dashboard.content.sysContent');
+    content.value = t('dashboard.content.sysContent');
   } else {
-    content.value = t('routes.dashboard.content.Content');
+    content.value = t('dashboard.content.Content');
   }
 </script>

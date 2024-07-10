@@ -11,7 +11,7 @@ const logs: AppRouteModule = {
   meta: {
     orderNo: 6,
     icon: 'icon-park-outline:upload-logs',
-    title: t('routes.dashboard.logs'),
+    title: t('dashboard.logs'),
     // hideMenu: true,
   },
   children: [
@@ -20,7 +20,7 @@ const logs: AppRouteModule = {
       name: 'Warning',
       component: () => import('/@/views/logs/warning/index.vue'),
       meta: {
-        title: t('routes.dashboard.warning'),
+        title: t('dashboard.warning'),
       },
     },
     {
@@ -28,7 +28,7 @@ const logs: AppRouteModule = {
       name: 'Operate',
       component: () => import('/@/views/logs/operate/index.vue'),
       meta: {
-        title: t('routes.dashboard.operate'),
+        title: t('dashboard.operate'),
       },
     },
     {
@@ -36,7 +36,7 @@ const logs: AppRouteModule = {
       name: 'logDownload',
       component: () => import('/@/views/logs/logDownload/index.vue'),
       meta: {
-        title: t('routes.dashboard.logDownload'),
+        title: t('dashboard.logDownload'),
       },
     },
   ],

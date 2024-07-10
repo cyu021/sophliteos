@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper title="SSM" :content="t('routes.dashboard.content.ssmContent')">
+  <PageWrapper title="SSM" :content="t('dashboard.content.ssmContent')">
     <div style="display: flex; flex-direction: row; margin-bottom: 20px">
       <div style="background-color: white" v-if="!deviceStore.isSingleBoard && !deviceStore.isPcie">
         <ControlForm :isSsm="true" />

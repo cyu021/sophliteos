@@ -4,14 +4,14 @@
   "updatedFiles": "アップロードしたファイル",
   "upgradePackage": "アップグレードパッケージ",
   "prepSpringZip": {
-    "selectModel": "Select Model File",
-    "customAlgoName": "Custom Algorithm Name",
-    "pack": "Pack",
-    "customAlgoDownloadLinks": "Custom Algorithm Download Links:",
-    "createDate": "Create Date",
-    "download": "Download",
-    "purge": "Purge",
-    "action": "Action"
+    "selectModel": "ファイルを選択",
+    "customAlgoName": "カスタムアルゴリズム名",
+    "pack": "パック",
+    "customAlgoDownloadLinks": "カスタムアルゴリズムのダウンロードリンク:",
+    "createDate": "作成日",
+    "download": "ダウンロード",
+    "purge": "パージ",
+    "action": "動作"
   },
   "systemUpdate": {
     "uploadFiles": "ファイルアップロード",
@@ -106,7 +106,6 @@
     "wan": "WAN設定",
     "lan": "LAN 設定",
     "lan2": "LAN2設定",
-    "core": "コアボード設定",
     "inputRightIp": "IPアドレスが無効です",
     "inputIp": "IPアドレスを入力してください",
     "inpuSubnetMask": "サブネットマスクを入力してください",
@@ -123,8 +122,8 @@
     "msg": "この SDK バージョンではネットワーク設定の変更は対応されていません",
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
-    "protocol": "Protocol",
-    "inputProtocol": "Please enter one of: http, https"
+    "protocol": "プロトコル",
+    "inputProtocol": "以下のいずれかを入力してください: http, https"
   },
   "threshold": {
     "fanSpeed": "ファン回転速度",
