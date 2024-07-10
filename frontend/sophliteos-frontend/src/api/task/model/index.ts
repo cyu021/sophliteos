@@ -16,6 +16,11 @@ export interface upUrlParams {
   protocol: string;
 }
 
+export interface rotateCfgParams {
+  record: number;
+  serviceLog: number;
+}
+
 /**
  * @description: Request list return value
  */

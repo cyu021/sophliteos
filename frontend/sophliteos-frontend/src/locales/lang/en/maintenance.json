@@ -3,6 +3,12 @@
   "sysSoftUpdate": "System Upgrade",
   "updatedFiles": "Uploaded File",
   "upgradePackage": "Upgrade Package",
+  "rotateConfig": {
+    "rotateConfig": "Rotate Config",
+    "inputRotateRetention": "Must between 1 and 180",
+    "record": "Record",
+    "serviceLog": "ServiceLog"
+  },
   "prepSpringZip": {
     "selectModel": "Select Model File",
     "customAlgoName": "Custom Algorithm Name",

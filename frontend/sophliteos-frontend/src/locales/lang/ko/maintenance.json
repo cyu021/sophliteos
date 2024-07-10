@@ -3,6 +3,12 @@
   "sysSoftUpdate": "시스템 업데이트",
   "updatedFiles": "업데이트된 파일",
   "upgradePackage": "업그레이드 패키지",
+  "rotateConfig": {
+    "rotateConfig": "Rotate Config",
+    "inputRotateRetention": "Must between 1 and 180",
+    "record": "Record",
+    "serviceLog": "ServiceLog"
+  },
   "prepSpringZip": {
     "selectModel": "Select Model File",
     "customAlgoName": "Custom Algorithm Name",
