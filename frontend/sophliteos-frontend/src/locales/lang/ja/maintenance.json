@@ -4,10 +4,10 @@
   "updatedFiles": "アップロードしたファイル",
   "upgradePackage": "アップグレードパッケージ",
   "rotateConfig": {
-    "rotateConfig": "Rotate Config",
-    "inputRotateRetention": "Must between 1 and 180",
-    "record": "Record",
-    "serviceLog": "ServiceLog"
+    "rotateConfig": "設定を回転",
+    "inputRotateRetention": "1～180の間でなければなりません",
+    "record": "記録",
+    "serviceLog": "サービスログ"
   },
   "prepSpringZip": {
     "selectModel": "ファイルを選択",
