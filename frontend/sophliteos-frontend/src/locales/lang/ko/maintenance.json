@@ -12,10 +12,10 @@
   "prepSpringZip": {
     "selectModel": "Select Model File",
     "customAlgoName": "Custom Algorithm Name",
-    "pack": "Pack",
+    "pack": "묶음",
     "customAlgoDownloadLinks": "Custom Algorithm Download Links:",
-    "createDate": "Create Date",
-    "download": "Download",
+    "createDate": "만든 날짜",
+    "download": "다운로드",
     "purge": "Purge",
     "action": "Action"
   },
@@ -123,12 +123,12 @@
     "restartAfterSubmit": "제출 후 장치가 다시 시작됩니다.",
     "useAddress": "수정이 성공한 후 해당 주소를 이용해 주세요.",
     "copyAddress": "주소 복사, 해당 페이지 재방문",
-    "reOpenPage": ", revisit this page",
+    "reOpenPage": ", 해당 페이지 재방문",
     "dynIpDialogContent": "제출 후 장치가 다시 시작됩니다. 수정이 성공한 후 라우팅 시스템에 따라 장치 IP를 결정하십시오.",
     "msg": "이 SDK 버전은 네트워크 설정 수정을 지원하지 않습니다.",
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
-    "protocol": "Protocol",
+    "protocol": "프로토콜",
     "inputProtocol": "Please enter one of: http, https"
   },
   "threshold": {
