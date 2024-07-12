@@ -4,7 +4,7 @@
   "updatedFiles": "Uploaded File",
   "upgradePackage": "Upgrade Package",
   "rotateConfig": {
-    "rotateConfig": "Rotate Config",
+    "rotateConfig": "Rotate Config(days)",
     "inputRotateRetention": "Must between 1 and 180",
     "record": "Record",
     "serviceLog": "ServiceLog"
