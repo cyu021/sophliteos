@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="storeTable" :title="t('routes.dashboard.store')">
+    <BasicTable @register="storeTable" :title="t('dashboard.store')">
       <template #toolbar>
         <a-button type="primary" @click="addStoreForm" class="addStoreButt">{{
           t('maintenance.containers.addStore')

@@ -1,5 +1,5 @@
 <template>
-  <!-- <PageWrapper title="LiteOS" :content="t('routes.dashboard.content.liteContent')"> -->
+  <!-- <PageWrapper title="LiteOS" :content="t('dashboard.content.liteContent')"> -->
   <PageWrapper title="System Upgrade" >
     <a-tabs v-model:activeKey="activeKey" class="!m-2 !p-2 bg-white" animated>
       <a-tab-pane key="control" :tab="controlText">

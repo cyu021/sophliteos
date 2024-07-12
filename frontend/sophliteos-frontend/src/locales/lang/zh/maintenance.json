@@ -4,10 +4,10 @@
   "updatedFiles": "文件已就绪",
   "upgradePackage": "已上传升级包",
   "rotateConfig": {
-    "rotateConfig": "Rotate Config",
-    "inputRotateRetention": "Must between 1 and 180",
-    "record": "Record",
-    "serviceLog": "ServiceLog"
+    "rotateConfig": "旋转配置",
+    "inputRotateRetention": "必须在 1 到 180 之间",
+    "record": "记录",
+    "serviceLog": "服务日志"
   },
   "prepSpringZip": {
     "selectModel": "选择模型文件",

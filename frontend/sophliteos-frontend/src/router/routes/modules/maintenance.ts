@@ -15,7 +15,7 @@ const maintenance: AppRouteModule = {
   meta: {
     orderNo: 5,
     icon: 'bx:server',
-    title: t('routes.dashboard.maintenance'),
+    title: t('dashboard.maintenance'),
     // hideMenu: true,
   },
   children: [
@@ -24,7 +24,7 @@ const maintenance: AppRouteModule = {
     //   name: 'PrepSpringZip',
     //   component: () => import('/@/views/maintenance/prepSpringZip/index.vue'),
     //   meta: {
-    //     title: t('routes.dashboard.prepSpringZip'),
+    //     title: t('dashboard.prepSpringZip'),
     //   },
     // },
     {
@@ -32,7 +32,7 @@ const maintenance: AppRouteModule = {
       name: 'SysSoft',
       component: () => import('/@/views/maintenance/sysSoft/index.vue'),
       meta: {
-        title: t('routes.dashboard.sysSoft'),
+        title: t('dashboard.sysSoft'),
       },
     },
     {
@@ -41,7 +41,7 @@ const maintenance: AppRouteModule = {
       // redirect: '/maintenance/softUpdate/LiteOSUpdate',
       component: () => import('/@/views/maintenance/softUpdate/index.vue'),
       meta: {
-        title: t('routes.dashboard.softUpdate'),
+        title: t('dashboard.softUpdate'),
       },
       // children: [
         // {
@@ -49,7 +49,7 @@ const maintenance: AppRouteModule = {
         //   name: 'ssmUpdate',
         //   component: () => import('/@/views/maintenance/softUpdate/ssmUpdate/index.vue'),
         //   meta: {
-        //     title: t('routes.dashboard.ssmUpdate'),
+        //     title: t('dashboard.ssmUpdate'),
         //   },
         // },
         // {
@@ -57,7 +57,7 @@ const maintenance: AppRouteModule = {
         //   name: 'LiteOSUpdate',
         //   component: () => import('/@/views/maintenance/softUpdate/index.vue'),
         //   meta: {
-        //     title: t('routes.dashboard.liteOsUpdate'),
+        //     title: t('dashboard.liteOsUpdate'),
         //   },
         // },
         // {
@@ -65,7 +65,7 @@ const maintenance: AppRouteModule = {
         //   name: 'OTADaemon',
         //   component: () => import('/@/views/maintenance/softUpdate/otaDaemonUpdate/index.vue'),
         //   meta: {
-        //     title: t('routes.dashboard.otaDaemonUpdate'),
+        //     title: t('dashboard.otaDaemonUpdate'),
         //   },
         // },
         // {
@@ -73,7 +73,7 @@ const maintenance: AppRouteModule = {
         //   name: 'Adapter',
         //   component: () => import('/@/views/maintenance/softUpdate/adapterUpdate/index.vue'),
         //   meta: {
-        //     title: t('routes.dashboard.adapterUpdate'),
+        //     title: t('dashboard.adapterUpdate'),
         //   },
         // },
         // {
@@ -81,7 +81,7 @@ const maintenance: AppRouteModule = {
         //   name: 'VPS',
         //   component: () => import('/@/views/maintenance/softUpdate/vpsUpdate/index.vue'),
         //   meta: {
-        //     title: t('routes.dashboard.vpsUpdate'),
+        //     title: t('dashboard.vpsUpdate'),
         //   },
         // },
         // {
@@ -89,7 +89,7 @@ const maintenance: AppRouteModule = {
         //   name: 'BMS',
         //   component: () => import('/@/views/maintenance/softUpdate/bmsUpdate/index.vue'),
         //   meta: {
-        //     title: t('routes.dashboard.bmsUpdate'),
+        //     title: t('dashboard.bmsUpdate'),
         //   },
         // },
       // ],
@@ -99,7 +99,7 @@ const maintenance: AppRouteModule = {
       name: 'coreBoardMap',
       component: () => import('/@/views/maintenance/coreBoardMap/index.vue'),
       meta: {
-        title: t('routes.dashboard.coreBoardMap'),
+        title: t('dashboard.coreBoardMap'),
         hideMenu: true,
       },
     },
@@ -108,8 +108,8 @@ const maintenance: AppRouteModule = {
       name: 'NetworkSetting',
       component: () => import('../../../views/maintenance/networkSetting/index.vue'),
       meta: {
-        title: t('routes.dashboard.sysSetting'),
-        // title: t('routes.dashboard.networkSetting'),
+        title: t('dashboard.sysSetting'),
+        // title: t('dashboard.networkSetting'),
       },
     },
     // {
@@ -117,7 +117,7 @@ const maintenance: AppRouteModule = {
     //   name: 'ssh',
     //   redirect: '/maintenance/ssh',
     //   meta: {
-    //     title: t('routes.dashboard.sshTerminal'),
+    //     title: t('dashboard.sshTerminal'),
     //   },
     //   children: [
     //     {
@@ -125,7 +125,7 @@ const maintenance: AppRouteModule = {
     //       name: 'sshTerminal',
     //       component: () => import('/@/views/maintenance/ssh/sshTerminal.vue'),
     //       meta: {
-    //         title: t('routes.dashboard.sshTerminal'),
+    //         title: t('dashboard.sshTerminal'),
     //         ignoreKeepAlive: true,
     //       },
     //     },
@@ -134,7 +134,7 @@ const maintenance: AppRouteModule = {
     //       name: 'hostComputer',
     //       component: () => import('/@/views/maintenance/ssh/hostComputer.vue'),
     //       meta: {
-    //         title: t('routes.dashboard.hostComputer'),
+    //         title: t('dashboard.hostComputer'),
     //         ignoreKeepAlive: true,
     //       },
     //     },
@@ -143,7 +143,7 @@ const maintenance: AppRouteModule = {
     //       name: 'quickCommands',
     //       component: () => import('/@/views/maintenance/ssh/quickCommands.vue'),
     //       meta: {
-    //         title: t('routes.dashboard.quickCommands'),
+    //         title: t('dashboard.quickCommands'),
     //         ignoreKeepAlive: true,
     //       },
     //     },
@@ -154,7 +154,7 @@ const maintenance: AppRouteModule = {
     //   name: 'contain',
     //   redirect: '/maintenance/contain',
     //   meta: {
-    //     title: t('routes.dashboard.DockerContainers'),
+    //     title: t('dashboard.DockerContainers'),
     //   },
     //   children: [
     //     {
@@ -162,7 +162,7 @@ const maintenance: AppRouteModule = {
     //       name: 'containers',
     //       component: () => import('/@/views/maintenance/contain/containers.vue'),
     //       meta: {
-    //         title: t('routes.dashboard.containers'),
+    //         title: t('dashboard.containers'),
     //       },
     //     },
     //     {
@@ -170,7 +170,7 @@ const maintenance: AppRouteModule = {
     //       name: 'mirror',
     //       component: () => import('/@/views/maintenance/contain/mirror.vue'),
     //       meta: {
-    //         title: t('routes.dashboard.mirror'),
+    //         title: t('dashboard.mirror'),
     //       },
     //     },
     //     {
@@ -178,7 +178,7 @@ const maintenance: AppRouteModule = {
     //       name: 'store',
     //       component: () => import('/@/views/maintenance/contain/store.vue'),
     //       meta: {
-    //         title: t('routes.dashboard.store'),
+    //         title: t('dashboard.store'),
     //       },
     //     },
     //   ],
@@ -188,7 +188,7 @@ const maintenance: AppRouteModule = {
       name: 'coreContain',
       component: () => import('/@/views/maintenance/coreContain/index.vue'),
       meta: {
-        title: t('routes.dashboard.coreDockerContainers'),
+        title: t('dashboard.coreDockerContainers'),
         hideMenu: true,
         dynamicLevel: 1,
         currentActiveMenu: '/maintenance',
@@ -200,7 +200,7 @@ const maintenance: AppRouteModule = {
     //   name: 'Threshold',
     //   component: () => import('/@/views/maintenance/threshold/index.vue'),
     //   meta: {
-    //     title: t('routes.dashboard.sysSetting'),
+    //     title: t('dashboard.sysSetting'),
     //   },
     // },
   ],

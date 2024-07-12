@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="containerTable" :title="t('routes.dashboard.containers')">
+    <BasicTable @register="containerTable" :title="t('dashboard.containers')">
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <TableAction

@@ -1,12 +1,12 @@
 <template>
   <Tabs v-model:activeKey="activeKey" class="core" type="card">
-    <TabPane key="contain" :tab="t('routes.dashboard.containers')">
+    <TabPane key="contain" :tab="t('dashboard.containers')">
       <CoreContainList :ip="ip" :number="slectBoard[0]" v-if="ip && activeKey === 'contain'" />
     </TabPane>
-    <TabPane key="image" :tab="t('routes.dashboard.mirror')">
+    <TabPane key="image" :tab="t('dashboard.mirror')">
       <CoreImageListVue :ip="ip" :number="slectBoard[0]" v-if="ip && activeKey === 'image'" />
     </TabPane>
-    <TabPane key="regisrty" :tab="t('routes.dashboard.store')">
+    <TabPane key="regisrty" :tab="t('dashboard.store')">
       <CoreRegistryListVue :ip="ip" :number="slectBoard[0]" v-if="ip && activeKey === 'regisrty'" />
     </TabPane>
     <template #leftExtra>

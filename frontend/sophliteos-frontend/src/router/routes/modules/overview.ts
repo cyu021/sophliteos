@@ -11,7 +11,7 @@ const overview: AppRouteModule = {
   meta: {
     orderNo: 1,
     icon: 'bx:grid-alt',
-    title: t('routes.dashboard.basicInfor'),
+    title: t('dashboard.basicInfor'),
     // hideChildrenInMenu: true,
     // hideMenu: true,
   },
@@ -21,7 +21,7 @@ const overview: AppRouteModule = {
       name: 'OverviewPage',
       component: () => import('/@/views/overview/index.vue'),
       meta: {
-        title: t('routes.dashboard.ovewview'),
+        title: t('dashboard.ovewview'),
         hideMenu: false,
         // icon: 'simple-icons:about-dot-me',
         // hideBreadcrumb: true, // 在隐藏面包屑中，隐藏当前菜单
@@ -32,7 +32,7 @@ const overview: AppRouteModule = {
       name: 'OverviewDetail',
       component: () => import('/@/views/overview/detail.vue'),
       meta: {
-        title: t('routes.dashboard.boardDetail'),
+        title: t('dashboard.boardDetail'),
         hideMenu: true,
         // icon: 'simple-icons:about-dot-me',
         // hideBreadcrumb: true, // 在隐藏面包屑中，隐藏当前菜单
@@ -45,7 +45,7 @@ const overview: AppRouteModule = {
       meta: {
         currentActiveMenu: '/overview/detail',
         hideMenu: true,
-        title: t('routes.dashboard.boardDetail'),
+        title: t('dashboard.boardDetail'),
         // icon: 'simple-icons:about-dot-me',
         // hideBreadcrumb: true, // 在隐藏面包屑中，隐藏当前菜单
         realPath: '/overview/detail',
@@ -57,7 +57,7 @@ const overview: AppRouteModule = {
       name: 'Threshold',
       component: () => import('/@/views/maintenance/threshold/index.vue'),
       meta: {
-        title: t('routes.dashboard.alarmThreshold'),
+        title: t('dashboard.alarmThreshold'),
       },
     },
   ],

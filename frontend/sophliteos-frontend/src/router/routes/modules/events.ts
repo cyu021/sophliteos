@@ -11,7 +11,7 @@ const events: AppRouteModule = {
     orderNo: 3,
     // hideChildrenInMenu: true,
     icon: 'tdesign:task',
-    title: t('routes.dashboard.eventManage'),
+    title: t('dashboard.eventManage'),
   },
   children: [
     {
@@ -19,7 +19,7 @@ const events: AppRouteModule = {
       name: 'EvnetList',
       component: () => import('/@/views/events/events/index.vue'),
       meta: {
-        title: t('routes.dashboard.eventList'),
+        title: t('dashboard.eventList'),
       },
     },
     {
@@ -27,7 +27,7 @@ const events: AppRouteModule = {
       name: 'AlarmRetrieval',
       component: () => import('/@/views/events/alarmRetrieval/index.vue'),
       meta: {
-        title: t('routes.dashboard.alarmRetrieval'),
+        title: t('dashboard.alarmRetrieval'),
         hideChildrenInMenu: true,
       },
       children: [
@@ -36,7 +36,7 @@ const events: AppRouteModule = {
           name: 'AlarmDetail',
           component: () => import('/@/views/events/alarmRetrieval/alarmDetail.vue'),
           meta: {
-            title: t('routes.dashboard.alarmDetail'),
+            title: t('dashboard.alarmDetail'),
             // hideMenu: true,
             // hideBreadcrumb: true, // 在隐藏面包屑中，隐藏当前菜单
             // hideTab: true,

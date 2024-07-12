@@ -2,7 +2,7 @@
   <div class="p-4">
     <BasicTable
       @register="storeTable"
-      :title="`${t('overview.coreBoard')} ${$props.number} ${t('routes.dashboard.store')}`"
+      :title="`${t('overview.coreBoard')} ${$props.number} ${t('dashboard.store')}`"
     >
       <template #toolbar>
         <a-button type="primary" @click="addStoreForm" class="addStoreButt">{{

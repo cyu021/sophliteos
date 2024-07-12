@@ -10,7 +10,7 @@ const algoModel: AppRouteModule = {
     orderNo: 4,
     // hideChildrenInMenu: true,
     icon: 'tdesign:task',
-    title: t('routes.dashboard.algoModel'),
+    title: t('dashboard.algoModel'),
   },
   children: [
     {
@@ -18,7 +18,7 @@ const algoModel: AppRouteModule = {
       name: 'AlgorithmsList',
       component: () => import('/@/views/accessAlgo/algorithms/index.vue'),
       meta: {
-        title: t('routes.dashboard.algorithm'),
+        title: t('dashboard.algorithm'),
       },
     },
     {
@@ -26,7 +26,7 @@ const algoModel: AppRouteModule = {
       name: 'PrepSpringZip',
       component: () => import('/@/views/maintenance/prepSpringZip/index.vue'),
       meta: {
-        title: t('routes.dashboard.prepSpringZip'),
+        title: t('dashboard.prepSpringZip'),
       },
     },
   ],

@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="mirrorTable" :title="t('routes.dashboard.mirror')">
+    <BasicTable @register="mirrorTable" :title="t('dashboard.mirror')">
       <template #toolbar>
         <a-button type="primary" @click="pullMirrorForm">{{
           t('maintenance.containers.pullMirror')

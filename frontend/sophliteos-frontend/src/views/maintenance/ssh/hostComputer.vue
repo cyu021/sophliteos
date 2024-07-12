@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <BasicTable @register="hostComputerTable" :title="t('routes.dashboard.hostComputer')">
+    <BasicTable @register="hostComputerTable" :title="t('dashboard.hostComputer')">
       <template #toolbar>
         <a-button type="primary" @click="addHostForm" class="addHostButt">{{
           t('maintenance.ssh.addHost')

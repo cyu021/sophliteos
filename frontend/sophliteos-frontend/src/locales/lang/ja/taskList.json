@@ -11,7 +11,7 @@
     "upUrlConfig": "結果アドレス設定",
     "upUrl": "結果アドレス",
     "on": "開始",
-    "off": "Stopped",
+    "off": "停止",
     "algorithmConfig": "アルゴリズム設定"
   }
 }

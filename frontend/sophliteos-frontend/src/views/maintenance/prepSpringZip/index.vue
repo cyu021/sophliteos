@@ -1,5 +1,5 @@
 <template>
-  <PageWrapper :title="t('routes.dashboard.prepSpringZip')" content="">
+  <PageWrapper :title="t('dashboard.prepSpringZip')" content="">
     <div style="display: flex; flex-direction: row; margin-bottom: 20px">
       <div style="background-color: white; width: 100%">
         <a-skeleton :loading="loading" active>

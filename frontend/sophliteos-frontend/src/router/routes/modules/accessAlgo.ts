@@ -11,7 +11,7 @@ const accessAlgo: AppRouteModule = {
     orderNo: 2,
     // hideChildrenInMenu: true,
     icon: 'tdesign:task',
-    title: t('routes.dashboard.accessAlgo'),
+    title: t('dashboard.accessAlgo'),
   },
   children: [
     {
@@ -19,7 +19,7 @@ const accessAlgo: AppRouteModule = {
       name: 'videoManage',
       component: () => import('/@/views/accessAlgo/dataSource/videoManage/videos.vue'),
       meta: {
-        title: t('routes.dashboard.videoManage'),
+        title: t('dashboard.videoManage'),
       },
     },
     // {
@@ -27,7 +27,7 @@ const accessAlgo: AppRouteModule = {
     //   name: 'AlgorithmsList',
     //   component: () => import('/@/views/accessAlgo/algorithms/index.vue'),
     //   meta: {
-    //     title: t('routes.dashboard.algorithm'),
+    //     title: t('dashboard.algorithm'),
     //   },
     // },
     {
@@ -35,7 +35,7 @@ const accessAlgo: AppRouteModule = {
       name: 'TaskList',
       component: () => import('/@/views/accessAlgo/task/taskList/index.vue'),
       meta: {
-        title: t('routes.dashboard.task'),
+        title: t('dashboard.task'),
       },
     },
     {
@@ -43,7 +43,7 @@ const accessAlgo: AppRouteModule = {
       name: 'paramList',
       component: () => import('/@/views/accessAlgo/paramConfig/paramConfig/index.vue'),
       meta: {
-        title: t('routes.dashboard.AlgoParamConfig'),
+        title: t('dashboard.AlgoParamConfig'),
       },
     }
   ],
