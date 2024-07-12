@@ -78,7 +78,7 @@ const rule: any[] = [
     transform(val) {
       return +val;
     },
-    message: '请输入正整数',
+    message: 'positive integer',
     trigger: 'blur',
   },
 ];
@@ -90,7 +90,7 @@ const floatRule: any[] = [
     transform(val) {
       return +val;
     },
-    message: '可输入小数',
+    message: 'positive float',
     trigger: 'blur',
   },
 ];
@@ -100,8 +100,24 @@ export const algoFormSchema: FormSchema[] = [
     field: 'Threshold',
     label: t('paramConfig.param.algoThreshold'),
     component: 'Input',
-    componentProps: { },
-    rules: floatRule,
+    componentProps: {
+      suffix: '',
+      allowClear: false,
+    },
+    rules: [
+      {
+        type: 'number',
+        min: 0,
+        transform(val) {
+          if(val.length == 0) {
+            return -1
+          }
+          return +val;
+        },
+        message: '0 ~ 1.0',
+        trigger: 'blur',
+      },
+    ],
   },
   {
     field: 'MinDetect',
@@ -154,11 +170,12 @@ export const algoFormSchema: FormSchema[] = [
     rules: [
       {
         type: 'integer',
-        min: 0,
+        min: 2,
+        max: 5,
         transform(val) {
           return +val;
         },
-        message: 'integer',
+        message: '2 ~ 5',
         trigger: 'blur',
       },
     ],
@@ -204,8 +221,8 @@ export const defaultEditConfigParams = {
   TrackInterval: 2,
   DetectInterval: 5,
   TargetSize: {
-    MinDetect: 30,
-    MaxDetect: 250,
+    MinDetect: 15,
+    MaxDetect: 2500,
   },
   DetectInfos: [],
   Extend: null,

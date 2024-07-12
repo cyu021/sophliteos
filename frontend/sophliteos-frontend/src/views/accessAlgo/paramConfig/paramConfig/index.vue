@@ -425,7 +425,7 @@
 
   const [registerForm, { setFieldsValue, validate }] = useForm({
     labelAlign: 'left',
-    labelWidth: 150,
+    labelWidth: 200,
     schemas: algoFormSchema,
     showActionButtonGroup: false,
   });
