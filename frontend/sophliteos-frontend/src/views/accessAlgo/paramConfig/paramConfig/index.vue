@@ -515,7 +515,8 @@
     extend.Threshold = Number(values.Threshold);
 
     extend.roiExtendRatio = Number(values.ExpansionRatio);
-    extend.dwellTimeSec = Number(values.RetentionTime);
+    // console.info("RetentionTime="+values.RetentionTime)
+    extend.dwellTimeSec = Number(values.RetentionTime == undefined ? 2 : values.RetentionTime);
     extend.notSaveImage = values.NotSaveImage;
 
     extend.detectModeRoi = roiMode.value;

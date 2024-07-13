@@ -161,27 +161,27 @@ export const algoFormSchema: FormSchema[] = [
       },
     ],
   },
-  {
-    field: 'RetentionTime',
-    label: t('paramConfig.param.retentionTime'),
-    component: 'Input',
-    componentProps: {
-      suffix: 's',
-      allowClear: false,
-    },
-    rules: [
-      {
-        type: 'integer',
-        min: 2,
-        max: 5,
-        transform(val) {
-          return +val;
-        },
-        message: '2 ~ 5',
-        trigger: 'blur',
-      },
-    ],
-  },
+  // {
+  //   field: 'RetentionTime',
+  //   label: t('paramConfig.param.retentionTime'),
+  //   component: 'Input',
+  //   componentProps: {
+  //     suffix: 's',
+  //     allowClear: false,
+  //   },
+  //   rules: [
+  //     {
+  //       type: 'integer',
+  //       min: 2,
+  //       max: 5,
+  //       transform(val) {
+  //         return +val;
+  //       },
+  //       message: '2 ~ 5',
+  //       trigger: 'blur',
+  //     },
+  //   ],
+  // },
   {
     field: 'NotSaveImage',
     label: t('paramConfig.param.notSaveImage'),
