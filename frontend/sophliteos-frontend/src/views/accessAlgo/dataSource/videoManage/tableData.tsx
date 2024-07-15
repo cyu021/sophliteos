@@ -9,9 +9,16 @@ const { t } = useI18n();
 export function getBasicColumns(): BasicColumn[] {
   return [
     {
+      title: t('dataSource.videoManage.deviceId'),
+      dataIndex: 'deviceId',
+      width: 140,
+      align: 'center',
+      ellipsis: false,
+    },
+    {
       title: t('dataSource.videoManage.deviceName'),
       dataIndex: 'name',
-      width: 150,
+      width: 120,
       align: 'center',
       ellipsis: true,
     },

@@ -19,6 +19,7 @@
     "platform": "Streaming Media Management Platform"
   },
   "videoManage": {
+    "deviceId": "DeviceID",
     "livePreview": "Live Preview",
     "deviceName": "Stream Name",
     "mediaServerName": "Streaming Services",

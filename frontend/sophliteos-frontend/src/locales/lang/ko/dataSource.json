@@ -19,6 +19,7 @@
     "platform": "스트리밍 미디어 관리 플랫폼"
   },
   "videoManage": {
+    "deviceId": "DeviceID",
     "livePreview": "실시간 미리보기",
     "deviceName": "채널 이름",
     "mediaServerName": "스트리밍 서비스",

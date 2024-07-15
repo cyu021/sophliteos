@@ -124,7 +124,7 @@
     tableSetting: { fullScreen: true },
     showIndexColumn: true,
     indexColumnProps: {
-      width: 120,
+      width: 50,
     },
     actionColumn: {
       width: 150,
