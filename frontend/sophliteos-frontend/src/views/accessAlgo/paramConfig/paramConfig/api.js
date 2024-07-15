@@ -89,10 +89,19 @@ const defaultExtend = (annotator) => {
     })
 }
 
+const ruleTemplate = () => {
+    return defHttp
+    .get({ url: '/template' }, { apiUrl: '/filter', isTransformResponse: false, joinParamsToUrl: false, })
+    .then((res) => {
+        return res.FilterTemplate;
+    })
+}
+
 const apis = {
     attrList,
     defaultExtend,
     videoUrl,
+    ruleTemplate,
 };
 
 export default apis;

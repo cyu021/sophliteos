@@ -62,7 +62,7 @@
             />
           </Tabs>
           <div class="flex flexDerecton" style="flex: 1" ref="divRef">
-            <div>
+            <div style="padding-right: 24px;">
               <div style="margin: 20px 0; font-weight: 600">
                 <span style="padding-left: 10px; border-left: 2px solid #0960bdb8"></span>
                 {{ t('paramConfig.param.setAlgoParams') }}
