@@ -4,7 +4,7 @@
   "updatedFiles": "업데이트된 파일",
   "upgradePackage": "업그레이드 패키지",
   "rotateConfig": {
-    "rotateConfig": "Rotate Config",
+    "rotateConfig": "Rotate Config(days)",
     "inputRotateRetention": "Must between 1 and 180",
     "record": "Record",
     "serviceLog": "ServiceLog"

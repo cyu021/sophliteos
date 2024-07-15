@@ -4,7 +4,7 @@
   "updatedFiles": "アップロードしたファイル",
   "upgradePackage": "アップグレードパッケージ",
   "rotateConfig": {
-    "rotateConfig": "設定を回転",
+    "rotateConfig": "設定を回転(日)",
     "inputRotateRetention": "1～180の間でなければなりません",
     "record": "記録",
     "serviceLog": "サービスログ"
