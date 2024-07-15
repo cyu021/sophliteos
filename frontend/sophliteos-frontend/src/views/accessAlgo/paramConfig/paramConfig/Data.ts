@@ -100,10 +100,11 @@ export const algoFormSchema: FormSchema[] = [
     field: 'Threshold',
     label: t('paramConfig.param.algoThreshold'),
     component: 'Input',
-    helpMessage: '0 as default threshold, 0.85, 0.9, ...',
+    // helpMessage: '0 as default threshold, 0.85, 0.9, ...',
     componentProps: {
       suffix: '',
       allowClear: false,
+      placeholder: '0 as default threshold, 0.85, 0.9, ...',
     },
     rules: [
       {
@@ -144,10 +145,11 @@ export const algoFormSchema: FormSchema[] = [
     field: 'ExpansionRatio',
     label: t('paramConfig.param.expansionRatio'),
     component: 'Input',
-    helpMessage: '1.1, 1.2, ...',
+    // helpMessage: '1.1, 1.2, ...',
     componentProps: {
       suffix: '',
       allowClear: false,
+      placeholder: '≥1.0, 1.1, 1.2, ...',
     },
     rules: [
       {
