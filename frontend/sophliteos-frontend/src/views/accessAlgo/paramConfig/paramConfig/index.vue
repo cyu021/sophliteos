@@ -68,7 +68,7 @@
                 {{ t('paramConfig.param.setAlgoParams') }}
               </div>
               <BasicForm @register="registerForm" style="width: 450px;" />
-              <div style="width: 450px; display: flex; flex-direction: row; align-items: center;">
+              <div style="padding-bottom: 24px; width: 450px; display: flex; flex-direction: row; align-items: center;">
                 <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
                 <Button style="max-width: 250px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" @click="showFilterRule">{{ filterName }}</Button>
                 <Button v-if="hasExtend" type="text" danger @click="deleteExtend"><DeleteOutlined /></Button>
