@@ -208,6 +208,15 @@
                   </a-form-item>
 
                   <a-form-item
+                    :label="t('maintenance.systemUpdate.currentBaseVersion')"
+                    :rules="[{ required: true }]"
+                  >
+                    <span>{{
+                      currentBaseVersionCore
+                    }}</span>
+                  </a-form-item>
+
+                  <a-form-item
                     :label="t('maintenance.systemUpdate.currentVpsVersion')"
                     :rules="[{ required: true }]"
                   >
@@ -545,6 +554,7 @@ const uploadFileAdapter = async () => {
 
 import apisCore from './coreUpdate/apis.js';
 
+const currentBaseVersionCore = ref<string>('');
 const currentVpsVersionCore = ref<string>('');
 const currentBmsVersionCore = ref<string>('');
 
@@ -557,6 +567,7 @@ onMounted(async () => {
 
 const fetchVersionCore = async () => {
   const version = await apisCore.currentVersion();
+  currentBaseVersionCore.value = version["base"];
   currentVpsVersionCore.value = version["vps"];
   currentBmsVersionCore.value = version["bms"];
 }

@@ -31,6 +31,7 @@
     "currentVersion": "当前系统版本：",
     "currentSoftVersion": "当前软件版本：",
     "currentSoVersion": "SO 版本",
+    "currentBaseVersion": "Base 版本",
     "currentVpsVersion": "VPS 版本",
     "currentBmsVersion": "BMS版本",
     "currentSsmVersion": "当前SSM版本：",

@@ -31,6 +31,7 @@
     "currentVersion": "System Version",
     "currentSoftVersion": "Software Version",
     "currentSoVersion": "SO Version",
+    "currentBaseVersion": "Base Version",
     "currentVpsVersion": "VPS Version",
     "currentBmsVersion": "BMS Version",
     "currentSsmVersion": "SSM Version",

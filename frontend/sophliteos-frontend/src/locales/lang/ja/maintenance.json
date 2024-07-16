@@ -31,6 +31,7 @@
     "currentVersion": "システムバージョン",
     "currentSoftVersion": "ソフトウェアバージョン",
     "currentSoVersion": "SO version",
+    "currentBaseVersion": "Base Version",
     "currentVpsVersion": "VPS version",
     "currentBmsVersion": "BMS version",
     "currentSsmVersion": "SSMバージョン",
