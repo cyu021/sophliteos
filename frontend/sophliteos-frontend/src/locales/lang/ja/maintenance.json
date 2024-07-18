@@ -20,6 +20,7 @@
     "action": "動作"
   },
   "systemUpdate": {
+    "filesUploading": "Processing",
     "uploadFiles": "ファイルアップロード",
     "systemUpdate": "コントロールボード",
     "coreBoardUpdate": "コア ボード",
@@ -96,6 +97,8 @@
     "msg": "システムの再起動後、ユーザー定義のマッピングは無効になります。"
   },
   "containers": {
+    "activated": "Activated",
+    "stop": "Stopped",
     "runningTime": "実行時間",
     "run": "実行"
   },

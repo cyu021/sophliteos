@@ -20,6 +20,7 @@
     "action": "Action"
   },
   "systemUpdate": {
+    "filesUploading": "Processing",
     "uploadFiles": "파일 업로드",
     "systemUpdate": "컨트롤 보드",
     "coreBoardUpdate": "코어 보드",
@@ -96,6 +97,8 @@
     "msg": "시스템이 다시 시작되면 사용자 정의 매핑이 무효화됩니다."
   },
   "containers": {
+    "activated": "Activated",
+    "stop": "Stopped",
     "runningTime": "러닝 타임",
     "run": "런"
   },

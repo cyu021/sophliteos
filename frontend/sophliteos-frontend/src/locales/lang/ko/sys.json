@@ -1,5 +1,6 @@
 {
   "api": {
+    "success": "Success",
     "operationFailed": "작업 실패",
     "errorTip": "에러 팁",
     "errorMessage": "작업이 실패했습니다. 시스템이 정상적이지 않습니다!",

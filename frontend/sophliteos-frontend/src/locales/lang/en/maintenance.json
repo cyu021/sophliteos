@@ -20,6 +20,7 @@
     "action": "Action"
   },
   "systemUpdate": {
+    "filesUploading": "Processing",
     "uploadFiles": "Upload Files",
     "systemUpdate": "Control Board Update",
     "coreBoardUpdate": "Core Board Update",
@@ -96,6 +97,8 @@
     "msg": "After system restart, user-defined mappings will become invalid."
   },
   "containers": {
+    "activated": "Activated",
+    "stop": "Stopped",
     "runningTime": "Running Time",
     "run": "Run"
   },

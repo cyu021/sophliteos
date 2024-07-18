@@ -1,5 +1,6 @@
 {
   "api": {
+    "success": "Success",
     "operationFailed": "Operation Failed",
     "errorTip": "Error Tip",
     "errorMessage": "The operation failed. The system is abnormal!",

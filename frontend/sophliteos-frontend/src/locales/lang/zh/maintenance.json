@@ -20,6 +20,7 @@
     "action": "操作"
   },
   "systemUpdate": {
+    "filesUploading": "Processing",
     "uploadFiles": "上传文件",
     "systemUpdate": "控制板升级",
     "coreBoardUpdate": "核心板升级",
@@ -96,6 +97,8 @@
     "msg": "系统重启后，用户自定义映射将失效"
   },
   "containers": {
+    "activated": "Activated",
+    "stop": "Stopped",
     "runningTime": "运行时间",
     "run": "启动"
   },
