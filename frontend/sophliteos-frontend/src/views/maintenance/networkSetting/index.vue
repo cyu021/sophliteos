@@ -16,6 +16,7 @@
             :key="item.field"
             :label="item.label"
             :name="item.field"
+            :labelCol="{ style: 'width: 150px' }"
           >
             <a-select
               v-if="item.type === 'select'"
@@ -158,11 +159,13 @@
             :key="item.field"
             :label="item.label"
             :name="item.field"
+            :labelCol="{ style: 'width: 150px' }"
           >
             <a-input
               v-if="item.type === 'input'"
               v-model:value="rotateCfgConfig[item.field]"
               :placeholder="item.placeholder"
+              :suffix="item.suffix"
             />
           </a-form-item>
           <a-form-item class="!pl-1/6">
@@ -660,8 +663,8 @@ const formItemListUpUrlConfig = [
   import { rotateRetentionCheck } from '/@/utils/validateFuncs';
   
   const rotateCfgConfig: UnwrapRef<RotateCfgSetParams> = reactive({
-    record: 180,
-    serviceLog: 180
+    record: 3,
+    serviceLog: 3
   });
 
 const rotateCfgConfigRules = computed(() => {
@@ -693,12 +696,14 @@ const formItemListRotateCfgConfig = [
     field: 'record',
     placeholder: t('sys.form.placeholder'),
     type: 'input',
+    suffix: 'days'
   },
   {
     label: t('maintenance.rotateConfig.serviceLog'),
     field: 'serviceLog',
     placeholder: t('sys.form.placeholder'),
     type: 'input',
+    suffix: 'days',
   },
 ];
   
@@ -722,7 +727,7 @@ const formItemListRotateCfgConfig = [
   
   const submitFormRotateCfgConfig = () => {
     loading.value = true;
-    var params : rotateCfgParams = { record: 180, serviceLog: 180} ;
+    var params : rotateCfgParams = { record: 3, serviceLog: 3} ;
     params.record = parseInt(rotateCfgConfigMap["rotateCfgConfig"].record, 10);
     params.serviceLog = parseInt(rotateCfgConfigMap["rotateCfgConfig"].serviceLog, 10);
     // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));

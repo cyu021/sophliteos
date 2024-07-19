@@ -4,9 +4,9 @@
   "updatedFiles": "文件已就绪",
   "upgradePackage": "已上传升级包",
   "rotateConfig": {
-    "rotateConfig": "旋转配置(天)",
+    "rotateConfig": "旋转配置",
     "inputRotateRetention": "必须在 1 到 180 之间",
-    "record": "记录",
+    "record": "记录&Snapshot",
     "serviceLog": "服务日志"
   },
   "prepSpringZip": {

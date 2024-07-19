@@ -3,7 +3,7 @@
     <div style="display: flex; flex-direction: row; align-content: space-between;">
       <div>{{ taskName + '-' + algorithmName }}</div>
       <div style="flex-grow: 1;"/>
-      <div>{{ 'template:' }}
+      <div>{{ 'Rule Template:' }}
         <Dropdown :trigger="['click']">
           <Button style="width: 300px;">{{ currentFilterTemplateName }}
             <DownOutlined style="opacity: 0.5;" />
@@ -21,7 +21,8 @@
     <Divider />
 
     <div style="padding: 14px; display: flex; flex-direction: row; align-items: center;">
-      <Input v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" />
+      <!-- <Input v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" /> -->
+      <Input v-model:value="cacheExtend.Empty" :placeholder="t('paramConfig.filter.name')" />
     </div>
 
     <div style="padding: 14px; padding-bottom: 30px;">
@@ -259,6 +260,7 @@
   const updateFilterTemplate = (value) => {
     currentFilterTemplateName.value = value.FilterName;
     cacheExtend.value = unformat(value || {});
+    cacheExtend.value.Empty = ''
   }
 
   function periodDelete(index) {
@@ -302,11 +304,12 @@
       cacheExtend.value.FilterPeriod = [];
     }
 
+    var currYear = new Date().getFullYear()
     cacheExtend.value.FilterPeriod.push({
-      DateStart: '20240101',
-      DateEnd: '20240131',
-      TimeStart: '0800',
-      TimeEnd: '2000',
+      DateStart: currYear+'0101',
+      DateEnd: (currYear+10)+'1231',
+      TimeStart: '0000',
+      TimeEnd: '2359',
       Weekday: '0,1,2,3,4,5,6',
     });
   }
