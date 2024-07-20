@@ -91,7 +91,7 @@ const defaultExtend = (annotator) => {
 
 const ruleTemplate = () => {
     return defHttp
-    .get({ url: '/template' }, { apiUrl: '/filter', isTransformResponse: false, joinParamsToUrl: false, })
+    .get({ url: '/template/get' }, { apiUrl: '/filter', isTransformResponse: false, joinParamsToUrl: false, })
     .then((res) => {
         return res.FilterTemplate;
     })

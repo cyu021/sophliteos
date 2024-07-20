@@ -139,18 +139,18 @@
                     </div>
                     <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
                       <div style="width: 120px;">{{ t('paramConfig.filter.endTime') }}</div>
-                      <TimePicker format="HH:mm" :value="dayjs(item.TimeEnd || '0000', 'HHmm')" @change="periodUpdateTimeEnd(index, $event)"/>
+                      <TimePicker format="HH:mm" :value="dayjs(item.TimeEnd || '2359', 'HHmm')" @change="periodUpdateTimeEnd(index, $event)"/>
                     </div>
                   </div>
 
                   <div style="display: flex; flex-direction: row;">
                     <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
                       <div style="width: 120px;">{{ t('paramConfig.filter.startDate') }}</div>
-                      <DatePicker :value="dayjs(item.DateStart || dayjs(), 'YYYYMMDD')" @change="periodUpdateDateStart(index, $event)"/>
+                      <DatePicker :value="dayjs(item.DateStart || dayjs().month(0).date(1), 'YYYYMMDD')" @change="periodUpdateDateStart(index, $event)"/>
                     </div>
                     <div style="display: flex; flex-direction: row; align-items: center; padding: 8px;">
                       <div style="width: 120px;">{{ t('paramConfig.filter.endDate') }}</div>
-                      <DatePicker :value="dayjs(item.DateEnd || dayjs(), 'YYYYMMDD')" @change="periodUpdateDateEnd(index, $event)"/>
+                      <DatePicker :value="dayjs(item.DateEnd || dayjs().year(dayjs().year()+10).month(11).date(31), 'YYYYMMDD')" @change="periodUpdateDateEnd(index, $event)"/>
                     </div>
                   </div>
 
