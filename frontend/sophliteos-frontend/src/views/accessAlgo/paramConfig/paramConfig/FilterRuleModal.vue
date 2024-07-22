@@ -181,12 +181,12 @@
 </template>
   
 <script lang="ts" setup>
-  import { Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, Space, CheckboxGroup, Checkbox, TimePicker, DatePicker, message, } from 'ant-design-vue';
+  import { Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, CheckboxGroup, TimePicker, DatePicker, } from 'ant-design-vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { onMounted, ref, watch, computed, watchEffect, } from 'vue';
+  import { onMounted, ref, watch, computed } from 'vue';
   import apis from './api';
-  import { DeleteOutlined, DownOutlined, PlusCircleOutlined, } from '@ant-design/icons-vue';
+  import { DeleteOutlined, DownOutlined } from '@ant-design/icons-vue';
   import dayjs from 'dayjs';
 
   const { t } = useI18n();
@@ -212,7 +212,7 @@
     { label: t('paramConfig.filter.friday'), value: '5' },
     { label: t('paramConfig.filter.saturday'), value: '6' }]
 
-  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal, getVisible }] = useModalInner(async (data) => {
     setModalProps({ confirmLoading: false });
 
   });
@@ -521,16 +521,18 @@
     }
   }
 
+  watch(getVisible, (newValue, oldValue) => {
+    if (!newValue) { return }
+    apis.ruleTemplate().then((res) => {
+      filterTemplate.value = res;
+      currentFilterTemplateName.value = ''
+    })
+  })
+
   onMounted(() => {
     apis.attrList().then((res) => {
       attrList.value = res;
     });
-
-    apis.ruleTemplate().then((res) => {
-      filterTemplate.value = res;
-      currentFilterTemplateName.value = (res[props.algorithmName] || [''])[0]
-      console.log('filter template', res);
-    })
   })
 
   watch(() => props.extend, async (newValue, oldValue) => {
