@@ -17,6 +17,7 @@
   "softUpdate": "Software Upgrade",
   "ssmUpdate": "SSM Upgrade",
   "sysSetting": "System Setting",
+  "ruleTemplate": "Rule Template",
   "liteOsUpdate": "Portal Upgrade",
   "otaDaemonUpdate": "Daemon Upgrade",
   "adapterUpdate": "Biz Module Upgrade",

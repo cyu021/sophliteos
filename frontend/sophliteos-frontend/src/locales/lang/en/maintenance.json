@@ -145,5 +145,13 @@
     "diskRate": "Disk Usage",
     "title": "Resource Alarm Threshold",
     "cloud": "Cloud Platform Config"
+  },
+  "ruleTemplate": {
+    "modelName": "AI Model Name",
+    "templateName": "Template Name",
+    "action": "Action",
+    "create": "Create a new rule template",
+    "edit": "Edit rule template",
+    "copy": "Copy from:"
   }
 }

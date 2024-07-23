@@ -171,7 +171,12 @@
         </div>
       </Card>
     </Card>
-    <FilterRuleModal :extend="extend" @register="RegisterFilterRuleModal" :taskName="taskId" :algorithmName="algorithmName" @success="updateFilterRule" />
+    <FilterRuleModal 
+      :extend="extend" 
+      @register="RegisterFilterRuleModal" 
+      :taskName="taskId" 
+      :algorithmName="algorithmName" 
+      @success="updateFilterRule" />
   </div>
 </template>
 

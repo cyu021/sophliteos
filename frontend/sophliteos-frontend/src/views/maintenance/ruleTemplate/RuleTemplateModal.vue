@@ -1,28 +1,27 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="Submit" width="70%" :height="1000">
-    <div style="display: flex; flex-direction: row; align-content: space-between;">
-      <div>{{ taskName + '-' + algorithmName }}</div>
-      <div style="flex-grow: 1;"/>
-      <div>{{ 'Rule Template:' }}
-        <Dropdown :trigger="['click']">
-          <Button style="width: 300px;">{{ currentFilterTemplateName }}
-            <DownOutlined style="opacity: 0.5;" />
-          </Button>
-          <template #overlay>
-            <Menu>
-              <MenuItem v-for="value in filterTemplate[algorithmName] || []" :key="value" @click="updateFilterTemplate(value)">
-                {{ value.FilterName }}
-              </MenuItem>
-            </Menu>
-          </template>
-        </Dropdown>
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="modelSelectDisabled ? t('maintenance.ruleTemplate.edit') : t('maintenance.ruleTemplate.create')" @ok="Submit" width="70%" :height="1000">
+    <div style="display: flex; flex-direction: column; align-content: space-between; padding: 14px">
+      <div style="padding-bottom: 24px;">
+        {{ t('maintenance.ruleTemplate.modelName') + ':' }}
+        <Select 
+          v-model:value="modelDisplayName" 
+          :options="aiModelNameOptions.map((i) => {return {value: i, label: i}})" 
+          style="padding-left: 4px; width: 300px" 
+          :disabled="modelSelectDisabled" 
+          @select="aiModelSelectChange" />
+      </div>
+      <div v-if="ruleTemplateSelectShow">{{ t('maintenance.ruleTemplate.copy') }}
+        <Select 
+          v-model:value="currentFilterTemplateName" 
+          :options="filterTemplate[modelDisplayName].map((i) => { return { value: i.FilterName, label: i.FilterName }})" 
+          style="width: 300px" 
+          @select="updateFilterTemplate" />
       </div>
     </div>
     <Divider />
 
     <div style="padding: 14px; display: flex; flex-direction: row; align-items: center;">
-      <!-- <Input v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" /> -->
-      <Input v-model:value="cacheExtend.Empty" :placeholder="t('paramConfig.filter.name')" />
+      <Input :disabled="modelSelectDisabled" v-model:value="cacheExtend.FilterName" :placeholder="t('maintenance.ruleTemplate.templateName')" />
     </div>
 
     <div style="padding: 14px; padding-bottom: 30px;">
@@ -181,13 +180,16 @@
 </template>
   
 <script lang="ts" setup>
-  import { Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, CheckboxGroup, TimePicker, DatePicker, } from 'ant-design-vue';
+  import { Select, SelectOption, Divider, Input, Collapse, CollapsePanel, Dropdown, Button, Menu, MenuItem, CheckboxGroup, TimePicker, DatePicker } from 'ant-design-vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { onMounted, ref, watch, computed } from 'vue';
   import apis from './api';
   import { DeleteOutlined, DownOutlined } from '@ant-design/icons-vue';
   import dayjs from 'dayjs';
+
+  const aiModelName = ref('')
+  const aiModelNameOptions = ref([])
 
   const { t } = useI18n();
   const title = t('paramConfig.param.filterRule');
@@ -257,10 +259,12 @@
     }
   }
 
-  const updateFilterTemplate = (value) => {
-    currentFilterTemplateName.value = value.FilterName;
-    cacheExtend.value = unformat(value || {});
-    cacheExtend.value.Empty = ''
+  const updateFilterTemplate = (e) => {
+    currentFilterTemplateName.value = e;
+    const template = filterTemplate.value[modelDisplayName.value].filter(i => i.FilterName === e)[0]
+    const newExtend = unformat(template || {})
+    newExtend.FilterName = ''
+    cacheExtend.value = newExtend
   }
 
   function periodDelete(index) {
@@ -384,12 +388,9 @@
   })
 
   const kvps = computed(() => {
-    console.log('kvp computed', attrList.value, currentLabelId.value)
     if (attrList.value) {
       if (attrList.value[props.algorithmName] && attrList.value[props.algorithmName][currentLabelId.value]) {
         const kvp = attrList.value[props.algorithmName] && attrList.value[props.algorithmName][currentLabelId.value].kvp;
-        console.log('kvp computed kvp', Object.keys(kvp))
-
         return Object.keys(kvp);
       }
     }
@@ -411,6 +412,34 @@
     }
 
     return selectOps;
+  })
+
+  const modelDisplayName = computed(() => {
+    if (props.algorithmName && props.algorithmName.trim().length > 0) {
+      return props.algorithmName
+    }
+
+    return aiModelName.value
+  })
+
+  const modelSelectDisabled = computed(() => {
+    if (props.algorithmName && props.algorithmName.trim().length > 0) {
+      return true
+    }
+
+    return false
+  })
+
+  const ruleTemplateSelectShow = computed(() => {
+    if (props.algorithmName && props.algorithmName.trim().length > 0) {
+      return false
+    }
+
+    if (aiModelName.value && aiModelName.value.trim().length > 0) {
+      return true
+    }
+
+    return false
   })
 
   function attrAdd(labelId) {
@@ -509,25 +538,31 @@
   }
 
   async function Submit() {
-    // const newValue = JSON.parse(JSON.stringify(cacheExtend.value))
     const newValue = format();
-    console.log('submit', newValue, format());
-
-    try {
-      emit('success', newValue);
-      closeModal();
-    } finally {
-      setModalProps({ confirmLoading: false });
-    }
+    await apis.updateRuleTemplate(modelDisplayName.value, newValue)
+    closeModal();
+    emit('success')
   }
 
   watch(getVisible, (newValue, oldValue) => {
     if (!newValue) { return }
-    apis.ruleTemplate().then((res) => {
+    aiModelName.value = ''
+    currentFilterTemplateName.value = ''
+
+    apis.ruleTemplateList().then((res) => {
       filterTemplate.value = res;
-      currentFilterTemplateName.value = ''
+    })
+
+    apis.modelList().then((res) => {
+      aiModelNameOptions.value = res.map(item => item.annotator_name)
     })
   })
+
+  const aiModelSelectChange = (e) => {
+    aiModelName.value = e
+    currentFilterTemplateName.value = ''
+    cacheExtend.value = {}
+  }
 
   onMounted(() => {
     apis.attrList().then((res) => {
@@ -541,13 +576,9 @@
   })
 
   const props = defineProps({
-    taskName: {
-      type: String,
-      default: null,
-    },
     algorithmName: {
       type: String,
-      default: null,
+      default: '',
     },
     extend: {
       type: Object,

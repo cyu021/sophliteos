@@ -145,5 +145,13 @@
     "diskRate": "磁盘使用率",
     "title": "告警阈值配置",
     "cloud": "云平台配置"
+  },
+  "ruleTemplate": {
+    "modelName": "AI模型名称",
+    "templateName": "模版名称",
+    "action": "操作",
+    "create": "新建一个模版",
+    "edit": "编辑",
+    "copy": "从其他复制:"
   }
 }
