@@ -1,8 +1,8 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="Submit" width="70%" :height="1000">
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="modelSelectDisabled ? t('maintenance.ruleTemplate.edit') : t('maintenance.ruleTemplate.create')" @ok="Submit" width="70%" :height="1000">
     <div style="display: flex; flex-direction: column; align-content: space-between; padding: 14px">
       <div style="padding-bottom: 24px;">
-        {{ 'AI Model:' }}
+        {{ t('maintenance.ruleTemplate.modelName') + ':' }}
         <Select 
           v-model:value="modelDisplayName" 
           :options="aiModelNameOptions.map((i) => {return {value: i, label: i}})" 
@@ -10,7 +10,7 @@
           :disabled="modelSelectDisabled" 
           @select="aiModelSelectChange" />
       </div>
-      <div v-if="ruleTemplateSelectShow">{{ 'Copy from Rule Template:' }}
+      <div v-if="ruleTemplateSelectShow">{{ t('maintenance.ruleTemplate.copy') }}
         <Select 
           v-model:value="currentFilterTemplateName" 
           :options="filterTemplate[modelDisplayName].map((i) => { return { value: i.FilterName, label: i.FilterName }})" 
@@ -21,7 +21,7 @@
     <Divider />
 
     <div style="padding: 14px; display: flex; flex-direction: row; align-items: center;">
-      <Input :disabled="modelSelectDisabled" v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" />
+      <Input :disabled="modelSelectDisabled" v-model:value="cacheExtend.FilterName" :placeholder="t('maintenance.ruleTemplate.templateName')" />
     </div>
 
     <div style="padding: 14px; padding-bottom: 30px;">

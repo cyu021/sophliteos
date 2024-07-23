@@ -3,8 +3,16 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'action'">
         <Space>
-          <Button type="primary" @click="onEdit(record)">Edit</Button>
-          <Button type="primary" danger @click="onDelete(record.aiModelName, record.templateName)">Delete</Button>
+          <Button type="primary" @click="onEdit(record)">
+            <template #icon>
+              <EditOutlined />
+            </template>
+          </Button>
+          <Button type="primary" danger @click="onDelete(record.aiModelName, record.templateName)">
+            <template #icon>
+              <DeleteOutlined />
+            </template>
+          </Button>
         </Space>
       </template>
     </template>
@@ -24,12 +32,15 @@
 </template>
 <script setup>
 import { Table, Space, Button, } from 'ant-design-vue';
-import { PlusOutlined } from '@ant-design/icons-vue'
+import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import { onMounted, ref } from 'vue'
 import apis from './api.js'
 
 import RuleTemplateModal from './RuleTemplateModal.vue'
 import { useModal } from '/@/components/Modal';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const [RegisterFilterRuleModal, { openModal: openRuleTemplateModal }] = useModal();
 
@@ -96,17 +107,17 @@ const onEdit = (e) => {
 
 const columns = [
   {
-    title: 'AI Model Name',
+    title: t('maintenance.ruleTemplate.modelName'),
     dataIndex: 'aiModelName',
     key: 'aiModelName',
   },
   {
-    title: 'Template Name',
+    title: t('maintenance.ruleTemplate.templateName'),
     dataIndex: 'templateName',
     key: 'templateName',
   },
   {
-    title: 'Action',
+    title: t('maintenance.ruleTemplate.action'),
     key: 'action',
   },
 ];

@@ -145,5 +145,13 @@
     "diskRate": "ディスク使用量",
     "title": "アラーム閾値",
     "cloud": "クラウドプラットフォームの設定"
+  },
+  "ruleTemplate": {
+    "modelName": "AI Model Name",
+    "templateName": "Template Name",
+    "action": "Action",
+    "create": "Create a new rule template",
+    "edit": "Edit rule template",
+    "copy": "Copy from:"
   }
 }
