@@ -4,8 +4,8 @@
       <div style="padding-bottom: 24px;">
         {{ t('maintenance.ruleTemplate.modelName') + ':' }}
         <Select 
-          v-model:value="modelDisplayName" 
-          :options="aiModelNameOptions.map((i) => {return {value: i, label: i}})" 
+          :value="modelDisplayName" 
+          :options="aiModelNameOptions.map((i) => {return { value: i, label: i }})" 
           style="padding-left: 4px; width: 300px" 
           :disabled="modelSelectDisabled" 
           @select="aiModelSelectChange" />
@@ -13,7 +13,7 @@
       <div v-if="ruleTemplateSelectShow">{{ t('maintenance.ruleTemplate.copy') }}
         <Select 
           v-model:value="currentFilterTemplateName" 
-          :options="filterTemplate[modelDisplayName].map((i) => { return { value: i.FilterName, label: i.FilterName }})" 
+          :options="(filterTemplate[modelDisplayName] || []).map((i) => { return { value: i.FilterName, label: i.FilterName }})" 
           style="width: 300px" 
           @select="updateFilterTemplate" />
       </div>
@@ -192,7 +192,6 @@
   const aiModelNameOptions = ref([])
 
   const { t } = useI18n();
-  const title = t('paramConfig.param.filterRule');
   const emit = defineEmits(['success', 'register']);
 
   const attributeActiveKey = ref(['1', '2'])
