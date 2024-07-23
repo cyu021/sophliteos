@@ -16,6 +16,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { isArray } from '/@/utils/is';
 import { h } from 'vue';
+import { log } from 'console';
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -124,13 +125,14 @@ export const useUserStore = defineStore({
     async getUserInfoAction(): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       // const userInfo = await getUserInfo();
+      console.info('userInfo='+this.getUserInfo)
       const userInfo = {
-        userId: '1',
-        username: 'admin',
+        userId: this.getUserInfo.userId, //'1',
+        username: this.getUserInfo.username, //'admin',
         realName: 'Big Brother',
         avatar: '',
         desc: 'manager',
-        password: 'admin',
+        password: 'fakePassword1',
         token: 'fakeToken1',
         homePath: '',
         roles: [

@@ -13,14 +13,15 @@ func SaveOptLog(request *http.Request, operationName, content string) {
 
 	user := GetUser(Token(request))
 
-	if operationName == "登录" {
+	if strings.HasPrefix(operationName, "Login-") { //"登录" {
+		eles := strings.Split(operationName, "-")
 		repo.SaveLog(repo.OptLog{
-			UserName:         "admin",
+			UserName:         eles[1], //"admin",
 			CreatedTime:      time.Now(),
 			OperationType:    strings.Split(request.RequestURI, "?")[0],
 			OperationContent: content,
 			OperationIP:      request.RemoteAddr[0:strings.LastIndex(request.RemoteAddr, ":")],
-			OperationFunc:    operationName,
+			OperationFunc:    eles[0],
 		})
 		return
 	}
