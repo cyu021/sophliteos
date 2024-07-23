@@ -1,22 +1,21 @@
 package system
 
 import (
-	"encoding/json"
 	"net/http"
 	"strings"
 	"time"
 
 	"sophliteos/global"
-	"sophliteos/logger"
 
 	"sophliteos/pkg/buserr"
 	"sophliteos/pkg/dto"
 	"sophliteos/pkg/handle"
 	"sophliteos/pkg/repo"
 	"sophliteos/pkg/service"
-	"sophliteos/pkg/utils/httpclient"
 
 	"github.com/google/uuid"
+
+	"sophliteos/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,21 +26,24 @@ type BaseApi struct{}
 func (b *BaseApi) Login(c *gin.Context) {
 	var req dto.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, handle.FailWithMsg(-1, "参数错误"))
+		// c.JSON(http.StatusOK, handle.FailWithMsg(-1, "参数错误"))
+		c.JSON(http.StatusOK, handle.FailWithMsg(-1, "Invalid parameters"))
 		return
 	}
 
 	userName := req.UserName
 	password := req.Password
 	if userName == "" || password == "" {
-		c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的用户名或密码"))
+		// c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的用户名或密码"))
+		c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "Invalid username or password"))
 		return
 	}
 
 	user, _ := repo.QueryUserWithName(userName)
 	var token string
 	if user == nil || user.Password != password { // 验证密码
-		c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的用户名或密码"))
+		// c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的用户名或密码"))
+		c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "Invalid username or password"))
 		return
 	} else {
 		now := time.Now()
@@ -51,12 +53,15 @@ func (b *BaseApi) Login(c *gin.Context) {
 			user.LoginTime = now
 			user.ExpireTime = now.Add(time.Hour * 2)
 			repo.UpdateUser(user)
+			logger.Info(">>> %v/%v", user.UserID, user.Token)
 		} else {
 			token = user.Token
+			logger.Info(">>> %v/%v", user.UserID, user.Token)
 		}
 	}
 	service.SetUser(token, user)
-	service.SaveOptLog(c.Request, "登录", "登录")
+	// service.SaveOptLog(c.Request, "登录", "登录")
+	service.SaveOptLog(c.Request, "Login-"+user.UserID, "Login")
 
 	c.JSON(http.StatusOK, handle.Success(dto.LoginResponse{
 		Token: token,
@@ -66,7 +71,8 @@ func (b *BaseApi) Login(c *gin.Context) {
 func (b *BaseApi) Logout(c *gin.Context) {
 	var req dto.LogoutRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusOK, handle.FailWithMsg(-1, "参数错误"))
+		// c.JSON(http.StatusOK, handle.FailWithMsg(-1, "参数错误"))
+		c.JSON(http.StatusOK, handle.FailWithMsg(-1, "Invalid parameters"))
 		return
 	}
 
@@ -76,23 +82,27 @@ func (b *BaseApi) Logout(c *gin.Context) {
 			user.Token = ""
 			user.ExpireTime = time.Now()
 			repo.UpdateUser(user)
-			service.SaveOptLog(c.Request, "注销登录", "注销登录")
+			// service.SaveOptLog(c.Request, "注销登录", "注销登录")
+			service.SaveOptLog(c.Request, "Logout", "Logout")
 			service.RemoveUser(req.Token)
 			c.JSON(http.StatusOK, handle.Success(nil))
 
 		} else {
-			c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的token"))
+			// c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的token"))
+			c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "Invalid token"))
 			return
 		}
 	} else {
-		c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的token"))
+		// c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "无效的token"))
+		c.JSON(http.StatusOK, handle.Fail(buserr.InvalidUsernameOrPassword, "Invalid token"))
 	}
 }
 
 func (b *BaseApi) AlarmListen(c *gin.Context) {
 	var alarmRec repo.AlarmRec
 	if err := c.ShouldBindJSON(&alarmRec); err != nil {
-		c.JSON(http.StatusOK, handle.FailWithMsg(-1, "参数错误"))
+		// c.JSON(http.StatusOK, handle.FailWithMsg(-1, "参数错误"))
+		c.JSON(http.StatusOK, handle.FailWithMsg(-1, "Invalid parameters"))
 		return
 	}
 
@@ -111,7 +121,8 @@ func (b *BaseApi) AlarmListen(c *gin.Context) {
 	}
 
 	if alarm.ComponentType == "disk" && alarmRec.Code < 0 {
-		alarm.Msg = "磁盘" + alarmRec.DiskName + ": " + alarmRec.Msg
+		// alarm.Msg = "磁盘" + alarmRec.DiskName + ": " + alarmRec.Msg
+		alarm.Msg = "Disk" + alarmRec.DiskName + ": " + alarmRec.Msg
 	}
 
 	alarm.CoreUnitBoardSn = alarmRec.BoardSn
@@ -152,20 +163,20 @@ func (b *BaseApi) GetDeviceIp(c *gin.Context) {
 }
 
 func Register() {
-	var req struct {
-		Msg  string `json:"msg"`
-		Code int    `json:"code"`
-	}
-	logger.Info("尝试注册algoliteos服务")
+	// var req struct {
+	// 	Msg  string `json:"msg"`
+	// 	Code int    `json:"code"`
+	// }
+	// logger.Info("尝试注册algoliteos服务")
 
-	data, _ := httpclient.NewRequest("127.0.0.1:8081/algorithm/register", "GET", nil, nil)
-	json.Unmarshal(data, &req)
+	// data, _ := httpclient.NewRequest("127.0.0.1:8081/algorithm/register", "GET", nil, nil)
+	// json.Unmarshal(data, &req)
 
-	if req.Msg != "ok" {
-		logger.Info("algoliteos未运行服务")
-		return
-	}
-	logger.Info("注册到algoliteos服务成功")
+	// if req.Msg != "ok" {
+	// 	logger.Info("algoliteos未运行服务")
+	// 	return
+	// }
+	// logger.Info("注册到algoliteos服务成功")
 	global.AlgoFlag = true
 }
 
