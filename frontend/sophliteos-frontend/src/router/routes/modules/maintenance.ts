@@ -203,6 +203,14 @@ const maintenance: AppRouteModule = {
     //     title: t('dashboard.sysSetting'),
     //   },
     // },
+    {
+      path: 'ruleTemplate',
+      name: 'ruleTemplate',
+      component: () => import('/@/views/maintenance/ruleTemplate/index.vue'),
+      meta: {
+        title: t('dashboard.ruleTemplate'),
+      },
+    },
   ],
 };
 

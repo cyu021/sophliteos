@@ -17,6 +17,7 @@
   "softUpdate": "软件升级",
   "ssmUpdate": "SSM升级",
   "sysSetting": "系统配置",
+  "ruleTemplate": "规则模版",
   "liteOsUpdate": "LiteOS升级",
   "otaDaemonUpdate": "Daemon升级",
   "adapterUpdate": "Adapter升级",
