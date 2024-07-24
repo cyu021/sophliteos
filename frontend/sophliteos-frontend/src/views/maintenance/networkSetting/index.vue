@@ -81,7 +81,7 @@
     <!-- <a-tab-pane key="core" :tab="t('maintenance.newworkSettings.core')" disabled>
       {{ t('maintenance.newworkSettings.core') }}
     </a-tab-pane> -->
-    <a-tab-pane key="algoConfig" :tab="t('taskList.taskList.algoConfigTitle')">
+    <!-- <a-tab-pane key="algoConfig" :tab="t('taskList.taskList.algoConfigTitle')">
       <a-skeleton :loading="pageLoading" active>
         <a-form
           :model="algoConfig"
@@ -111,7 +111,7 @@
           </a-form-item>
         </a-form>
       </a-skeleton>
-    </a-tab-pane>
+    </a-tab-pane> -->
     <a-tab-pane key="upUrlConfig" :tab="t('taskList.taskList.upUrlConfig')">
       <a-skeleton :loading="pageLoading" active>
         <a-form
@@ -560,7 +560,8 @@
   const upUrlConfig: UnwrapRef<UpUrlConfigSetParams> = reactive({
     ip: '',
     port: '',
-    protocol: ''
+    protocol: '',
+    endpoint: ''
   });
 
 const upUrlConfigRules = computed(() => {
@@ -583,6 +584,12 @@ const upUrlConfigRules = computed(() => {
           {
             required: true,
             validator: portCheck,
+            trigger: 'blur',
+          },
+        ],
+        endpoint: [
+          {
+            required: true,
             trigger: 'blur',
           },
         ],
@@ -612,6 +619,12 @@ const formItemListUpUrlConfig = [
     placeholder: t('sys.form.placeholder'),
     type: 'input',
   },
+  {
+    label: t('maintenance.newworkSettings.serverEndpoint'),
+    field: 'endpoint',
+    placeholder: '/algorithm/upload',
+    type: 'input',
+  },
 ];
   
   const ipDataUpUrlConfig = reactive({
@@ -626,19 +639,29 @@ const formItemListUpUrlConfig = [
       let resultEles2 = resultEles[1].split(':');
       ipDataUpUrlConfig.upUrlConfig['protocol'] = resultEles[0];
       ipDataUpUrlConfig.upUrlConfig['ip'] = resultEles2[0];
-      ipDataUpUrlConfig.upUrlConfig['port'] = resultEles2[1];
+      let resultEles3 = resultEles2[1].split('/');
+      ipDataUpUrlConfig.upUrlConfig['port'] = resultEles3[0];
+      ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/algorithm/upload'
+      if(resultEles3.length > 2) {
+        ipDataUpUrlConfig.upUrlConfig['endpoint'] = resultEles3.slice(1,resultEles3.length).join('/')
+      }
+      if(!ipDataUpUrlConfig.upUrlConfig['endpoint'].startsWith('/')) {
+        ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/'+ipDataUpUrlConfig.upUrlConfig['endpoint']
+      }
       upUrlConfig.ip = ipDataUpUrlConfig.upUrlConfig['ip'];
       upUrlConfig.port = ipDataUpUrlConfig.upUrlConfig['port'];
       upUrlConfig.protocol = ipDataUpUrlConfig.upUrlConfig['protocol'];
+      upUrlConfig.endpoint = ipDataUpUrlConfig.upUrlConfig['endpoint']
     }
   };
   
   const submitFormUpUrlConfig = () => {
     loading.value = true;
-    var params : upUrlParams = { protocol: '', ip: '', port: ''} ;
+    var params : upUrlParams = { protocol: '', ip: '', port: '', endpoint: ''} ;
     params.protocol = upUrlConfigMap["upUrlConfig"].protocol;
     params.ip = upUrlConfigMap["upUrlConfig"].ip;
     params.port = upUrlConfigMap["upUrlConfig"].port;
+    params.endpoint = upUrlConfigMap["upUrlConfig"].endpoint;
     console.info('addUpUrl params = '+JSON.stringify(params));
     const result = addUpUrl(params);
     console.info('addUpUrl result = '+JSON.stringify(result));
