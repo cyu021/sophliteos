@@ -407,7 +407,7 @@
     } else {
       init();
     }
-    initAlgoConfig();
+    // initAlgoConfig();
     initUpUrlConfig();
     initRotateCfgConfig();
   });
