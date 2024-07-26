@@ -140,6 +140,7 @@ const start = (name) => {
     return dynamicStart(name)
     .then((dynamicResult) => {
       if(dynamicResult['msg'] != 'success') {
+        dynamicStop(name)
         abilitiesReleaseToken({ token: token })
         throw new Error(dynamicResult['msg']);
       }
