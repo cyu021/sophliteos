@@ -1,4 +1,7 @@
 <template>
+  <div style="padding: 24px; padding-right: 64px; justify-content: flex-end; display: flex; flex-direction: row;">
+    <Button type="primary" @click="onAddNew">Add Template</Button>
+  </div>
   <Table :columns="columns" :data-source="data" style="padding: 14px;" :pagination="paginationConfig">
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'action'">
@@ -17,12 +20,6 @@
       </template>
     </template>
   </Table>
-
-  <Button shape="circle" size="large" style="position: absolute; right: 24px; bottom: 24px; width: 60px; height: 60px;" type="primary" @click="onAddNew">
-    <template #icon>
-      <PlusOutlined />
-    </template>
-  </Button>
 
   <RuleTemplateModal 
     :extend="extend" 
