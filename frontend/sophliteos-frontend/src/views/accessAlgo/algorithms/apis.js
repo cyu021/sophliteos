@@ -138,7 +138,11 @@ const start = (name) => {
     const index = keys.length > 0 ? (Math.max(...keys.map(Number)) + 1) : 1;
 
     return dynamicStart(name)
-    .then((res) => {
+    .then((dynamicResult) => {
+      if(dynamicResult['msg'] != 'success') {
+        abilitiesReleaseToken({ token: token })
+        throw new Error(dynamicResult['msg']);
+      }
       return abilitiesSet({ token: token, [name]: '' + index })
     })
     .then((res) => {
@@ -165,7 +169,7 @@ const stop = (name) => {
     }
 
     if (existNames.includes(name)) {
-      throw new Error('当前算法包存在任务使用，请先删除对应任务');
+      throw new Error('Model is in use, stop the tasks first');
     }
 
     return true;

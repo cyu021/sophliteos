@@ -377,7 +377,7 @@ const beforeUploadOtaDaemon = (file) => {
 
 async function handleUploadOtaDaemon() {
   if (fileListOtaDaemon.value.length <= 0) {
-    createMessage.error('请先选择文件');
+    createMessage.error('Select otadaemon-ota.zip first');
   } else {
     await uploadFileDaemon();
   }
@@ -386,7 +386,7 @@ async function handleUploadOtaDaemon() {
 const handleRestartDaemon = async () => {
   const res = await apisOtaDaemon.restart();
   if (res.code === 0) {
-    createMessage.success('重启成功');
+    createMessage.success('Daemon restarted');
   } else {
     createMessage.error(res.msg);
   }
@@ -397,7 +397,7 @@ const handleUpgradeDaemon = async () => {
 
   const res = await apisOtaDaemon.upgrade();
   if (res.code === 0) {
-    createMessage.success('升级成功');
+    createMessage.success('Upgrade done');
     await fetchVersionOtaDaemon();
   } else {
     createMessage.error(res.msg);
@@ -507,7 +507,7 @@ const handleUpgradeAdapter = async () => {
   const res = await apisAdapter.upgrade();
   console.info("adapter upgrade res = " + JSON.stringify(res));
   if (res.code === 0) {
-    createMessage.success('Upgrade success');
+    createMessage.success('Upgrade done');
     await fetchVersionAdapter();
   } else {
     createMessage.error(res.msg);
@@ -598,7 +598,7 @@ const beforeUploadCore = (file) => {
 
 async function handleUploadCore() {
   if (fileListCore.value.length <= 0) {
-    createMessage.error('请先选择文件');
+    createMessage.error('Select core-ota.zip first');
   } else {
     await uploadFileCore();
   }
@@ -607,7 +607,7 @@ async function handleUploadCore() {
 const handleRestartCore = async () => {
   const res = await apisCore.restart();
   if (res.code === 0) {
-    createMessage.success('重启成功');
+    createMessage.success('Core restarted');
   } else {
     createMessage.error(res.msg);
   }
@@ -618,7 +618,7 @@ const handleUpgradeCore = async () => {
 
   const res = await apisCore.upgrade();
   if (res.code === 0) {
-    createMessage.success('升级成功');
+    createMessage.success('Upgrade done');
     await fetchVersionCore();
   } else {
     createMessage.error(res.msg);

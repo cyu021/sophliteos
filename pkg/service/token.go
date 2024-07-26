@@ -87,7 +87,7 @@ func Valid(request *http.Request, req interface{}) error {
 	err := validate.Struct(req)
 	if err != nil {
 		errs := err.(validator.ValidationErrors)
-		errText := fmt.Sprintf("参数错误！%v", removeStructName(errs.Translate(trans)))
+		errText := fmt.Sprintf("Invalid param!%v", removeStructName(errs.Translate(trans)))
 		// logger.Error(errText)
 		return errors.New(errText)
 	}
