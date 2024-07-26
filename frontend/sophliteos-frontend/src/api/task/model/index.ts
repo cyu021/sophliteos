@@ -14,6 +14,7 @@ export interface upUrlParams {
   ip: string;
   port: string;
   protocol: string;
+  endpoint: string;
 }
 
 export interface rotateCfgParams {

@@ -16,6 +16,7 @@ export interface UpUrlConfigSetParams {
   ip: string; // ip地址
   port: string;
   protocol: string; //http|https
+  endpoint: string;
 }
 
 export interface RotateCfgSetParams {

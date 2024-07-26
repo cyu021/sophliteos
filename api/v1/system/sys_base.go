@@ -64,7 +64,8 @@ func (b *BaseApi) Login(c *gin.Context) {
 	service.SaveOptLog(c.Request, "Login-"+user.UserID, "Login")
 
 	c.JSON(http.StatusOK, handle.Success(dto.LoginResponse{
-		Token: token,
+		Token:      token,
+		ExpireTime: user.ExpireTime.Format("2006-01-02T15:04:05.999999999-07:00"),
 	}))
 }
 
