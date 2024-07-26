@@ -17,6 +17,7 @@
   "softUpdate": "소프트웨어 업그레이드",
   "ssmUpdate": "SSM 업그레이드",
   "sysSetting": "시스템 설정",
+  "ruleTemplate": "Rule Template",
   "liteOsUpdate": "LiteOS 업그레이드",
   "otaDaemonUpdate": "OTADaemon 업그레이드",
   "adapterUpdate": "Adapter 업그레이드",

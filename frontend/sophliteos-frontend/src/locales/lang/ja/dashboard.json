@@ -17,6 +17,7 @@
   "softUpdate": "アップグレード",
   "ssmUpdate": "SSMアップグレード",
   "sysSetting": "システム設定",
+  "ruleTemplate": "Rule Template",
   "liteOsUpdate": "LiteOS アップグレード",
   "otaDaemonUpdate": "OTADaemon アップグレード",
   "adapterUpdate": "Adapter アップグレード",

@@ -8,4 +8,6 @@ export default {
     ...genMessage(modules, 'zh'),
     antdLocale,
   },
+  dateLocale: null,
+  dateLocaleName: 'zh',
 };

@@ -13,7 +13,7 @@
       t('maintenance.systemUpdate.localUpdate1')
     }}</div>
     <div class="formStyle">
-      <div style="width: 20vw; margin-left: 20px; min-width: 350px; margin-right: 20px">
+      <div style="width: 20vw; margin-left: 20px; min-width: 650px; margin-right: 20px">
         <a-form
           :model="formState"
           v-bind="formItemLayout"
