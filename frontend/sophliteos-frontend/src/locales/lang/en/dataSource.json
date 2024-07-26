@@ -19,9 +19,9 @@
     "platform": "Streaming Media Management Platform"
   },
   "videoManage": {
-    "deviceId": "Stream ID",
+    "deviceId": "Device ID",
     "livePreview": "Live Preview",
-    "deviceName": "Stream Name",
+    "deviceName": "Device Name",
     "mediaServerName": "Streaming Services",
     "type": "Device Type",
     "protocol": "Stream Protocol",
@@ -32,7 +32,7 @@
     "isNeedDetect": "Inspection Status",
     "encodeFormat": "Encoding Format",
     "resolution": "Resolution",
-    "addDevice": "Add Stream (1920x1080)",
+    "addDevice": "Add Device (1920x1080)",
     "editDevice": "Edit Equipment",
     "allCheck": "Stream Check",
     "status": "Status",

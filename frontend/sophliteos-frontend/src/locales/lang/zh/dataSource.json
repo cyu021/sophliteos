@@ -19,7 +19,7 @@
     "platform": "流媒体管理平台"
   },
   "videoManage": {
-    "deviceId": "Stream ID",
+    "deviceId": "Device ID",
     "livePreview": "实时预览",
     "deviceName": "通道名称",
     "mediaServerName": "流媒体服务",

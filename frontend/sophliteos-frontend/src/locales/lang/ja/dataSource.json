@@ -19,7 +19,7 @@
     "platform": "ストリーミングメディア管理プラットフォーム"
   },
   "videoManage": {
-    "deviceId": "Stream ID",
+    "deviceId": "Device ID",
     "livePreview": "ライブプレビュー",
     "deviceName": "チャネル名",
     "mediaServerName": "配信サービス",
