@@ -168,6 +168,7 @@
   const pageLoading = ref(true);
   const init = async () => {
     const result = await getAlarm();
+    console.info("getAlarm => "+JSON.stringify(result))
     pageLoading.value = false;
     if (result) {
       formState.fanSpeed = 9999;
@@ -183,6 +184,7 @@
       formState.tpuRate = Math.round(result.tpuRate * 100);
     }
     const res = await getComIP();
+    console.info("getComIP => "+JSON.stringify(res))
     if (res) {
       CloudModel.commonIP = res.natIP;
       CloudModel.cloudIP = res.serviceAddress.register.serviceAddress[0];
@@ -204,15 +206,15 @@
       });
       const isParams = Object.values(params).every((value) => value > 0);
       if (!isParams) {
-        createMessage.error(`设置值必须大于0！`, 1);
+        createMessage.error(`Config value must be greater than 0！`, 1);
         init();
       } else {
         await setAlarm(params)
           .then(() => {
-            createMessage.success('操作成功');
+            createMessage.success('Done');
           })
           .catch(() => {
-            createMessage.error('操作失败');
+            createMessage.error('Failed');
           });
       }
     } catch (error) {
@@ -235,7 +237,7 @@
       },
     };
     await modComIP(params).then(() => {
-      createMessage.success('修改成功');
+      createMessage.success('Done');
     });
   }
 </script>

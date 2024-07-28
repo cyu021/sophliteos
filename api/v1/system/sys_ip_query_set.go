@@ -147,9 +147,11 @@ func (b *IpApi) IpSet(c *gin.Context) {
 	logger.Info("ip:%v", ip)
 
 	// 修改ip
-	service.SaveOptLog(c.Request, "IP设置", "网卡"+req.Device+" 设置IP: "+req.IP)
+	// service.SaveOptLog(c.Request, "IP设置", "网卡"+req.Device+" 设置IP: "+req.IP)
+	service.SaveOptLog(c.Request, "IP Config", "NIC:"+req.Device+", IP: "+req.IP)
 
-	c.JSON(http.StatusOK, handle.OkWithMsg("请求成功"))
+	// c.JSON(http.StatusOK, handle.OkWithMsg("请求成功"))
+	c.JSON(http.StatusOK, handle.OkWithMsg("Config done"))
 
 	go func() {
 		time.Sleep(2 * time.Second)
