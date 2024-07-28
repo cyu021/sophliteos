@@ -24,7 +24,10 @@ enum Api {
 }
 
 export function getTaskList(params?: MediaServerParams) {
-  return defHttp.post({ url: Api.taskList, params }, { apiUrl: 'algorithm' });
+  console.info("getTaskList params = " + JSON.stringify(params))
+  // return defHttp.post({ url: Api.taskList, params }, { apiUrl: 'algorithm' });
+  var paramsAll: MediaServerParams = {pageNo: 1, pageSize: 1000};
+  return defHttp.post({ url: Api.taskList, params: paramsAll }, { apiUrl: 'algorithm' });
 }
 export function PostDeleteTask(params: any) {
   return defHttp.post({ url: Api.deleteTask, params }, { apiUrl: 'algorithm' });
