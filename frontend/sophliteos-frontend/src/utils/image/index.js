@@ -81,7 +81,8 @@ export function cropperImageByRect(
     };
 
     img.onerror = () => {
-      reject(new Error('图片加载失败'));
+      // reject(new Error('图片加载失败'));
+      reject(new Error('Load image failed'));
     };
     img.src = imgUrl;
   });
@@ -123,7 +124,8 @@ export function drawRectOnImage(imageUrl, srcRect, InBoxs) {
       resolve(canvas.toDataURL('image/jpeg', 1));
     };
     img.onerror = () => {
-      reject(new Error('图片加载失败'));
+      // reject(new Error('图片加载失败'));
+      reject(new Error('Load image failed'));
     };
     img.src = imageUrl;
   });

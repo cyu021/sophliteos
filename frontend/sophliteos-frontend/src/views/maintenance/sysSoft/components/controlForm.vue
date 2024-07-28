@@ -340,7 +340,8 @@
         .catch(() => {
           fileLoading.value = false;
           progressStatus.value = 'exception';
-          createMessage.error('上传失败');
+          // createMessage.error('上传失败');
+          createMessage.error('Upload failed');
           clearTimeout(timerId);
         });
       return {

@@ -163,7 +163,8 @@ export const useUserStore = defineStore({
             token: this.getToken,
           });
         } catch {
-          console.log('注销Token失败');
+          // console.log('注销Token失败');
+          console.log('Invalidate token failed');
         }
       }
       this.setToken(undefined);

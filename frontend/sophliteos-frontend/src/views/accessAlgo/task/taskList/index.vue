@@ -151,6 +151,7 @@
   const [addModal, { openModal: addOpenModal }] = useModal();
   async function addTask() {
     const usedUrl = getDataSource() ? getDataSource().map((item) => item.deviceName) : [];
+    console.info("usedUrl = " + JSON.stringify(usedUrl))
     const algoOptions = await getAbilityOption();
     addOpenModal(true, {
       usedUrl,
@@ -158,7 +159,7 @@
     });
   }
   function addSuccess() {
-    createMessage.success('新建成功');
+    createMessage.success('Add success');
     reload();
   }
   const [algoConfigModal, { openModal: algoConfigOpenModal }] = useModal();
@@ -167,7 +168,7 @@
     algoConfigOpenModal(true, res);
   }
   function configSuccess() {
-    createMessage.success('配置成功');
+    createMessage.success('Config success');
     reload();
   }
   const [upUrlConfigModal, { openModal: upUrlConfigOpenModal }] = useModal();

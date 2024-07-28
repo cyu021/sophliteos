@@ -154,7 +154,7 @@ const beforeUpload = (file) => {
 
 async function handleUpload() {
   if (fileList.value.length <= 0) {
-    createMessage.error('请先选择文件');
+    createMessage.error('Select file first');
   } else {
     await uploadFile();
   }
@@ -163,7 +163,7 @@ async function handleUpload() {
 const handleRestart = async () => {
   const res = await apisOtaDaemon.restart();
   if (res.code === 0) {
-    createMessage.success('重启成功');
+    createMessage.success('Restart done');
   } else {
     createMessage.error(res.msg);
   }
@@ -174,7 +174,7 @@ const handleUpgrade = async () => {
 
   const res = await apisOtaDaemon.upgrade();
   if (res.code === 0) {
-    createMessage.success('升级成功');
+    createMessage.success('Upgrade done');
     await fetchVersion();
   } else {
     createMessage.error(res.msg);
