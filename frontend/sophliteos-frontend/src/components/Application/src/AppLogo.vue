@@ -43,7 +43,7 @@
 
   const localeStore = useLocaleStore();
   const lTitle = computed(() => {
-    return localeStore.getLocale === 'en' ? title_en : title;
+    return localeStore.getLocale === 'zh_CN' ? title : title_en;
   });
 
   const getAppLogoClass = computed(() => [
