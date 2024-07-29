@@ -133,8 +133,7 @@
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
     "protocol": "프로토콜",
-    "inputProtocol": "Please enter one of: http, https",
-    "serverEndpoint": "Endpoint"
+    "inputProtocol": "Please enter one of: http, https"
   },
   "threshold": {
     "fanSpeed": "팬 속도",

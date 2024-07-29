@@ -1,6 +1,6 @@
 {
   "api": {
-    "success": "Success",
+    "success": "成功",
     "operationFailed": "操作を完了できませんでした。",
     "errorTip": "エラーヒント",
     "errorMessage": "操作に失敗しました。システムが異常です。",

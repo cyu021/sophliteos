@@ -20,7 +20,7 @@
     "action": "動作"
   },
   "systemUpdate": {
-    "filesUploading": "Processing",
+    "filesUploading": "処理中",
     "uploadFiles": "ファイルアップロード",
     "systemUpdate": "コントロールボード",
     "coreBoardUpdate": "コア ボード",
@@ -32,7 +32,7 @@
     "currentVersion": "システムバージョン",
     "currentSoftVersion": "ソフトウェアバージョン",
     "currentSoVersion": "SO version",
-    "currentBaseVersion": "Base Version",
+    "currentBaseVersion": "ベースバージョン",
     "currentVpsVersion": "VPS version",
     "currentBmsVersion": "BMS version",
     "currentSsmVersion": "SSMバージョン",
@@ -97,8 +97,8 @@
     "msg": "システムの再起動後、ユーザー定義のマッピングは無効になります。"
   },
   "containers": {
-    "activated": "Activated",
-    "stop": "Stopped",
+    "activated": "有効",
+    "stop": "停止",
     "runningTime": "実行時間",
     "run": "実行"
   },
@@ -133,8 +133,7 @@
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
     "protocol": "プロトコル",
-    "inputProtocol": "以下のいずれかを入力してください: http, https",
-    "serverEndpoint": "Endpoint"
+    "inputProtocol": "以下のいずれかを入力してください: http, https"
   },
   "threshold": {
     "fanSpeed": "ファン回転速度",
@@ -148,11 +147,11 @@
     "cloud": "クラウドプラットフォームの設定"
   },
   "ruleTemplate": {
-    "modelName": "AI Model Name",
-    "templateName": "Template Name",
-    "action": "Action",
-    "create": "Create a new rule template",
-    "edit": "Edit rule template",
-    "copy": "Copy from:"
+    "modelName": "AI モデル名",
+    "templateName": "テンプレート名",
+    "action": "動作",
+    "create": "新しいフォーム テンプレートを作成します",
+    "edit": "ルールテンプレートの編集",
+    "copy": "コピー元:"
   }
 }

@@ -1,6 +1,6 @@
 {
   "app": {
-    "searchNotData": "検索結果なし",
+    "searchNotData": "検索結果に該当するものはありません",
     "toSearch": "検索する",
     "toNavigate": "を選択します。"
   },
@@ -22,12 +22,12 @@
     "btn_zoom_out": "ズームアウト",
     "preview": "プレヴュー",
     "btn_detail": "詳細",
-    "btn_delete": "削除する",
+    "btn_delete": "削除",
     "btn_edit": "編集",
     "btn_add": "追加",
     "btn_action": "アクション",
     "btn_play": "ビデオプレビュー",
-    "btn_inspect": "調査する"
+    "btn_inspect": "調査"
   },
   "drawer": {
     "loadingText": "読み込み中...",
@@ -36,7 +36,7 @@
   },
   "excel": {
     "exportModalTitle": "データのエクスポート",
-    "fileType": "ファイル種類",
+    "fileType": "ファイル種別",
     "fileName": "ファイル名",
     "md5": "MD5 値"
   },
