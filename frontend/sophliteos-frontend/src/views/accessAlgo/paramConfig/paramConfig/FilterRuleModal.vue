@@ -21,8 +21,7 @@
     <Divider />
 
     <div style="padding: 14px; display: flex; flex-direction: row; align-items: center;">
-      <!-- <Input v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" /> -->
-      <Input v-model:value="cacheExtend.Empty" :placeholder="t('paramConfig.filter.name')" />
+      <Input v-model:value="cacheExtend.FilterName" :placeholder="t('paramConfig.filter.name')" />
     </div>
 
     <div style="padding: 14px; padding-bottom: 30px;">
@@ -259,8 +258,9 @@
 
   const updateFilterTemplate = (value) => {
     currentFilterTemplateName.value = value.FilterName;
-    cacheExtend.value = unformat(value || {});
-    cacheExtend.value.Empty = ''
+    const template = JSON.parse(JSON.stringify(unformat(value || {})))
+    template.FilterName = ''
+    cacheExtend.value = template;
   }
 
   function periodDelete(index) {
