@@ -201,7 +201,7 @@ const beforeUpload = (file) => {
 
 async function handleUpload() {
   if (fileList.value.length <= 0) {
-    createMessage.error('请先选择文件');
+    createMessage.error('Select zip file first');
   } else {
     return uploadFile()
   }
@@ -218,7 +218,7 @@ async function uploadFile() {
     const dataParams = { annoName: algoName };
     fileLoading.value = true;
     progressStatus.value = 'normal';
-    tip.value = '上传文件中...';
+    tip.value = 'Uploading...';
 
     return apis.upload({
       name: 'model',
@@ -283,7 +283,7 @@ const handleTimeout = (percent) => {
   if (percent < 100) {
     fileLoading.value = false;
     progressStatus.value = 'exception';
-    createMessage.error('文件传输超时');
+    createMessage.error('Upload takes too long');
   }
 };
 
