@@ -18,6 +18,7 @@
   "ssmUpdate": "SSM Upgrade",
   "sysSetting": "System Setting",
   "ruleTemplate": "Rule Template",
+  "restart": "One-click Restart",
   "liteOsUpdate": "Portal Upgrade",
   "otaDaemonUpdate": "Daemon Upgrade",
   "adapterUpdate": "Biz Module Upgrade",

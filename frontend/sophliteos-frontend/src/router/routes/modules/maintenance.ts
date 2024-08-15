@@ -211,6 +211,14 @@ const maintenance: AppRouteModule = {
         title: t('dashboard.ruleTemplate'),
       },
     },
+    {
+      path: 'restart',
+      name: 'restart',
+      component: () => import('/@/views/maintenance/restart/index.vue'),
+      meta: {
+        title: t('dashboard.restart'),
+      },
+    },
   ],
 };
 

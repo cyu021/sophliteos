@@ -154,5 +154,18 @@
     "create": "Create a new rule template",
     "edit": "Edit rule template",
     "copy": "Copy from:"
+  },
+  "restart": {
+    "hardware": "Hardware",
+    "services": "Services",
+    "restart": "Restart",
+    "hardwareTip": "Click 'Restart' to restart the device. Please refresh after 1-2 minutes.",
+    "servicesTip": "Click 'Restart' to restart services one by one, 'Plugin Module' -> 'Biz Module' -> 'Daemon'.",
+    "restartDone": "restart done",
+    "restartFailed": "restart failed",
+    "plugin": "Plugin module",
+    "biz": "Biz module",
+    "daemon": "Daemon module",
+    "restarting": "restarting"
   }
 }

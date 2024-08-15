@@ -153,5 +153,18 @@
     "create": "新しいフォーム テンプレートを作成します",
     "edit": "ルールテンプレートの編集",
     "copy": "コピー元:"
+  },
+  "restart": {
+    "hardware": "ハードウェア",
+    "services": "サービス",
+    "restart": "再起動",
+    "hardwareTip": "「再起動」をクリックしてデバイスを再起動します。1〜2 分後にページをリフレッシュしてください。",
+    "servicesTip": "「再起動」をクリックして、サービスを順番に再起動します。「プラグイン モジュール」->「Biz モジュール」->「Daemon」。",
+    "restartDone": "再起動完了",
+    "restartFailed": "再起動失敗",
+    "plugin": "プラグイン モジュール",
+    "biz": "Biz モジュール",
+    "daemon": "Daemon モジュール",
+    "restarting": "再起動中"
   }
 }

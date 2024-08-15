@@ -153,5 +153,18 @@
     "create": "新建一个模版",
     "edit": "编辑",
     "copy": "从其他复制:"
+  },
+  "restart": {
+    "hardware": "硬件",
+    "services": "服务",
+    "restart": "重启",
+    "hardwareTip": "点击“重启”以重启设备。请在 1-2 分钟后刷新。",
+    "servicesTip": "点击“重启”以依次重启服务：“插件模块”->“Biz 模块”->“Daemon”。",
+    "restartDone": "重启完成",
+    "restartFailed": "重启失败",
+    "plugin": "插件模块",
+    "biz": "Biz 模块",
+    "daemon": "Daemon 模块",
+    "restarting": "重启中"
   }
 }
