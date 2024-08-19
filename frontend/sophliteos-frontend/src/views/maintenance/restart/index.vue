@@ -3,7 +3,7 @@
     <a-tabs v-model:activeKey="activeKey" class="!m-2 !p-2 bg-white" animated>
       <a-tab-pane key="hardware" :tab="t('maintenance.restart.hardware')">
         <div style="background-color: #F0F2F5; height: 240px;">
-          <div style="padding: 14px;">
+          <div style="padding: 14px; white-space: pre-wrap;">
             {{ t('maintenance.restart.hardwareTip') }}
           </div>
 
@@ -94,8 +94,7 @@ const onServicesRestart = async () => {
   }
 
   // 2. Biz
-  serviceSteps.value = serviceSteps.value + "\n"
-  serviceSteps.value = t('maintenance.restart.biz') + "..." + t('maintenance.restart.restarting') + "..."
+  serviceSteps.value = serviceSteps.value + "\n" + t('maintenance.restart.biz') + "..." + t('maintenance.restart.restarting') + "..."
   try {
     const r = await apisAdapter.restart()
     if (r.code === 0) {
@@ -108,8 +107,7 @@ const onServicesRestart = async () => {
   }
 
   // 3. Daemon
-  serviceSteps.value = serviceSteps.value + "\n"
-  serviceSteps.value = t('maintenance.restart.daemon') + "..." + t('maintenance.restart.restarting') + "..."
+  serviceSteps.value = serviceSteps.value + "\n" + t('maintenance.restart.daemon') + "..." + t('maintenance.restart.restarting') + "..."
   try {
     const r3 = await apisOtaDaemon.restart()
     if (r3.code === 0) {
