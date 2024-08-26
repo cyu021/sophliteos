@@ -162,7 +162,7 @@ interface FormState {
 const formState: UnwrapRef<FormState> = reactive({
   file: '',
   algoName: '',
-  placeholder: '[A-Za-z0-9]+',
+  placeholder: 'upper/lowercase letter + number',
 });
 
 const formItemLayout = {
