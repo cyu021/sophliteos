@@ -18,7 +18,7 @@
   "ssmUpdate": "SSMアップグレード",
   "sysSetting": "システム設定",
   "ruleTemplate": "ルールテンプレート",
-  "restart": "ワンクリック再起動",
+  "restart": "ワンクリックセルフチェック",
   "liteOsUpdate": "LiteOS アップグレード",
   "otaDaemonUpdate": "OTADaemon アップグレード",
   "adapterUpdate": "Adapter アップグレード",

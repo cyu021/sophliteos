@@ -157,14 +157,14 @@
   "restart": {
     "hardware": "하드웨어",
     "services": "서비스",
-    "restart": "재시작",
-    "hardwareTip": "'재시작' 버튼을 클릭하여 박스를 전원 껐다 켜세요. \n1~2분 후에 페이지를 새로 고쳐주세요.",
-    "servicesTip": "‘재시작’을 클릭하여 서비스를 순차적으로 재시작합니다. ‘플러그인 모듈’ -> ‘Biz 모듈’ -> ‘Daemon’.",
-    "restartDone": "재시작 완료",
-    "restartFailed": "재시작 실패",
+    "restart": "발각",
+    "hardwareTip": "'발각' 버튼을 클릭하여 박스를 전원 껐다 켜세요. \n1~2분 후에 페이지를 새로 고쳐주세요.",
+    "servicesTip": "‘발각’을 클릭하여 서비스를 순차적으로 발각합니다. ‘플러그인 모듈’ -> ‘Biz 모듈’ -> ‘Daemon’.",
+    "restartDone": "발각 완료",
+    "restartFailed": "발각 실패",
     "plugin": "플러그인 모듈",
     "biz": "Biz 모듈",
     "daemon": "Daemon 모듈",
-    "restarting": "재시작 중"
+    "restarting": "발각 중"
   }
 }

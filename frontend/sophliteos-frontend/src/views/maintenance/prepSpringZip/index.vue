@@ -40,7 +40,8 @@
                   required
                   v-model:value="formState.algoName"
                 >
-                  <a-input v-model:value="formState.algoName" />
+                  <a-input v-model:value="formState.algoName"
+                  :placeholder="formState.placeholder" />
                 </a-form-item>
 
                 <!-- <a-form-item :wrapper-col="{ span: 14, offset: 4 }" /> -->
@@ -155,11 +156,13 @@ if (!deviceInfo.value.deviceSn) {
 interface FormState {
   file: any;
   algoName: string,
+  placeholder: string,
 }
 
 const formState: UnwrapRef<FormState> = reactive({
   file: '',
   algoName: '',
+  placeholder: '[A-Za-z0-9]+',
 });
 
 const formItemLayout = {
