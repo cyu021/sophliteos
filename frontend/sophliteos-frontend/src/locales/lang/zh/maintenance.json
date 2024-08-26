@@ -133,7 +133,8 @@
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
     "protocol": "协议",
-    "inputProtocol": "请输入以下内容之一：http、https"
+    "inputProtocol": "请输入以下内容之一：http、https",
+    "serverEndpoint": "Endpoint"
   },
   "threshold": {
     "fanSpeed": "风扇转速",

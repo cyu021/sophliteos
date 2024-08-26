@@ -133,7 +133,8 @@
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
     "protocol": "プロトコル",
-    "inputProtocol": "以下のいずれかを入力してください: http, https"
+    "inputProtocol": "以下のいずれかを入力してください: http, https",
+    "serverEndpoint": "Endpoint"
   },
   "threshold": {
     "fanSpeed": "ファン回転速度",
