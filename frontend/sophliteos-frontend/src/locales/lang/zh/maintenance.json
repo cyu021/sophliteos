@@ -132,6 +132,7 @@
     "msg": "该SDK版本不支持修改网络设置",
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
+    "serverEndpoint": "ServerEndpoint",
     "protocol": "协议",
     "inputProtocol": "请输入以下内容之一：http、https"
   },
@@ -165,6 +166,9 @@
     "plugin": "插件模块",
     "biz": "Biz 模块",
     "daemon": "Daemon 模块",
-    "restarting": "重启中"
+    "restarting": "重启中",
+    "taskRestart": "是否自动重启任务",
+    "taskRestartTipOK": "点击\"确认\"将自动重启算法任务",
+    "taskRestartTipNO": "点击\"取消\"需要自行手动重新启动算法任务"
   }
 }

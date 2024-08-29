@@ -165,6 +165,9 @@
     "plugin": "플러그인 모듈",
     "biz": "Biz 모듈",
     "daemon": "Daemon 모듈",
-    "restarting": "재시작 중"
+    "restarting": "재시작 중",
+    "taskRestart": "작업을 자동으로 재시작하겠습니까?",
+    "taskRestartTipOK": "\"확인\"을 클릭하면 알고리즘 작업이 자동으로 재시작됩니다.",
+    "taskRestartTipNO": "\"취소\"를 클릭하면 알고리즘 작업을 수동으로 재시작해야 합니다."
   }
 }

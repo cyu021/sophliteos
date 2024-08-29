@@ -165,6 +165,9 @@
     "plugin": "プラグイン モジュール",
     "biz": "Biz モジュール",
     "daemon": "Daemon モジュール",
-    "restarting": "再起動中"
+    "restarting": "再起動中",
+    "taskRestart": "タスクを自動的に再起動しますか？",
+    "taskRestartTipOK": "「確認」をクリックすると、アルゴリズムタスクが自動的に再起動します。",
+    "taskRestartTipNO": "「キャンセル」をクリックすると、アルゴリズムタスクを手動で再起動する必要があります。"
   }
 }

@@ -177,6 +177,20 @@
       </a-skeleton>
     </a-tab-pane>
   </a-tabs>
+  <BasicModal
+    v-bind="$attrs"
+    @register="register"
+    :title="t('maintenance.restart.taskRestart')"
+    :canFullscreen="false"
+    @ok="handleRestartTasksOk"
+    :closable="false"
+    :okText="t('common.okText')"
+    :ok-button-props="restartLoading"
+    :cancel-button-props="restartCancel"
+  >
+    <p>{{ t('maintenance.restart.taskRestartTipOK') }}</p>
+    <p>{{ t('maintenance.restart.taskRestartTipNO') }} </p>
+  </BasicModal>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, onMounted, computed, watch, h } from 'vue';
@@ -193,6 +207,11 @@
   // import { number } from '@intlify/core-base';
   import { IpCheck, subnetMaskCheck, gatewayCheck, dnsCheck } from '/@/utils/validateFuncs';
   import { useDeviceInfo } from '/@/store/modules/overview';
+
+  import { BasicModal, useModal } from '/@/components/Modal';
+
+  const [register, { openModal, closeModal }] = useModal();
+
   const deviceStore = useDeviceInfo();
   const { createMessage } = useMessage();
 
@@ -413,14 +432,11 @@
   });
 
   ////////////////////////////////////////////////
-  
+
   import { AlgoConfigSetParams } from '/@/api/maintenance/model/index';
   import { portCheck } from '/@/utils/validateFuncs';
-  import {
-    getAlgorithm,
-    addAlgorithm
-  } from '/@/api/task/index';
-  
+  import { getAlgorithm, addAlgorithm, getTaskList, StartTask, StopTask } from '/@/api/task/index';
+
   const algoConfig: UnwrapRef<AlgoConfigSetParams> = reactive({
     ip: '',
     port: '',
@@ -428,21 +444,21 @@
 
   const algoConfigRules = computed(() => {
     return {
-          ip: [
-            {
-              required: true,
-              validator: IpCheck,
-              trigger: 'blur',
-            },
-          ],
-          port: [
-            {
-              required: true,
-              validator: portCheck,
-              trigger: 'blur',
-            },
-          ],
-        };
+      ip: [
+        {
+          required: true,
+          validator: IpCheck,
+          trigger: 'blur',
+        },
+      ],
+      port: [
+        {
+          required: true,
+          validator: portCheck,
+          trigger: 'blur',
+        },
+      ],
+    };
   });
 
   const algoConfigMap = {
@@ -463,30 +479,30 @@
       type: 'input',
     },
   ];
-  
+
   const ipDataAlgoConfig = reactive({
     algoConfig: [],
   });
   const initAlgoConfig = async () => {
     const result = await getAlgorithm();
     pageLoading.value = false;
-    console.info('initAlgoConfig result='+JSON.stringify(result))
+    console.info('initAlgoConfig result=' + JSON.stringify(result));
     if (result) {
       ipDataAlgoConfig.algoConfig = result;
       algoConfig.ip = result.ip;
       algoConfig.port = result.port.toString();
     }
   };
-  
+
   const submitFormAlgoConfig = () => {
     loading.value = true;
-    var params = {}
-    params["ip"] = algoConfigMap["algoConfig"].ip;
-    params["port"] = Number(algoConfigMap["algoConfig"].port);
-    console.info('addAlgorithm params = '+JSON.stringify(params));
+    var params = {};
+    params['ip'] = algoConfigMap['algoConfig'].ip;
+    params['port'] = Number(algoConfigMap['algoConfig'].port);
+    console.info('addAlgorithm params = ' + JSON.stringify(params));
     const result = addAlgorithm(params);
-    console.info('addAlgorithm result = '+JSON.stringify(result));
-    if(JSON.stringify(result) === '{}') {
+    console.info('addAlgorithm result = ' + JSON.stringify(result));
+    if (JSON.stringify(result) === '{}') {
       createMessage.success('update success');
     } else {
       createMessage.error('invalid operation');
@@ -548,92 +564,89 @@
   /////////////////////////////////////////////////////
 
   import { UpUrlConfigSetParams } from '/@/api/maintenance/model/index';
-  import {
-    getUpUrl,
-    addUpUrl
-  } from '/@/api/task/index';
+  import { getUpUrl, addUpUrl } from '/@/api/task/index';
 
   import { upUrlParams } from '/@/api/task/model/index';
-  
+
   import { protocolCheck } from '/@/utils/validateFuncs';
-  
+
   const upUrlConfig: UnwrapRef<UpUrlConfigSetParams> = reactive({
     ip: '',
     port: '',
     protocol: '',
-    endpoint: ''
+    endpoint: '',
   });
 
-const upUrlConfigRules = computed(() => {
-  return {
-        protocol: [
-          {
-            required: true,
-            validator: protocolCheck,
-            trigger: 'blur',
-          },
-        ],
-        ip: [
-          {
-            required: true,
-            validator: IpCheck,
-            trigger: 'blur',
-          },
-        ],
-        port: [
-          {
-            required: true,
-            validator: portCheck,
-            trigger: 'blur',
-          },
-        ],
-        endpoint: [
-          {
-            required: true,
-            trigger: 'blur',
-          },
-        ],
-      };
-});
+  const upUrlConfigRules = computed(() => {
+    return {
+      protocol: [
+        {
+          required: true,
+          validator: protocolCheck,
+          trigger: 'blur',
+        },
+      ],
+      ip: [
+        {
+          required: true,
+          validator: IpCheck,
+          trigger: 'blur',
+        },
+      ],
+      port: [
+        {
+          required: true,
+          validator: portCheck,
+          trigger: 'blur',
+        },
+      ],
+      endpoint: [
+        {
+          required: true,
+          trigger: 'blur',
+        },
+      ],
+    };
+  });
 
-const upUrlConfigMap = {
-  upUrlConfig,
-};
+  const upUrlConfigMap = {
+    upUrlConfig,
+  };
 
-const formItemListUpUrlConfig = [
-  {
-    label: t('maintenance.newworkSettings.protocol'),
-    field: 'protocol',
-    placeholder: t('sys.form.placeholder'),
-    type: 'input',
-  },
-  {
-    label: t('maintenance.newworkSettings.ip'),
-    field: 'ip',
-    placeholder: t('sys.form.placeholder'),
-    type: 'input',
-  },
-  {
-    label: t('maintenance.newworkSettings.serverPort'),
-    field: 'port',
-    placeholder: t('sys.form.placeholder'),
-    type: 'input',
-  },
-  {
-    label: t('maintenance.newworkSettings.serverEndpoint'),
-    field: 'endpoint',
-    placeholder: '/algorithm/upload',
-    type: 'input',
-  },
-];
-  
+  const formItemListUpUrlConfig = [
+    {
+      label: t('maintenance.newworkSettings.protocol'),
+      field: 'protocol',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.newworkSettings.ip'),
+      field: 'ip',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.newworkSettings.serverPort'),
+      field: 'port',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.newworkSettings.serverEndpoint'),
+      field: 'endpoint',
+      placeholder: '/algorithm/upload',
+      type: 'input',
+    },
+  ];
+
   const ipDataUpUrlConfig = reactive({
     upUrlConfig: [],
   });
   const initUpUrlConfig = async () => {
     const result = await getUpUrl();
     pageLoading.value = false;
-    console.info('initUpUrlConfig result='+JSON.stringify(result))
+    console.info('initUpUrlConfig result=' + JSON.stringify(result));
     if (result) {
       let resultEles = result.split('://');
       let resultEles2 = resultEles[1].split(':');
@@ -641,105 +654,137 @@ const formItemListUpUrlConfig = [
       ipDataUpUrlConfig.upUrlConfig['ip'] = resultEles2[0];
       let resultEles3 = resultEles2[1].split('/');
       ipDataUpUrlConfig.upUrlConfig['port'] = resultEles3[0];
-      ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/algorithm/upload'
-      if(resultEles3.length > 2) {
-        ipDataUpUrlConfig.upUrlConfig['endpoint'] = resultEles3.slice(1,resultEles3.length).join('/')
+      ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/algorithm/upload';
+      if (resultEles3.length > 2) {
+        ipDataUpUrlConfig.upUrlConfig['endpoint'] = resultEles3
+          .slice(1, resultEles3.length)
+          .join('/');
       }
-      if(!ipDataUpUrlConfig.upUrlConfig['endpoint'].startsWith('/')) {
-        ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/'+ipDataUpUrlConfig.upUrlConfig['endpoint']
+      if (!ipDataUpUrlConfig.upUrlConfig['endpoint'].startsWith('/')) {
+        ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/' + ipDataUpUrlConfig.upUrlConfig['endpoint'];
       }
       upUrlConfig.ip = ipDataUpUrlConfig.upUrlConfig['ip'];
       upUrlConfig.port = ipDataUpUrlConfig.upUrlConfig['port'];
       upUrlConfig.protocol = ipDataUpUrlConfig.upUrlConfig['protocol'];
-      upUrlConfig.endpoint = ipDataUpUrlConfig.upUrlConfig['endpoint']
+      upUrlConfig.endpoint = ipDataUpUrlConfig.upUrlConfig['endpoint'];
     }
   };
-  
-  const submitFormUpUrlConfig = () => {
+
+  const submitFormUpUrlConfig = async () => {
     loading.value = true;
-    var params : upUrlParams = { protocol: '', ip: '', port: '', endpoint: ''} ;
-    params.protocol = upUrlConfigMap["upUrlConfig"].protocol;
-    params.ip = upUrlConfigMap["upUrlConfig"].ip;
-    params.port = upUrlConfigMap["upUrlConfig"].port;
-    params.endpoint = upUrlConfigMap["upUrlConfig"].endpoint;
-    console.info('addUpUrl params = '+JSON.stringify(params));
+    var params: upUrlParams = { protocol: '', ip: '', port: '', endpoint: '' };
+    params.protocol = upUrlConfigMap['upUrlConfig'].protocol;
+    params.ip = upUrlConfigMap['upUrlConfig'].ip;
+    params.port = upUrlConfigMap['upUrlConfig'].port;
+    params.endpoint = upUrlConfigMap['upUrlConfig'].endpoint;
+    console.info('addUpUrl params = ' + JSON.stringify(params));
     const result = addUpUrl(params);
-    console.info('addUpUrl result = '+JSON.stringify(result));
-    if(JSON.stringify(result) === '{}') {
+    console.info('addUpUrl result = ' + JSON.stringify(result));
+    if (JSON.stringify(result) === '{}') {
       createMessage.success('update success');
     } else {
       createMessage.error('invalid operation');
     }
     loading.value = false;
-};
 
-/////////////////////////////////////////////////////
+    const r = await existRunningTasks();
+    if (r.length > 0) {
+      openModal();
+    }
+  };
+
+  const restartLoading = ref({ loading: false });
+  const restartCancel = ref({ disabled: false });
+  const handleRestartTasksOk = async () => {
+    restartLoading.value = { loading: true };
+    restartCancel.value = { disabled: true };
+
+    const list = await existRunningTasks();
+    for (const item of list) {
+      await taskRestart(item);
+    }
+
+    restartLoading.value = { loading: false };
+    restartCancel.value = { disabled: false };
+    closeModal();
+  };
+
+  const existRunningTasks = async () => {
+    const res = await getTaskList();
+    const list = res.items.filter((item) => item.status == 1);
+    return list;
+  };
+
+  const taskRestart = async (task) => {
+    await StopTask({ taskId: task.taskId, deviceName: task.deviceName }).then();
+    await StartTask({ taskId: task.taskId }).then();
+  };
+
+  /////////////////////////////////////////////////////
 
   import { RotateCfgSetParams } from '/@/api/maintenance/model/index';
-  import {
-    getRotateCfg,
-    modRotateCfg
-  } from '/@/api/task/index';
+  import { getRotateCfg, modRotateCfg } from '/@/api/task/index';
 
   import { rotateCfgParams } from '/@/api/task/model/index';
-  
+
   import { rotateRetentionCheck } from '/@/utils/validateFuncs';
-  
+  import { Model } from 'echarts';
+
   const rotateCfgConfig: UnwrapRef<RotateCfgSetParams> = reactive({
     record: 3,
-    serviceLog: 3
+    serviceLog: 3,
   });
 
-const rotateCfgConfigRules = computed(() => {
-  return {
-        record: [
-          {
-            required: true,
-            validator: rotateRetentionCheck,
-            trigger: 'blur',
-          },
-        ],
-        serviceLog: [
-          {
-            required: true,
-            validator: rotateRetentionCheck,
-            trigger: 'blur',
-          },
-        ]
-      };
-});
+  const rotateCfgConfigRules = computed(() => {
+    return {
+      record: [
+        {
+          required: true,
+          validator: rotateRetentionCheck,
+          trigger: 'blur',
+        },
+      ],
+      serviceLog: [
+        {
+          required: true,
+          validator: rotateRetentionCheck,
+          trigger: 'blur',
+        },
+      ],
+    };
+  });
 
-const rotateCfgConfigMap = {
-  rotateCfgConfig,
-};
+  const rotateCfgConfigMap = {
+    rotateCfgConfig,
+  };
 
-const formItemListRotateCfgConfig = [
-  {
-    label: t('maintenance.rotateConfig.record'),
-    field: 'record',
-    placeholder: t('sys.form.placeholder'),
-    type: 'input',
-    suffix: 'days'
-  },
-  {
-    label: t('maintenance.rotateConfig.serviceLog'),
-    field: 'serviceLog',
-    placeholder: t('sys.form.placeholder'),
-    type: 'input',
-    suffix: 'days',
-  },
-];
-  
+  const formItemListRotateCfgConfig = [
+    {
+      label: t('maintenance.rotateConfig.record'),
+      field: 'record',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+      suffix: 'days',
+    },
+    {
+      label: t('maintenance.rotateConfig.serviceLog'),
+      field: 'serviceLog',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+      suffix: 'days',
+    },
+  ];
+
   const ipDataRotateCfgConfig = reactive({
     rotateCfgConfig: [],
   });
   const initRotateCfgConfig = async () => {
     const result = await getRotateCfg();
     pageLoading.value = false;
-    console.info('initRotateCfgConfig result='+JSON.stringify(result))
+    console.info('initRotateCfgConfig result=' + JSON.stringify(result));
     if (result) {
-      ipDataRotateCfgConfig.rotateCfgConfig['record'] = result["data"]["record"];
-      ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'] = result["data"]["serviceLog"];
+      ipDataRotateCfgConfig.rotateCfgConfig['record'] = result['data']['record'];
+      ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'] = result['data']['serviceLog'];
       rotateCfgConfig.record = ipDataRotateCfgConfig.rotateCfgConfig['record'];
       rotateCfgConfig.serviceLog = ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'];
       // console.info('ipDataRotateCfgConfig = '+JSON.stringify(ipDataRotateCfgConfig));
@@ -747,22 +792,21 @@ const formItemListRotateCfgConfig = [
       // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
     }
   };
-  
+
   const submitFormRotateCfgConfig = () => {
     loading.value = true;
-    var params : rotateCfgParams = { record: 3, serviceLog: 3} ;
-    params.record = parseInt(rotateCfgConfigMap["rotateCfgConfig"].record, 10);
-    params.serviceLog = parseInt(rotateCfgConfigMap["rotateCfgConfig"].serviceLog, 10);
+    var params: rotateCfgParams = { record: 3, serviceLog: 3 };
+    params.record = parseInt(rotateCfgConfigMap['rotateCfgConfig'].record, 10);
+    params.serviceLog = parseInt(rotateCfgConfigMap['rotateCfgConfig'].serviceLog, 10);
     // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
-    console.info('modRotateCfg params = '+JSON.stringify(params));
+    console.info('modRotateCfg params = ' + JSON.stringify(params));
     const result = modRotateCfg(params);
-    console.info('modRotateCfg result = '+JSON.stringify(result));
-    if(JSON.stringify(result) === '{}') {
+    console.info('modRotateCfg result = ' + JSON.stringify(result));
+    if (JSON.stringify(result) === '{}') {
       createMessage.success('update success');
     } else {
       createMessage.error('invalid operation');
     }
     loading.value = false;
-};
-
+  };
 </script>

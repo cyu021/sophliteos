@@ -62,16 +62,35 @@
             />
           </Tabs>
           <div class="flex flexDerecton" style="flex: 1" ref="divRef">
-            <div style="padding-right: 24px;">
+            <div style="padding-right: 24px">
               <div style="margin: 20px 0; font-weight: 600">
                 <span style="padding-left: 10px; border-left: 2px solid #0960bdb8"></span>
                 {{ t('paramConfig.param.setAlgoParams') }}
               </div>
-              <BasicForm @register="registerForm" style="width: 450px;" />
-              <div style="padding-bottom: 24px; width: 450px; display: flex; flex-direction: row; align-items: center;">
-                <div style="width: 150px;">{{ t('paramConfig.param.filterRule') }}</div>
-                <Button style="max-width: 250px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" @click="showFilterRule">{{ filterName }}</Button>
-                <Button v-if="hasExtend" type="text" danger @click="deleteExtend"><DeleteOutlined /></Button>
+              <BasicForm @register="registerForm" style="width: 450px" />
+              <div
+                style="
+                  padding-bottom: 24px;
+                  width: 450px;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                "
+              >
+                <div style="width: 150px">{{ t('paramConfig.param.filterRule') }}</div>
+                <Button
+                  style="
+                    max-width: 250px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                  "
+                  @click="showFilterRule"
+                  >{{ filterName }}</Button
+                >
+                <Button v-if="hasExtend" type="text" danger @click="deleteExtend"
+                  ><DeleteOutlined
+                /></Button>
               </div>
             </div>
             <div :style="{ width: `${videoWidth}px`, height: `${(9 * videoWidth) / 16 + 30}px` }">
@@ -110,7 +129,7 @@
                         color: drawMode ? '#0960bd' : 'black',
                         backgroundColor: drawMode ? '#e4effd' : 'white',
                       }"
-                    >{{ drawText }}</Button
+                      >{{ drawText }}</Button
                     >
                   </Tooltip>
                   <Tooltip :title="t('paramConfig.draw.rectTip')" color="#0960bd">
@@ -122,16 +141,15 @@
                         color: rectMode ? '#0960bd' : 'black',
                         backgroundColor: rectMode ? '#e4effd' : 'white',
                       }"
-                    >{{ t('paramConfig.draw.drawRect') }}</Button>
+                      >{{ t('paramConfig.draw.drawRect') }}</Button
+                    >
                   </Tooltip>
 
-                  <Popover
-                    v-if="drawRegion"
-                  >
+                  <Popover v-if="drawRegion">
                     <template #content>
                       <div>
                         <div v-if="pylogonObject.length > 0">
-                          ROI 0: 
+                          ROI 0:
                           <Radio.Group :options="modeOptions" v-model:value="roiMode[0]" />
                         </div>
                         <div v-if="pylogonObject.length > 1">
@@ -148,7 +166,7 @@
                     <template #content>
                       <div>
                         <div v-if="lineObject.length > 0">
-                          Line 0: 
+                          Line 0:
                           <Radio.Group :options="modeOptions" v-model:value="crossLineMode[0]" />
                         </div>
                         <div v-if="lineObject.length > 1">
@@ -171,13 +189,28 @@
         </div>
       </Card>
     </Card>
-    <FilterRuleModal 
-      :extend="extend" 
-      @register="RegisterFilterRuleModal" 
-      :taskName="taskId" 
-      :algorithmName="algorithmName" 
-      @success="updateFilterRule" />
+    <FilterRuleModal
+      :extend="extend"
+      @register="RegisterFilterRuleModal"
+      :taskName="taskId"
+      :algorithmName="algorithmName"
+      @success="updateFilterRule"
+    />
   </div>
+  <BasicModal
+    v-bind="$attrs"
+    @register="registerBasicModal"
+    :title="t('maintenance.restart.taskRestart')"
+    :canFullscreen="false"
+    :closable="false"
+    @ok="handleRestartTasksOk"
+    :okText="t('common.okText')"
+    :ok-button-props="restartLoading"
+    :cancel-button-props="restartCancel"
+  >
+    <p>{{ t('maintenance.restart.taskRestartTipOK') }}</p>
+    <p>{{ t('maintenance.restart.taskRestartTipNO') }} </p>
+  </BasicModal>
 </template>
 
 <script lang="ts" setup>
@@ -198,10 +231,10 @@
     Radio,
     Divider,
   } from 'ant-design-vue';
-  import { EditOutlined, ClearOutlined, DeleteOutlined, } from '@ant-design/icons-vue';
+  import { EditOutlined, ClearOutlined, DeleteOutlined } from '@ant-design/icons-vue';
   import { fabric } from 'fabric';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { getTaskList } from '/@/api/task';
+  import { getTaskList, StartTask, StopTask } from '/@/api/task';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { useAbilitesStore } from '/@/store/modules/abilities';
   import { AlgoTaskInfoType } from '/@/api/paramConfig/model';
@@ -220,10 +253,12 @@
   import { WebRTCPlayer } from '@eyevinn/webrtc-player';
 
   import FilterRuleModal from './FilterRuleModal.vue';
-  import { useModal } from '/@/components/Modal';
+  import { BasicModal, useModal } from '/@/components/Modal';
   import apis from './api';
 
   const [RegisterFilterRuleModal, { openModal: openFilterRuleModal }] = useModal();
+
+  const [registerBasicModal, { openModal, closeModal }] = useModal();
 
   const { createMessage } = useMessage();
   const { t } = useI18n();
@@ -270,7 +305,7 @@
    */
   const pylogonObject = ref<any>([]); //当前区域对象
   const pylogonSubmitPoint = ref<any>([]); //当前区域的点数组
-  
+
   const lineObject = ref(); //当前检测线对象
   const lineSubmitPoint = ref(); //当前检测线的点
   const originPaintData = ref();
@@ -283,9 +318,9 @@
   const roiMode = ref([0, 0]);
   const crossLineMode = ref([0, 0]);
   const modeOptions = ref([
-  { value: 0, label: t('paramConfig.param.top'), },
-  { value: 1, label: t('paramConfig.param.center'), },
-  { value: 2, label: t('paramConfig.param.bottom'), }
+    { value: 0, label: t('paramConfig.param.top') },
+    { value: 1, label: t('paramConfig.param.center') },
+    { value: 2, label: t('paramConfig.param.bottom') },
   ]);
 
   onMounted(() => {
@@ -299,8 +334,8 @@
   onUnmounted(() => {
     clearCanvas();
     if (player.value) {
-      player.value.unload()
-      player.value.destroy()
+      player.value.unload();
+      player.value.destroy();
     }
     window.removeEventListener('resize', computeVideoWidth);
   });
@@ -315,7 +350,7 @@
 
   const filterName = computed(() => {
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         const extend = algorithms[0].Extend;
         if (extend && extend.FilterName) {
@@ -324,12 +359,12 @@
       }
     }
 
-    return t('paramConfig.param.createFilterRule')
-  })
+    return t('paramConfig.param.createFilterRule');
+  });
 
-  const hasExtend = computed(() => {    
+  const hasExtend = computed(() => {
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         const extend = algorithms[0].Extend;
         if (extend && extend.FilterName) {
@@ -339,51 +374,51 @@
     }
 
     return false;
-  })
+  });
 
   const algorithmName = computed(() => {
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         const algorithm = algorithms[0];
-        return abilitiesMap.value.get(Number(algorithm.Type))
+        return abilitiesMap.value.get(Number(algorithm.Type));
       }
     }
 
-    return ''
-  })
+    return '';
+  });
 
   const extend = computed(async () => {
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         return algorithms[0].Extend || {};
       }
-    } 
+    }
 
     return {};
-  })
+  });
 
   function updateFilterRule(value) {
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         algorithms[0].Extend = value;
       }
-    } 
+    }
   }
 
   async function getCurrentExtend() {
     const rtsp = await apis.videoUrl(algoTaskInfo.value.device.name);
 
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         const extend = algorithms[0].Extend;
 
         if (extend) {
           if (extend.Filter) {
-            extend.Filter.forEach(element => {
+            extend.Filter.forEach((element) => {
               element.Rtsp = rtsp;
             });
           }
@@ -391,7 +426,7 @@
 
         return extend;
       }
-    } 
+    }
 
     return null;
   }
@@ -458,7 +493,9 @@
     };
 
     roiMode.value = Array.isArray(algo.Extend?.detectModeRoi) ? algo.Extend?.detectModeRoi : [0, 0];
-    crossLineMode.value = Array.isArray(algo.Extend?.detectModeCrossline) ? algo.Extend?.detectModeCrossline : [0, 0];
+    crossLineMode.value = Array.isArray(algo.Extend?.detectModeCrossline)
+      ? algo.Extend?.detectModeCrossline
+      : [0, 0];
 
     nextTick(() => {
       setFieldsValue(formData);
@@ -467,34 +504,55 @@
       clearDraftDraw();
       // 绘制的点坐标适配当前canvas
 
-      const detectInfos = JSON.parse(JSON.stringify(algo.DetectInfos))
+      const detectInfos = JSON.parse(JSON.stringify(algo.DetectInfos));
 
-      const points = detectInfos.map((item) => item.HotArea).filter((element) => {
-        if (element === null || element === undefined) { return false; }
+      const points = detectInfos
+        .map((item) => item.HotArea)
+        .filter((element) => {
+          if (element === null || element === undefined) {
+            return false;
+          }
 
-        if (element.length == 4) {
-          if (element[0].X == 0 && element[0].Y == 0 
-            && element[1].X == 1920 && element[1].Y == 0
-            && element[2].X == 1920 && element[2].Y == 1080
-            && element[3].X == 0 && element[3].Y == 1080
-          ) { return false; }
-        }
+          if (element.length == 4) {
+            if (
+              element[0].X == 0 &&
+              element[0].Y == 0 &&
+              element[1].X == 1920 &&
+              element[1].Y == 0 &&
+              element[2].X == 1920 &&
+              element[2].Y == 1080 &&
+              element[3].X == 0 &&
+              element[3].Y == 1080
+            ) {
+              return false;
+            }
+          }
 
-        return true;
-      });
+          return true;
+        });
 
-      const line = detectInfos.map((item) => item.TripWire).filter((element) => {
-        if (element === null || element === undefined) { return false; }
+      const line = detectInfos
+        .map((item) => item.TripWire)
+        .filter((element) => {
+          if (element === null || element === undefined) {
+            return false;
+          }
 
-        if (element.DirectStart.X == 0 && element.DirectStart.Y == 0 
-          && element.DirectEnd.X == 0 && element.DirectEnd.Y == 0
-          && element.LineStart.X == 0 && element.LineStart.Y == 0
-          && element.LineEnd.X == 0 && element.LineEnd.Y == 0
-        ) { return false; }
-        
-        return true;
-      })
+          if (
+            element.DirectStart.X == 0 &&
+            element.DirectStart.Y == 0 &&
+            element.DirectEnd.X == 0 &&
+            element.DirectEnd.Y == 0 &&
+            element.LineStart.X == 0 &&
+            element.LineStart.Y == 0 &&
+            element.LineEnd.X == 0 &&
+            element.LineEnd.Y == 0
+          ) {
+            return false;
+          }
 
+          return true;
+        });
 
       originPaintData.value = [points, line];
       initObjectByApi(points, line);
@@ -528,23 +586,33 @@
     extend.detectModeCrossline = crossLineMode.value;
 
     lineSubmitPoint.value.forEach((element) => {
-      element.forEach(item => {
+      element.forEach((item) => {
         item.x = Math.round(item.x * pixRatio.value) || 0;
         item.y = Math.round(item.y * pixRatio.value) || 0;
       });
     });
 
-    const detectInfos = [{
-      HotArea: [{X: 0, Y: 0}, {X: 1920, Y: 0}, {X: 1920, Y: 1080}, {X: 0, Y: 1080}],
-      TripWire: {
-        LineStart: {X: 0, Y: 0},
-        LineEnd: {X: 0, Y: 0},
-        DirectStart: {X: 0, Y: 0},
-        DirectEnd: {X: 0, Y: 0}
-      }
-    }]
+    const detectInfos = [
+      {
+        HotArea: [
+          { X: 0, Y: 0 },
+          { X: 1920, Y: 0 },
+          { X: 1920, Y: 1080 },
+          { X: 0, Y: 1080 },
+        ],
+        TripWire: {
+          LineStart: { X: 0, Y: 0 },
+          LineEnd: { X: 0, Y: 0 },
+          DirectStart: { X: 0, Y: 0 },
+          DirectEnd: { X: 0, Y: 0 },
+        },
+      },
+    ];
 
-    const maxLength = lineSubmitPoint.value.length > pylogonSubmitPoint.value.length ? lineSubmitPoint.value.length : pylogonSubmitPoint.value.length;
+    const maxLength =
+      lineSubmitPoint.value.length > pylogonSubmitPoint.value.length
+        ? lineSubmitPoint.value.length
+        : pylogonSubmitPoint.value.length;
 
     for (let i = 0; i < maxLength; i++) {
       const lineTmpSubmitPoint = lineSubmitPoint.value[i];
@@ -568,8 +636,8 @@
           DirectEnd: {
             X: lineTmpSubmitPoint?.[2].x,
             Y: lineTmpSubmitPoint?.[2].y,
-          }
-        }
+          },
+        };
       }
 
       const pylogonTmpSubmitPoint = pylogonSubmitPoint.value[i];
@@ -577,7 +645,7 @@
       detectInfo.HotArea = pylogonTmpSubmitPoint?.map((item) => ({
         X: Math.round(item.x * pixRatio.value),
         Y: Math.round(item.y * pixRatio.value),
-      }))
+      }));
 
       detectInfos.push(detectInfo);
     }
@@ -606,7 +674,33 @@
       createMessage.success(t('common.saveSuccess'));
     }
     handleSelectChange(true);
+
+    const task = await currentTask(taskId.value);
+    if (task && task.status == 1) {
+      openModal();
+    }
   }
+
+  const restartLoading = ref({ loading: false });
+  const restartCancel = ref({ disabled: false });
+  const handleRestartTasksOk = async () => {
+    const task = await currentTask(taskId.value);
+    if (task && task.status == 1) {
+      restartLoading.value = { loading: true };
+      restartCancel.value = { disabled: true };
+      await StopTask({ taskId: task.taskId, deviceName: task.deviceName }).then();
+      await StartTask({ taskId: task.taskId }).then();
+      restartLoading.value = { loading: false };
+      restartCancel.value = { disabled: false };
+    }
+
+    closeModal();
+  };
+
+  const currentTask = async (taskId) => {
+    const res = await getTaskList({ pageNo: -1, pageSize: -1 });
+    return res.items.find((item) => item.taskId == taskId);
+  };
 
   // 重置，重置表单和绘制
   function reset() {
@@ -619,7 +713,7 @@
   }
 
   async function play(url: any) {
-    console.log('play', url)
+    console.log('play', url);
     if (player.value) {
       await player.value.unload();
       player.value.destroy();
@@ -629,38 +723,41 @@
       video: video.value,
       type: 'whep',
     });
-    await player.value.load(new URL(url))
+    await player.value.load(new URL(url));
   }
 
   function initObjectByApi(pointsArray, lineArray) {
-    pylogonObject.value = []
-    pylogonSubmitPoint.value = []
+    pylogonObject.value = [];
+    pylogonSubmitPoint.value = [];
 
-    pointsArray.forEach(points => {
+    pointsArray.forEach((points) => {
       if (points && points.length > 0) {
         const convertPoints = points.map((item) => ({
           x: item.X / pixRatio.value,
           y: item.Y / pixRatio.value,
         }));
 
-        const tmpObject = pylogonObject.value || []
+        const tmpObject = pylogonObject.value || [];
         tmpObject.push(makePylogon(convertPoints));
         pylogonObject.value = tmpObject;
 
         const tmpSubmitPoint = pylogonSubmitPoint.value || [];
-        tmpSubmitPoint.push(convertPoints)
+        tmpSubmitPoint.push(convertPoints);
         pylogonSubmitPoint.value = tmpSubmitPoint;
       }
     });
 
-    lineObject.value = []
-    lineSubmitPoint.value = []
+    lineObject.value = [];
+    lineSubmitPoint.value = [];
 
-    lineArray.forEach(line => {
+    lineArray.forEach((line) => {
       if (line) {
         const p1 = { x: line.LineStart.X / pixRatio.value, y: line.LineStart.Y / pixRatio.value };
         const p2 = { x: line.LineEnd.X / pixRatio.value, y: line.LineEnd.Y / pixRatio.value };
-        const p3 = { x: line.DirectStart.X / pixRatio.value, y: line.DirectStart.Y / pixRatio.value };
+        const p3 = {
+          x: line.DirectStart.X / pixRatio.value,
+          y: line.DirectStart.Y / pixRatio.value,
+        };
         const p4 = { x: line.DirectEnd.X / pixRatio.value, y: line.DirectEnd.Y / pixRatio.value };
         const line1 = makeLine([p1, p2]);
         const line2 = makeLine([p3, p4], {}, true);
@@ -734,7 +831,7 @@
 
   function deleteExtend() {
     if (algoTaskInfo.value && activeKey.value) {
-      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value)
+      const algorithms = algoTaskInfo.value.algorithms.filter((v) => v.Type === activeKey.value);
       if (algorithms.length > 0) {
         algorithms[0].Extend = {};
       }
@@ -778,17 +875,25 @@
         canvas.value.add(thisPylogon);
         // pylogonObject.value && canvas.value.remove(pylogonObject.value);
 
-        const tmpObject = pylogonObject.value || []
+        const tmpObject = pylogonObject.value || [];
         tmpObject.push(thisPylogon);
         pylogonObject.value = tmpObject;
 
         const tmpSubmitPoint = pylogonSubmitPoint.value || [];
-        tmpSubmitPoint.push(pylogonPoints.value)
+        tmpSubmitPoint.push(pylogonPoints.value);
         pylogonSubmitPoint.value = tmpSubmitPoint;
 
         const index = tmpObject.length - 1;
         var point = pylogonPoints.value[0];
-        let text = new fabric.Text('ROI ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+        let text = new fabric.Text('ROI ' + index, {
+          backgroundColor: 'white',
+          padding: 5,
+          fill: 'green',
+          fontSize: 20,
+          top: point.y,
+          left: point.x,
+          selectable: false,
+        });
         canvas.value.add(text);
 
         clearDraftDraw();
@@ -800,17 +905,25 @@
         const lines = makeGroup([...draftLines.value]);
         // lineObject.value && canvas.value.remove(lineObject.value);
 
-        const lineTmpObject = lineObject.value || []
+        const lineTmpObject = lineObject.value || [];
         lineTmpObject.push(lines);
         lineObject.value = lineTmpObject;
 
-        const lineTmpSubmitPoint = lineSubmitPoint.value || []
-        lineTmpSubmitPoint.push([...pylogonPoints.value, lastPoint.value])
+        const lineTmpSubmitPoint = lineSubmitPoint.value || [];
+        lineTmpSubmitPoint.push([...pylogonPoints.value, lastPoint.value]);
         lineSubmitPoint.value = lineTmpSubmitPoint;
 
         const index = lineTmpObject.length - 1;
         var point = pylogonPoints.value[0];
-        let text = new fabric.Text('Line ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+        let text = new fabric.Text('Line ' + index, {
+          backgroundColor: 'white',
+          padding: 5,
+          fill: 'green',
+          fontSize: 20,
+          top: point.y,
+          left: point.x,
+          selectable: false,
+        });
         canvas.value.add(text);
 
         canvas.value.add(lines);
@@ -873,10 +986,10 @@
       getRectPoints(rectDownPoint.value, rectUpPoint.value);
 
       const tmpSubmitPoint = pylogonSubmitPoint.value || [];
-      tmpSubmitPoint.push(pylogonPoints.value)
+      tmpSubmitPoint.push(pylogonPoints.value);
       pylogonSubmitPoint.value = tmpSubmitPoint;
 
-      const tmpObject = pylogonObject.value || []
+      const tmpObject = pylogonObject.value || [];
       const thisPylogon = makePylogon(pylogonPoints.value);
       tmpObject.push(thisPylogon);
       pylogonObject.value = tmpObject;
@@ -885,7 +998,15 @@
 
       const index = tmpObject.length - 1;
       var point = pylogonPoints.value[0];
-      let text = new fabric.Text('ROI ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+      let text = new fabric.Text('ROI ' + index, {
+        backgroundColor: 'white',
+        padding: 5,
+        fill: 'green',
+        fontSize: 20,
+        top: point.y,
+        left: point.x,
+        selectable: false,
+      });
       canvas.value.add(text);
 
       clearDraftDraw();
@@ -978,7 +1099,15 @@
             canvas.value.add(element);
 
             const point = element.get('points')[0];
-            let text = new fabric.Text('ROI ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+            let text = new fabric.Text('ROI ' + index, {
+              backgroundColor: 'white',
+              padding: 5,
+              fill: 'green',
+              fontSize: 20,
+              top: point.y,
+              left: point.x,
+              selectable: false,
+            });
             canvas.value.add(text);
           });
         }
@@ -999,7 +1128,15 @@
             canvas.value.add(element);
 
             const point = lineSubmitPoint.value[index][0];
-            const text = new fabric.Text('Line ' + index, { backgroundColor: 'white', padding: 5, fill: 'green', fontSize: 20, top: point.y, left: point.x, selectable: false });
+            const text = new fabric.Text('Line ' + index, {
+              backgroundColor: 'white',
+              padding: 5,
+              fill: 'green',
+              fontSize: 20,
+              top: point.y,
+              left: point.x,
+              selectable: false,
+            });
             canvas.value.add(text);
           });
         }

@@ -133,7 +133,7 @@
         createMessage.success(t('maintenance.containers.activated'));
         record.status = 1;
       } else {
-        await StopTask({ taskId: record.taskId, deviceName: record.taskId }).then();
+        await StopTask({ taskId: record.taskId, deviceName: record.deviceName }).then();
         createMessage.success(t('maintenance.containers.stop'));
         record.status = 0;
       }
