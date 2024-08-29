@@ -133,7 +133,8 @@
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
     "protocol": "プロトコル",
-    "inputProtocol": "以下のいずれかを入力してください: http, https"
+    "inputProtocol": "以下のいずれかを入力してください: http, https",
+    "serverEndpoint": "Endpoint"
   },
   "threshold": {
     "fanSpeed": "ファン回転速度",
@@ -157,15 +158,15 @@
   "restart": {
     "hardware": "ハードウェア",
     "services": "サービス",
-    "restart": "再起動",
-    "hardwareTip": "「再起動」をクリックしてボックスの電源を切り再起動します。\n1〜2分後にページをリフレッシュしてみてください。",
-    "servicesTip": "「再起動」をクリックして、サービスを順番に再起動します。「プラグイン モジュール」->「Biz モジュール」->「Daemon」。",
-    "restartDone": "再起動完了",
-    "restartFailed": "再起動失敗",
+    "restart": "検出",
+    "hardwareTip": "「検出」をクリックしてボックスの電源を切り検出します。\n1〜2分後にページをリフレッシュしてみてください。",
+    "servicesTip": "「検出」をクリックして、サービスを順番に検出します。「プラグイン モジュール」->「Biz モジュール」->「Daemon」。",
+    "restartDone": "検出完了",
+    "restartFailed": "検出失敗",
     "plugin": "プラグイン モジュール",
     "biz": "Biz モジュール",
     "daemon": "Daemon モジュール",
-    "restarting": "再起動中",
+    "restarting": "検出中",
     "taskRestart": "タスクを自動的に再起動しますか？",
     "taskRestartTipOK": "「確認」をクリックすると、アルゴリズムタスクが自動的に再起動します。",
     "taskRestartTipNO": "「キャンセル」をクリックすると、アルゴリズムタスクを手動で再起動する必要があります。"

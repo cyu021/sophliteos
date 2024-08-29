@@ -134,7 +134,8 @@
     "serverPort": "ServerPort",
     "serverEndpoint": "ServerEndpoint",
     "protocol": "协议",
-    "inputProtocol": "请输入以下内容之一：http、https"
+    "inputProtocol": "请输入以下内容之一：http、https",
+    "serverEndpoint": "Endpoint"
   },
   "threshold": {
     "fanSpeed": "风扇转速",
@@ -158,15 +159,15 @@
   "restart": {
     "hardware": "硬件",
     "services": "服务",
-    "restart": "重启",
-    "hardwareTip": "点击“重启”使盒子断电重启。\n请在1～2分钟后尝试刷新页面。",
-    "servicesTip": "点击“重启”依次重启“插件模块”>“Biz 模块”>“Daemon”",
-    "restartDone": "重启完成",
-    "restartFailed": "重启失败",
+    "restart": "检测",
+    "hardwareTip": "点击“检测”使盒子断电重启。\n请在1～2分钟后尝试刷新页面。",
+    "servicesTip": "点击“检测”依次检测“插件模块”>“Biz 模块”>“Daemon”",
+    "restartDone": "检测完成",
+    "restartFailed": "检测失败",
     "plugin": "插件模块",
     "biz": "Biz 模块",
     "daemon": "Daemon 模块",
-    "restarting": "重启中",
+    "restarting": "检测中",
     "taskRestart": "是否自动重启任务",
     "taskRestartTipOK": "点击\"确认\"将自动重启算法任务",
     "taskRestartTipNO": "点击\"取消\"需要自行手动重新启动算法任务"
