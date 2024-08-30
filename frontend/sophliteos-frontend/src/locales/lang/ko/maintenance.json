@@ -169,6 +169,9 @@
     "restarting": "발각 중",
     "taskRestart": "작업을 자동으로 재시작하겠습니까?",
     "taskRestartTipOK": "\"확인\"을 클릭하면 알고리즘 작업이 자동으로 재시작됩니다.",
-    "taskRestartTipNO": "\"취소\"를 클릭하면 알고리즘 작업을 수동으로 재시작해야 합니다."
+    "taskRestartTipNO": "\"취소\"를 클릭하면 알고리즘 작업을 수동으로 재시작해야 합니다.",
+    "stopping": "종료 중...",
+    "starting": "시작 중...",
+    "startDone": "시작 성공..."
   }
 }

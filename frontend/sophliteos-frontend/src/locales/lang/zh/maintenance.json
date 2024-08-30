@@ -170,6 +170,9 @@
     "restarting": "检测中",
     "taskRestart": "是否自动重启任务",
     "taskRestartTipOK": "点击\"确认\"将自动重启算法任务",
-    "taskRestartTipNO": "点击\"取消\"需要自行手动重新启动算法任务"
+    "taskRestartTipNO": "点击\"取消\"需要自行手动重新启动算法任务",
+    "stopping": "关闭中...",
+    "starting": "启用中...",
+    "startDone": "启用成功..."
   }
 }

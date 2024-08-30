@@ -188,8 +188,9 @@
     :ok-button-props="restartLoading"
     :cancel-button-props="restartCancel"
   >
-    <p>{{ t('maintenance.restart.taskRestartTipOK') }}</p>
-    <p>{{ t('maintenance.restart.taskRestartTipNO') }} </p>
+    <div style="padding: 14px; white-space: pre-wrap">
+      {{ restartTips }}
+    </div>
   </BasicModal>
 </template>
 <script lang="ts" setup>
@@ -690,9 +691,16 @@
     const r = await existRunningTasks();
     if (r.length > 0) {
       openModal();
+      restartTips.value =
+        t('maintenance.restart.taskRestartTipOK') +
+        '\n' +
+        t('maintenance.restart.taskRestartTipNO');
     }
   };
 
+  const restartTips = ref(
+    t('maintenance.restart.taskRestartTipOK') + '\n' + t('maintenance.restart.taskRestartTipNO'),
+  );
   const restartLoading = ref({ loading: false });
   const restartCancel = ref({ disabled: false });
   const handleRestartTasksOk = async () => {
@@ -700,6 +708,7 @@
     restartCancel.value = { disabled: true };
 
     const list = await existRunningTasks();
+    restartTips.value = '';
     for (const item of list) {
       await taskRestart(item);
     }
@@ -716,8 +725,13 @@
   };
 
   const taskRestart = async (task) => {
+    restartTips.value =
+      restartTips.value + task.deviceName + ' ' + t('maintenance.restart.stopping');
     await StopTask({ taskId: task.taskId, deviceName: task.deviceName }).then();
+    restartTips.value = restartTips.value + ' ' + t('maintenance.restart.starting');
     await StartTask({ taskId: task.taskId }).then();
+    restartTips.value = restartTips.value + ' ' + t('maintenance.restart.startDone');
+    restartTips.value = restartTips.value + '\n';
   };
 
   /////////////////////////////////////////////////////

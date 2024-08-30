@@ -208,8 +208,9 @@
     :ok-button-props="restartLoading"
     :cancel-button-props="restartCancel"
   >
-    <p>{{ t('maintenance.restart.taskRestartTipOK') }}</p>
-    <p>{{ t('maintenance.restart.taskRestartTipNO') }} </p>
+    <div style="padding: 14px; white-space: pre-wrap">
+      {{ restartTips }}
+    </div>
   </BasicModal>
 </template>
 
@@ -681,6 +682,10 @@
     }
   }
 
+  const restartTips = ref(
+    t('maintenance.restart.taskRestartTipOK') + '\n' + t('maintenance.restart.taskRestartTipNO'),
+  );
+
   const restartLoading = ref({ loading: false });
   const restartCancel = ref({ disabled: false });
   const handleRestartTasksOk = async () => {
@@ -688,8 +693,13 @@
     if (task && task.status == 1) {
       restartLoading.value = { loading: true };
       restartCancel.value = { disabled: true };
+
+      restartTips.value = task.deviceName + ' ' + t('maintenance.restart.stopping');
       await StopTask({ taskId: task.taskId, deviceName: task.deviceName }).then();
+      restartTips.value = restartTips.value + ' ' + t('maintenance.restart.starting');
       await StartTask({ taskId: task.taskId }).then();
+      restartTips.value = restartTips.value + ' ' + t('maintenance.restart.startDone');
+
       restartLoading.value = { loading: false };
       restartCancel.value = { disabled: false };
     }

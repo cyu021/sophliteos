@@ -169,6 +169,9 @@
     "restarting": "checking",
     "taskRestart": "Automatically restart the task?",
     "taskRestartTipOK": "Click \"OK\" to automatically restart the algorithm task.",
-    "taskRestartTipNO": "Click \"Cancel\" to manually restart the algorithm task."
+    "taskRestartTipNO": "Click \"Cancel\" to manually restart the algorithm task.",
+    "stopping": "Stopping...",
+    "starting": "Starting...",
+    "startDone": "Started successfully..."
   }
 }
