@@ -65,7 +65,7 @@
                 "
               >
                 <div style="width: 150px; text-align: left">
-                  {{ nameOfKvpLabel(algorithmName, item.Label) + '(' + item.Label + ')' }}
+                  {{ nameOfKvpLabel(modelDisplayName, item.Label) + '(' + item.Label + ')' }}
                 </div>
                 <div
                   style="display: flex; flex-direction: column; flex-grow: 1; padding-left: 48px"
@@ -667,7 +667,7 @@
     if (!cacheExtend.value.Filter) {
       cacheExtend.value.Filter = [
         {
-          Annotator: props.algorithmName,
+          Annotator: modelDisplayName,
           Label: labelId,
           Rule: [],
         },
@@ -676,7 +676,7 @@
     }
 
     cacheExtend.value.Filter.push({
-      Annotator: props.algorithmName,
+      Annotator: modelDisplayName,
       Label: labelId,
       Rule: [],
     });
