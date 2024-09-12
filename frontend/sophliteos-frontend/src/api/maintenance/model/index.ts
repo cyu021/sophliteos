@@ -22,6 +22,8 @@ export interface UpUrlConfigSetParams {
 export interface RotateCfgSetParams {
   record: number; //days, 1-180
   serviceLog: number; //days, 1-180
+  retryRows: number; //rows, 1000-5000
+  enableRetry: boolean;
 }
 
 export interface AlarmParams {

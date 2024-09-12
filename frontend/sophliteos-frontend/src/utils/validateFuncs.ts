@@ -76,6 +76,15 @@ export const rotateRetentionCheck = (_rule, value) => {
   }
 };
 
+export const rotateRetryRowsCheck = (_rule, value) => {
+  console.log("rotateRetryRowsCheck on "+value);
+  if(value < 1000 || value > 5000) {
+    return Promise.reject(t('maintenance.rotateConfig.inputRotateRetryRows'));
+  } else {
+    return Promise.resolve();
+  }
+};
+
 export const portCheck = (_rule, value) => {
   console.log("portCheck on "+value);
   const portRegex = /[1-6]?[0-9]*[0-5]/;

@@ -167,6 +167,14 @@
               :placeholder="item.placeholder"
               :suffix="item.suffix"
             />
+            <a-select
+              v-if="item.type === 'select'"
+              ref="select"
+              v-model:value="rotateCfgConfig[item.field]"
+              :options="item.options"
+              @change="item.onChange"
+            >
+            </a-select>
           </a-form-item>
           <a-form-item class="!pl-1/6">
             <a-button type="primary" html-type="submit" :loading="loading">{{
@@ -741,12 +749,14 @@
 
   import { rotateCfgParams } from '/@/api/task/model/index';
 
-  import { rotateRetentionCheck } from '/@/utils/validateFuncs';
+  import { rotateRetentionCheck, rotateRetryRowsCheck } from '/@/utils/validateFuncs';
   import { Model } from 'echarts';
 
   const rotateCfgConfig: UnwrapRef<RotateCfgSetParams> = reactive({
     record: 3,
     serviceLog: 3,
+    retryRows: 1000,
+    enableRetry: false,
   });
 
   const rotateCfgConfigRules = computed(() => {
@@ -762,6 +772,13 @@
         {
           required: true,
           validator: rotateRetentionCheck,
+          trigger: 'blur',
+        },
+      ],
+      retryRows: [
+        {
+          required: true,
+          validator: rotateRetryRowsCheck,
           trigger: 'blur',
         },
       ],
@@ -787,6 +804,30 @@
       type: 'input',
       suffix: 'days',
     },
+    {
+      label: t('maintenance.rotateConfig.enableRetry'),
+      field: 'enableRetry',
+      placeholder: t('sys.form.placeholder'),
+      type: 'select',
+      options: [
+        {
+          value: false,
+          label: "Disable",
+        },
+        {
+          value: true,
+          label: "Enable",
+        },
+      ],
+      onChange() {},
+    },
+    {
+      label: t('maintenance.rotateConfig.retryRows'),
+      field: 'retryRows',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+      suffix: 'rows',
+    },
   ];
 
   const ipDataRotateCfgConfig = reactive({
@@ -799,8 +840,12 @@
     if (result) {
       ipDataRotateCfgConfig.rotateCfgConfig['record'] = result['data']['record'];
       ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'] = result['data']['serviceLog'];
+      ipDataRotateCfgConfig.rotateCfgConfig['retryRows'] = result['data']['retryRows'];
+      ipDataRotateCfgConfig.rotateCfgConfig['enableRetry'] = result['data']['enableRetry'];
       rotateCfgConfig.record = ipDataRotateCfgConfig.rotateCfgConfig['record'];
       rotateCfgConfig.serviceLog = ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'];
+      rotateCfgConfig.retryRows = ipDataRotateCfgConfig.rotateCfgConfig['retryRows'];
+      rotateCfgConfig.enableRetry = ipDataRotateCfgConfig.rotateCfgConfig['enableRetry'];
       // console.info('ipDataRotateCfgConfig = '+JSON.stringify(ipDataRotateCfgConfig));
       // console.info('rotateCfgConfig = '+JSON.stringify(rotateCfgConfig));
       // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
@@ -809,9 +854,11 @@
 
   const submitFormRotateCfgConfig = () => {
     loading.value = true;
-    var params: rotateCfgParams = { record: 3, serviceLog: 3 };
+    var params: rotateCfgParams = { record: 3, serviceLog: 3, retryRows: 1000, enableRetry: false };
     params.record = parseInt(rotateCfgConfigMap['rotateCfgConfig'].record, 10);
     params.serviceLog = parseInt(rotateCfgConfigMap['rotateCfgConfig'].serviceLog, 10);
+    params.retryRows = parseInt(rotateCfgConfigMap['rotateCfgConfig'].retryRows, 10);
+    params.enableRetry = rotateCfgConfigMap['rotateCfgConfig'].enableRetry
     // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
     console.info('modRotateCfg params = ' + JSON.stringify(params));
     const result = modRotateCfg(params);

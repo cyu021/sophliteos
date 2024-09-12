@@ -7,7 +7,10 @@
     "rotateConfig": "旋转配置",
     "inputRotateRetention": "必须在 1 到 180 之间",
     "record": "记录&Snapshot",
-    "serviceLog": "服务日志"
+    "serviceLog": "服务日志",
+    "enableRetry": "EnablePushRetry",
+    "retryRows": "PushRetryRows",
+    "inputRotateRetryRows": "必须在 1000 到 3000 之间"
   },
   "prepSpringZip": {
     "selectModel": "选择模型文件",

@@ -7,7 +7,10 @@
     "rotateConfig": "設定を回転",
     "inputRotateRetention": "1～180の間でなければなりません",
     "record": "記録&Snapshot",
-    "serviceLog": "サービスログ"
+    "serviceLog": "サービスログ",
+    "enableRetry": "EnablePushRetry",
+    "retryRows": "PushRetryRows",
+    "inputRotateRetryRows": "Must between 1000 and 3000"
   },
   "prepSpringZip": {
     "selectModel": "ファイルを選択",

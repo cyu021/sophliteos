@@ -20,6 +20,8 @@ export interface upUrlParams {
 export interface rotateCfgParams {
   record: number;
   serviceLog: number;
+  retryRows: number; //rows, 1000-5000
+  enableRetry: boolean;
 }
 
 /**
