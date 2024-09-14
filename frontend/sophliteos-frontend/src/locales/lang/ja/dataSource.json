@@ -34,10 +34,10 @@
     "resolution": "解像度",
     "addDevice": "デバイスを追加",
     "editDevice": "機器を編集",
-    "allCheck": "全検査",
+    "allCheck": "全てストリムチェック",
     "status": "ステータス",
-    "flowType": "フロータイプ",
+    "flowType": "プロトコルタイプ",
     "deviceType": "デバイス名",
-    "RTSP": "RTSP アドレス"
+    "RTSP": "アドレス\n（例：rtsp://xxxxx）"
   }
 }

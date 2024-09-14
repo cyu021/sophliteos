@@ -2,7 +2,7 @@
   "upload": "新しいアルゴリズムをアップロード",
   "select": "アップロード",
   "name": "名前",
-  "state": "状態",
+  "state": "ステータス",
   "action": "アクション",
   "state_on": "有効化",
   "state_off": "無効化",

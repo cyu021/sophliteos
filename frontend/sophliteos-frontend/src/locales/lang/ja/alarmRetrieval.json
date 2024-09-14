@@ -1,10 +1,10 @@
 {
   "alarm": {
-    "channel": "チャンネル選択",
-    "search": "アラームタイプ",
+    "channel": "チャンネル",
+    "search": "イベントタイプ",
     "startTime": "開始時間",
     "EndTime": "終了時間",
-    "totalNumber": "総アラーム数",
+    "totalNumber": "総イベント数",
     "images": "画像",
     "setSpace": "最大スペースを設定",
     "setting": "現在の設定",
@@ -13,9 +13,9 @@
     "saveSetting": "設定を保存",
     "useSpace": "使用済みスペース",
     "maxSpace": "最大スペース",
-    "alarmDetail": "アラーム詳細",
+    "alarmDetail": "イベント詳細",
     "detailInfo": "詳細情報",
-    "alarmType": "アラームタイプ",
+    "alarmType": "イベントタイプ",
     "captureTime": "キャプチャ時間",
     "confidenceLevel": "信頼度レベル",
     "total": "合計",
@@ -24,6 +24,6 @@
     "notKown": "不明",
     "taskId": "タスクID",
     "srcId": "ビデオソースID",
-    "taskSelect": "タスク選択"
+    "taskSelect": "タスク"
   }
 }
