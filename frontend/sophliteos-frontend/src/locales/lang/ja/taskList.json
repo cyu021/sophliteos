@@ -1,7 +1,7 @@
 {
   "taskList": {
-    "id": "タスク数",
-    "videoSource": "ビデオソース",
+    "id": "タスク名",
+    "videoSource": "ビデオソース設定",
     "algoInfo": "アルゴリズムの設定情報",
     "status": "タスクステータス",
     "addTask": "タスクを追加",

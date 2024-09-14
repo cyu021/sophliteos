@@ -11,13 +11,13 @@
   },
   "prepSpringZip": {
     "selectModel": "ファイルを選択",
-    "customAlgoName": "カスタムアルゴリズム名",
-    "pack": "パック",
-    "customAlgoDownloadLinks": "カスタムアルゴリズムのダウンロードリンク:",
+    "customAlgoName": "アルゴリズム名",
+    "pack": "パッケージ",
+    "customAlgoDownloadLinks": "アルゴリズムのダウンロードリンク:",
     "createDate": "作成日",
     "download": "ダウンロード",
     "purge": "パージ",
-    "action": "動作"
+    "action": "アクション"
   },
   "systemUpdate": {
     "filesUploading": "処理中",
@@ -150,11 +150,11 @@
     "cloud": "クラウドプラットフォームの設定"
   },
   "ruleTemplate": {
-    "modelName": "AI モデル名",
+    "modelName": "アルゴリズム名",
     "templateName": "テンプレート名",
-    "action": "動作",
+    "action": "アクション",
     "create": "新しいフォーム テンプレートを作成します",
-    "edit": "ルールテンプレートの編集",
+    "edit": "フィルターテンプレートの編集",
     "copy": "コピー元:"
   },
   "restart": {

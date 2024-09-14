@@ -2,10 +2,10 @@
   "param": {
     "algoType": "アルゴリズムタイプ",
     "minDetectRange": "最小検出範囲",
-    "alarmInterval": "アラームの間隔",
+    "alarmInterval": "イベントの間隔",
     "algoThreshold": "アルゴリズム閾値",
     "paramConfig": "パラメータの編集",
-    "selectTask": "タスクを選択",
+    "selectTask": "選択タスク",
     "channelDetail": "チャネル情報",
     "channel": "チャンネル名",
     "media": "ストリーミングメディア",
@@ -26,7 +26,7 @@
     "bottom": "底部",
     "setAlgoParams": "アルゴリズムの設定",
     "filterRule": "イベント フィルター",
-    "createFilterRule": "ルールの新規作成"
+    "createFilterRule": "新規作成"
   },
   "draw": {
     "clear": "図面をクリア",
@@ -43,9 +43,9 @@
     "detectMode": "検出モード"
   },
   "filter": {
-    "name": "ルール名",
-    "attributeRule": "属性ルール",
-    "timeRules": "時間ルール",
+    "name": "フィルター名",
+    "attributeRule": "属性フィルター",
+    "timeRules": "時間フィルター",
     "startTime": "開始時間",
     "endTime": "終了時間",
     "startDate": "開始日",
