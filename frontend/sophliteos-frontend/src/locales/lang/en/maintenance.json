@@ -7,10 +7,7 @@
     "rotateConfig": "Rotate Config",
     "inputRotateRetention": "Must between 1 and 180",
     "record": "Record&Snapshot",
-    "serviceLog": "ServiceLog",
-    "enableRetry": "EnablePushRetry",
-    "retryRows": "PushRetryRows",
-    "inputRotateRetryRows": "Must between 1000 and 3000"
+    "serviceLog": "ServiceLog"
   },
   "prepSpringZip": {
     "selectModel": "Select Model File",
@@ -137,7 +134,9 @@
     "serverPort": "Server Port",
     "protocol": "Protocol",
     "inputProtocol": "Please enter one of: http, https",
-    "serverEndpoint": "Endpoint"
+    "serverEndpoint": "Endpoint",
+    "enableRetry": "EnablePushRetry",
+    "retryRows": "PushRetryRows"
   },
   "threshold": {
     "fanSpeed": "Fan Speed",

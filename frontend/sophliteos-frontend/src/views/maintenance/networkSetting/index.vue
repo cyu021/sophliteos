@@ -128,12 +128,22 @@
             :key="item.field"
             :label="item.label"
             :name="item.field"
+            :label-col="{ style: {width: '200px'} }"
           >
             <a-input
               v-if="item.type === 'input'"
               v-model:value="upUrlConfig[item.field]"
               :placeholder="item.placeholder"
+              :suffix="item.suffix"
             />
+            <a-select
+              v-if="item.type === 'select'"
+              ref="select"
+              v-model:value="upUrlConfig[item.field]"
+              :options="item.options"
+              @change="item.onChange"
+            >
+            </a-select>
           </a-form-item>
           <a-form-item class="!pl-1/6">
             <a-button type="primary" html-type="submit" :loading="loading">{{
@@ -167,14 +177,6 @@
               :placeholder="item.placeholder"
               :suffix="item.suffix"
             />
-            <a-select
-              v-if="item.type === 'select'"
-              ref="select"
-              v-model:value="rotateCfgConfig[item.field]"
-              :options="item.options"
-              @change="item.onChange"
-            >
-            </a-select>
           </a-form-item>
           <a-form-item class="!pl-1/6">
             <a-button type="primary" html-type="submit" :loading="loading">{{
@@ -584,6 +586,8 @@
     port: '',
     protocol: '',
     endpoint: '',
+    retryRows: 1000,
+    enableRetry: false,
   });
 
   const upUrlConfigRules = computed(() => {
@@ -612,6 +616,13 @@
       endpoint: [
         {
           required: true,
+          trigger: 'blur',
+        },
+      ],
+      retryRows: [
+        {
+          required: true,
+          validator: rotateRetryRowsCheck,
           trigger: 'blur',
         },
       ],
@@ -647,17 +658,43 @@
       placeholder: '/algorithm/upload',
       type: 'input',
     },
+    {
+      label: t('maintenance.newworkSettings.enableRetry'),
+      field: 'enableRetry',
+      placeholder: t('sys.form.placeholder'),
+      type: 'select',
+      options: [
+        {
+          value: false,
+          label: "Disable",
+        },
+        {
+          value: true,
+          label: "Enable",
+        },
+      ],
+      onChange() {},
+    },
+    {
+      label: t('maintenance.newworkSettings.retryRows'),
+      field: 'retryRows',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+      suffix: 'rows',
+    },
   ];
 
   const ipDataUpUrlConfig = reactive({
     upUrlConfig: [],
   });
   const initUpUrlConfig = async () => {
-    const result = await getUpUrl();
+    let result = await getUpUrl();
+    result = result ? result : '{"uploadhost": "http://127.0.0.1:8081", "enableRetry": false, "retryRows": 1000}';
     pageLoading.value = false;
-    console.info('initUpUrlConfig result=' + JSON.stringify(result));
-    if (result) {
-      let resultEles = result.split('://');
+    let resultJson = JSON.parse(result)
+    console.info('initUpUrlConfig result=' + JSON.stringify(resultJson));
+    if (resultJson["Uploadhost"]) {
+      let resultEles = resultJson["Uploadhost"].split('://');
       let resultEles2 = resultEles[1].split(':');
       ipDataUpUrlConfig.upUrlConfig['protocol'] = resultEles[0];
       ipDataUpUrlConfig.upUrlConfig['ip'] = resultEles2[0];
@@ -677,15 +714,24 @@
       upUrlConfig.protocol = ipDataUpUrlConfig.upUrlConfig['protocol'];
       upUrlConfig.endpoint = ipDataUpUrlConfig.upUrlConfig['endpoint'];
     }
+    ipDataUpUrlConfig.upUrlConfig["enableRetry"] = resultJson["EnableRetry"]
+    upUrlConfig.enableRetry = ipDataUpUrlConfig.upUrlConfig["enableRetry"]
+    ipDataUpUrlConfig.upUrlConfig["retryRows"] = resultJson["RetryRows"]
+    if(ipDataUpUrlConfig.upUrlConfig["retryRows"] == 0) {
+      ipDataUpUrlConfig.upUrlConfig["retryRows"] = 1000
+    }
+    upUrlConfig.retryRows = ipDataUpUrlConfig.upUrlConfig["retryRows"]
   };
 
   const submitFormUpUrlConfig = async () => {
     loading.value = true;
-    var params: upUrlParams = { protocol: '', ip: '', port: '', endpoint: '' };
+    var params: upUrlParams = { protocol: '', ip: '', port: '', endpoint: '', enableRetry: false, retryRows: 1000 };
     params.protocol = upUrlConfigMap['upUrlConfig'].protocol;
     params.ip = upUrlConfigMap['upUrlConfig'].ip;
     params.port = upUrlConfigMap['upUrlConfig'].port;
     params.endpoint = upUrlConfigMap['upUrlConfig'].endpoint;
+    params.enableRetry = upUrlConfigMap['upUrlConfig'].enableRetry;
+    params.retryRows = Number(upUrlConfigMap['upUrlConfig'].retryRows);
     console.info('addUpUrl params = ' + JSON.stringify(params));
     const result = addUpUrl(params);
     console.info('addUpUrl result = ' + JSON.stringify(result));
@@ -755,8 +801,6 @@
   const rotateCfgConfig: UnwrapRef<RotateCfgSetParams> = reactive({
     record: 3,
     serviceLog: 3,
-    retryRows: 1000,
-    enableRetry: false,
   });
 
   const rotateCfgConfigRules = computed(() => {
@@ -772,13 +816,6 @@
         {
           required: true,
           validator: rotateRetentionCheck,
-          trigger: 'blur',
-        },
-      ],
-      retryRows: [
-        {
-          required: true,
-          validator: rotateRetryRowsCheck,
           trigger: 'blur',
         },
       ],
@@ -804,30 +841,6 @@
       type: 'input',
       suffix: 'days',
     },
-    {
-      label: t('maintenance.rotateConfig.enableRetry'),
-      field: 'enableRetry',
-      placeholder: t('sys.form.placeholder'),
-      type: 'select',
-      options: [
-        {
-          value: false,
-          label: "Disable",
-        },
-        {
-          value: true,
-          label: "Enable",
-        },
-      ],
-      onChange() {},
-    },
-    {
-      label: t('maintenance.rotateConfig.retryRows'),
-      field: 'retryRows',
-      placeholder: t('sys.form.placeholder'),
-      type: 'input',
-      suffix: 'rows',
-    },
   ];
 
   const ipDataRotateCfgConfig = reactive({
@@ -840,15 +853,12 @@
     if (result) {
       ipDataRotateCfgConfig.rotateCfgConfig['record'] = result['data']['record'];
       ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'] = result['data']['serviceLog'];
-      ipDataRotateCfgConfig.rotateCfgConfig['retryRows'] = result['data']['retryRows'];
-      ipDataRotateCfgConfig.rotateCfgConfig['enableRetry'] = result['data']['enableRetry'];
+      // ipDataRotateCfgConfig.rotateCfgConfig['retryRows'] = result['data']['retryRows'];
+      // ipDataRotateCfgConfig.rotateCfgConfig['enableRetry'] = result['data']['enableRetry'];
       rotateCfgConfig.record = ipDataRotateCfgConfig.rotateCfgConfig['record'];
       rotateCfgConfig.serviceLog = ipDataRotateCfgConfig.rotateCfgConfig['serviceLog'];
-      rotateCfgConfig.retryRows = ipDataRotateCfgConfig.rotateCfgConfig['retryRows'];
-      rotateCfgConfig.enableRetry = ipDataRotateCfgConfig.rotateCfgConfig['enableRetry'];
-      // console.info('ipDataRotateCfgConfig = '+JSON.stringify(ipDataRotateCfgConfig));
-      // console.info('rotateCfgConfig = '+JSON.stringify(rotateCfgConfig));
-      // console.info('rotateCfgConfigMap = '+JSON.stringify(rotateCfgConfigMap));
+      // rotateCfgConfig.retryRows = ipDataRotateCfgConfig.rotateCfgConfig['retryRows'];
+      // rotateCfgConfig.enableRetry = ipDataRotateCfgConfig.rotateCfgConfig['enableRetry'];
     }
   };
 

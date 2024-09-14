@@ -7,10 +7,7 @@
     "rotateConfig": "設定を回転",
     "inputRotateRetention": "1～180の間でなければなりません",
     "record": "記録&Snapshot",
-    "serviceLog": "サービスログ",
-    "enableRetry": "EnablePushRetry",
-    "retryRows": "PushRetryRows",
-    "inputRotateRetryRows": "Must between 1000 and 3000"
+    "serviceLog": "サービスログ"
   },
   "prepSpringZip": {
     "selectModel": "ファイルを選択",
@@ -137,7 +134,9 @@
     "serverPort": "ServerPort",
     "protocol": "プロトコル",
     "inputProtocol": "以下のいずれかを入力してください: http, https",
-    "serverEndpoint": "Endpoint"
+    "serverEndpoint": "Endpoint",
+    "enableRetry": "EnablePushRetry",
+    "retryRows": "PushRetryRows"
   },
   "threshold": {
     "fanSpeed": "ファン回転速度",

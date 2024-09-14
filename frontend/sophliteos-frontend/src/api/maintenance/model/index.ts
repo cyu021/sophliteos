@@ -17,6 +17,8 @@ export interface UpUrlConfigSetParams {
   port: string;
   protocol: string; //http|https
   endpoint: string;
+  retryRows: number; //rows, 1000-5000
+  enableRetry: boolean;
 }
 
 export interface RotateCfgSetParams {

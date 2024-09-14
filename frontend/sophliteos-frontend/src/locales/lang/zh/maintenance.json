@@ -7,10 +7,7 @@
     "rotateConfig": "旋转配置",
     "inputRotateRetention": "必须在 1 到 180 之间",
     "record": "记录&Snapshot",
-    "serviceLog": "服务日志",
-    "enableRetry": "EnablePushRetry",
-    "retryRows": "PushRetryRows",
-    "inputRotateRetryRows": "必须在 1000 到 3000 之间"
+    "serviceLog": "服务日志"
   },
   "prepSpringZip": {
     "selectModel": "选择模型文件",
@@ -135,10 +132,11 @@
     "msg": "该SDK版本不支持修改网络设置",
     "inputPort": "Please enter port",
     "serverPort": "ServerPort",
-    "serverEndpoint": "ServerEndpoint",
     "protocol": "协议",
     "inputProtocol": "请输入以下内容之一：http、https",
-    "serverEndpoint": "Endpoint"
+    "serverEndpoint": "Endpoint",
+    "enableRetry": "EnablePushRetry",
+    "retryRows": "PushRetryRows"
   },
   "threshold": {
     "fanSpeed": "风扇转速",

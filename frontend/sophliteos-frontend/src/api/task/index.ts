@@ -75,7 +75,7 @@ export const getUpUrl = () =>
     if (res.Code == 0) {
       return res.result;
     }
-    return 'http://127.0.0.1:8081';
+    return '{"uploadhost": "http://127.0.0.1:8081", "enableRetry": false, "retryRows": 1000}';
   }
   );
 

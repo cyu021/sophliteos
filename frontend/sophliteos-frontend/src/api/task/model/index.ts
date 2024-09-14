@@ -15,6 +15,8 @@ export interface upUrlParams {
   port: string;
   protocol: string;
   endpoint: string;
+  enableRetry: boolean;
+  retryRows: number;
 }
 
 export interface rotateCfgParams {
