@@ -136,7 +136,10 @@
     "inputProtocol": "请输入以下内容之一：http、https",
     "serverEndpoint": "Endpoint",
     "enableRetry": "EnablePushRetry",
-    "retryRows": "PushRetryRows"
+    "retryRows": "PushRetryRows",
+    "pushEndpointMain": "Main Push Endpoint",
+    "pushEndpointBackup": "Backup Push Endpoint",
+    "pushRetry": "Push Retry"
   },
   "threshold": {
     "fanSpeed": "风扇转速",

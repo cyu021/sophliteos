@@ -144,6 +144,10 @@
               @change="item.onChange"
             >
             </a-select>
+            <template v-if="item.type === 'divider'">
+              <label>{{item.field}}</label>
+              <hr style="height: 3px; width: 100%; background-color: #bbb" />
+            </template>
           </a-form-item>
           <a-form-item class="!pl-1/6">
             <a-button type="primary" html-type="submit" :loading="loading">{{
@@ -586,6 +590,10 @@
     port: '',
     protocol: '',
     endpoint: '',
+    ip2: '',
+    port2: '',
+    protocol2: '',
+    endpoint2: '',
     retryRows: 1000,
     enableRetry: false,
   });
@@ -595,7 +603,6 @@
       protocol: [
         {
           required: true,
-          validator: protocolCheck,
           trigger: 'blur',
         },
       ],
@@ -619,6 +626,32 @@
           trigger: 'blur',
         },
       ],
+      protocol2: [
+        {
+          required: false,
+          trigger: 'blur',
+        },
+      ],
+      ip2: [
+        {
+          required: false,
+          validator: IpCheck,
+          trigger: 'blur',
+        },
+      ],
+      port2: [
+        {
+          required: false,
+          validator: portCheck,
+          trigger: 'blur',
+        },
+      ],
+      endpoint2: [
+        {
+          required: false,
+          trigger: 'blur',
+        },
+      ],
       retryRows: [
         {
           required: true,
@@ -635,10 +668,25 @@
 
   const formItemListUpUrlConfig = [
     {
+      field: t('maintenance.newworkSettings.pushEndpointMain'),
+      type: 'divider',
+    },
+    {
       label: t('maintenance.newworkSettings.protocol'),
       field: 'protocol',
       placeholder: t('sys.form.placeholder'),
-      type: 'input',
+      type: 'select',
+      options: [
+        {
+          value: "http",
+          label: "http",
+        },
+        {
+          value: "https",
+          label: "https",
+        },
+      ],
+      onChange() {},
     },
     {
       label: t('maintenance.newworkSettings.ip'),
@@ -657,6 +705,49 @@
       field: 'endpoint',
       placeholder: '/algorithm/upload',
       type: 'input',
+    },
+    {
+      field: t('maintenance.newworkSettings.pushEndpointBackup'),
+      type: 'divider',
+    },
+    {
+      label: t('maintenance.newworkSettings.protocol'),
+      field: 'protocol2',
+      placeholder: t('sys.form.placeholder'),
+      type: 'select',
+      options: [
+        {
+          value: "http",
+          label: "http",
+        },
+        {
+          value: "https",
+          label: "https",
+        },
+      ],
+      onChange() {},
+    },
+    {
+      label: t('maintenance.newworkSettings.ip'),
+      field: 'ip2',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.newworkSettings.serverPort'),
+      field: 'port2',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.newworkSettings.serverEndpoint'),
+      field: 'endpoint2',
+      placeholder: '/algorithm/upload',
+      type: 'input',
+    },
+    {
+      field: t('maintenance.newworkSettings.pushRetry'),
+      type: 'divider',
     },
     {
       label: t('maintenance.newworkSettings.enableRetry'),
@@ -694,25 +785,50 @@
     let resultJson = JSON.parse(result)
     console.info('initUpUrlConfig result=' + JSON.stringify(resultJson));
     if (resultJson["Uploadhost"]) {
-      let resultEles = resultJson["Uploadhost"].split('://');
-      let resultEles2 = resultEles[1].split(':');
-      ipDataUpUrlConfig.upUrlConfig['protocol'] = resultEles[0];
-      ipDataUpUrlConfig.upUrlConfig['ip'] = resultEles2[0];
-      let resultEles3 = resultEles2[1].split('/');
-      ipDataUpUrlConfig.upUrlConfig['port'] = resultEles3[0];
-      ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/algorithm/upload';
-      if (resultEles3.length > 2) {
-        ipDataUpUrlConfig.upUrlConfig['endpoint'] = resultEles3
-          .slice(1, resultEles3.length)
-          .join('/');
+      let uploadhosts = resultJson["Uploadhost"].split(";")
+      for(let i = 0; i < uploadhosts.length; i++) {
+        if(i == 0) {
+          let resultEles = uploadhosts[i].split('://');
+          let resultEles2 = resultEles[1].split(':');
+          ipDataUpUrlConfig.upUrlConfig['protocol'] = resultEles[0];
+          ipDataUpUrlConfig.upUrlConfig['ip'] = resultEles2[0];
+          let resultEles3 = resultEles2[1].split('/');
+          ipDataUpUrlConfig.upUrlConfig['port'] = resultEles3[0];
+          ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/algorithm/upload';
+          if (resultEles3.length > 2) {
+            ipDataUpUrlConfig.upUrlConfig['endpoint'] = resultEles3
+              .slice(1, resultEles3.length)
+              .join('/');
+          }
+          if (!ipDataUpUrlConfig.upUrlConfig['endpoint'].startsWith('/')) {
+            ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/' + ipDataUpUrlConfig.upUrlConfig['endpoint'];
+          }
+          upUrlConfig.ip = ipDataUpUrlConfig.upUrlConfig['ip'];
+          upUrlConfig.port = ipDataUpUrlConfig.upUrlConfig['port'];
+          upUrlConfig.protocol = ipDataUpUrlConfig.upUrlConfig['protocol'];
+          upUrlConfig.endpoint = ipDataUpUrlConfig.upUrlConfig['endpoint'];
+        } else if(i == 1) {
+          let resultEles = uploadhosts[i].split('://');
+          let resultEles2 = resultEles[1].split(':');
+          ipDataUpUrlConfig.upUrlConfig['protocol2'] = resultEles[0];
+          ipDataUpUrlConfig.upUrlConfig['ip2'] = resultEles2[0];
+          let resultEles3 = resultEles2[1].split('/');
+          ipDataUpUrlConfig.upUrlConfig['port2'] = resultEles3[0];
+          ipDataUpUrlConfig.upUrlConfig['endpoint2'] = '/algorithm/upload';
+          if (resultEles3.length > 2) {
+            ipDataUpUrlConfig.upUrlConfig['endpoint2'] = resultEles3
+              .slice(1, resultEles3.length)
+              .join('/');
+          }
+          if (!ipDataUpUrlConfig.upUrlConfig['endpoint2'].startsWith('/')) {
+            ipDataUpUrlConfig.upUrlConfig['endpoint2'] = '/' + ipDataUpUrlConfig.upUrlConfig['endpoint2'];
+          }
+          upUrlConfig.ip2 = ipDataUpUrlConfig.upUrlConfig['ip2'];
+          upUrlConfig.port2 = ipDataUpUrlConfig.upUrlConfig['port2'];
+          upUrlConfig.protocol2 = ipDataUpUrlConfig.upUrlConfig['protocol2'];
+          upUrlConfig.endpoint2 = ipDataUpUrlConfig.upUrlConfig['endpoint2'];
+        }
       }
-      if (!ipDataUpUrlConfig.upUrlConfig['endpoint'].startsWith('/')) {
-        ipDataUpUrlConfig.upUrlConfig['endpoint'] = '/' + ipDataUpUrlConfig.upUrlConfig['endpoint'];
-      }
-      upUrlConfig.ip = ipDataUpUrlConfig.upUrlConfig['ip'];
-      upUrlConfig.port = ipDataUpUrlConfig.upUrlConfig['port'];
-      upUrlConfig.protocol = ipDataUpUrlConfig.upUrlConfig['protocol'];
-      upUrlConfig.endpoint = ipDataUpUrlConfig.upUrlConfig['endpoint'];
     }
     ipDataUpUrlConfig.upUrlConfig["enableRetry"] = resultJson["EnableRetry"]
     upUrlConfig.enableRetry = ipDataUpUrlConfig.upUrlConfig["enableRetry"]
@@ -725,13 +841,17 @@
 
   const submitFormUpUrlConfig = async () => {
     loading.value = true;
-    var params: upUrlParams = { protocol: '', ip: '', port: '', endpoint: '', enableRetry: false, retryRows: 1000 };
+    var params: upUrlParams = { protocol: '', ip: '', port: '', endpoint: '', enableRetry: false, retryRows: 1000, protocol2: '', ip2: '', port2: '', endpoint2: '' };
     params.protocol = upUrlConfigMap['upUrlConfig'].protocol;
     params.ip = upUrlConfigMap['upUrlConfig'].ip;
     params.port = upUrlConfigMap['upUrlConfig'].port;
     params.endpoint = upUrlConfigMap['upUrlConfig'].endpoint;
     params.enableRetry = upUrlConfigMap['upUrlConfig'].enableRetry;
     params.retryRows = Number(upUrlConfigMap['upUrlConfig'].retryRows);
+    params.protocol2 = upUrlConfigMap['upUrlConfig'].protocol2;
+    params.ip2 = upUrlConfigMap['upUrlConfig'].ip2;
+    params.port2 = upUrlConfigMap['upUrlConfig'].port2;
+    params.endpoint2 = upUrlConfigMap['upUrlConfig'].endpoint2;
     console.info('addUpUrl params = ' + JSON.stringify(params));
     const result = addUpUrl(params);
     console.info('addUpUrl result = ' + JSON.stringify(result));

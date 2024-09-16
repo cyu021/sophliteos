@@ -136,7 +136,10 @@
     "inputProtocol": "Please enter one of: http, https",
     "serverEndpoint": "Endpoint",
     "enableRetry": "EnablePushRetry",
-    "retryRows": "PushRetryRows"
+    "retryRows": "PushRetryRows",
+    "pushEndpointMain": "Main Push Endpoint",
+    "pushEndpointBackup": "Backup Push Endpoint",
+    "pushRetry": "Push Retry"
   },
   "threshold": {
     "fanSpeed": "Fan Speed",

@@ -17,6 +17,10 @@ export interface UpUrlConfigSetParams {
   port: string;
   protocol: string; //http|https
   endpoint: string;
+  ip2: string; // ip地址
+  port2: string;
+  protocol2: string; //http|https
+  endpoint2: string;
   retryRows: number; //rows, 1000-5000
   enableRetry: boolean;
 }
