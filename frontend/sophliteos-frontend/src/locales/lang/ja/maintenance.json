@@ -158,7 +158,8 @@
     "action": "アクション",
     "create": "新しいフォーム テンプレートを作成します",
     "edit": "フィルターテンプレートの編集",
-    "copy": "コピー元:"
+    "copy": "コピー元:",
+    "templateDesc": "Template Description"
   },
   "restart": {
     "hardware": "ハードウェア",

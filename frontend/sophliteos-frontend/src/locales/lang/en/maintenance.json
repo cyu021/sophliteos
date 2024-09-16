@@ -158,7 +158,8 @@
     "action": "Action",
     "create": "Create a new rule template",
     "edit": "Edit rule template",
-    "copy": "Copy from:"
+    "copy": "Copy from:",
+    "templateDesc": "Template Description"
   },
   "restart": {
     "hardware": "Hardware",

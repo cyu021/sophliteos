@@ -158,7 +158,8 @@
     "action": "操作",
     "create": "新建一个模版",
     "edit": "编辑",
-    "copy": "从其他复制:"
+    "copy": "从其他复制:",
+    "templateDesc": "Template Description"
   },
   "restart": {
     "hardware": "硬件",

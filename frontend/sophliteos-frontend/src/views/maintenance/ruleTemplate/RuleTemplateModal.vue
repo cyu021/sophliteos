@@ -50,6 +50,14 @@
       />
     </div>
 
+    <div style="padding: 14px; display: flex; flex-direction: row; align-items: center">
+      <Input
+        :disabled="modelSelectDisabled"
+        v-model:value="cacheExtend.FilterDescription"
+        :placeholder="t('maintenance.ruleTemplate.templateDesc')"
+      />
+    </div>
+
     <div style="padding: 14px; padding-bottom: 30px">
       <Collapse v-model:activeKey="attributeActiveKey">
         <CollapsePanel key="1" :header="t('paramConfig.filter.attributeRule')">
@@ -765,6 +773,7 @@
 
   async function Submit() {
     const newValue = format();
+    console.info("newVaule="+JSON.stringify(newValue))
     await apis.updateRuleTemplate(modelDisplayName.value, newValue);
     closeModal();
     emit('success');

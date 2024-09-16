@@ -172,6 +172,7 @@
                 key: key + index,
                 aiModelName: key,
                 templateName: item.FilterName,
+                templateDesc: item.FilterDescription,
                 value: item,
               });
             });
@@ -204,6 +205,11 @@
       title: t('maintenance.ruleTemplate.templateName'),
       dataIndex: 'templateName',
       key: 'templateName',
+    },
+    {
+      title: t('maintenance.ruleTemplate.templateDesc'),
+      dataIndex: 'templateDesc',
+      key: 'templateDesc',
     },
     {
       title: t('maintenance.ruleTemplate.action'),
