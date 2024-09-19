@@ -123,7 +123,7 @@ func (b *BaseApi) AlarmListen(c *gin.Context) {
 
 	if alarm.ComponentType == "disk" && alarmRec.Code < 0 {
 		// alarm.Msg = "磁盘" + alarmRec.DiskName + ": " + alarmRec.Msg
-		alarm.Msg = "Disk" + alarmRec.DiskName + ": " + alarmRec.Msg
+		alarm.Msg = "Disk " + alarmRec.DiskName + ": " + alarmRec.Msg
 	}
 
 	alarm.CoreUnitBoardSn = alarmRec.BoardSn
