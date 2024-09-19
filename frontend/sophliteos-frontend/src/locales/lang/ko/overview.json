@@ -36,7 +36,7 @@
   "memory": "메모리",
   "size": "크기",
   "disk": "디스크(eMMC)",
-  "diskExt": "Disk(others)",
+  "diskExt": "Disk(HDD)",
   "zong": "총",
   "ge": " ",
   "basicInfor": "기본 정보",
