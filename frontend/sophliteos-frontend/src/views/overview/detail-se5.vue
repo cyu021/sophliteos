@@ -86,6 +86,23 @@
         </a-row>
       </a-col>
     </a-row>
+    <a-row class="se5-row">
+      <a-col :xs="24" :lg="12">
+        <a-descriptions :title="t('overview.licInfo')" bordered :column="1">
+          <a-descriptions-item :label="t('overview.licDetails.expireDate')">{{
+            originData.licInfo['expireDate']
+          }}</a-descriptions-item>
+          <a-descriptions-item :label="t('overview.licDetails.rtspLimit')">{{
+            originData.licInfo['rtspLimit']
+          }}</a-descriptions-item>
+          <a-descriptions-item 
+            v-for="(lv, lk) of originData.licInfo['pipelineCfgs']"
+            :label="'Stream Limit for Algo: '+lk">{{
+            lv['rtspLimit']
+          }}</a-descriptions-item>
+        </a-descriptions>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script lang="ts" setup>
@@ -143,6 +160,11 @@
         title: t('overview.disk'),
         usage: originData.value.disk[0].usage,
         total: originData.value.disk[0].total,
+      },
+      {
+        title: t('overview.diskExt'),
+        usage: originData.value.disk[1].usage,
+        total: originData.value.disk[1].total,
       },
       {
         title: t('overview.tpu'),

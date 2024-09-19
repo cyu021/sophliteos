@@ -35,10 +35,16 @@
   "cores": "コア数",
   "memory": "メモリ",
   "size": "サイズ",
-  "disk": "ディスク",
+  "disk": "ディスク(eMMC)",
+  "diskExt": "Disk(HDD)",
   "zong": "合計",
   "ge": " ",
   "basicInfor": "基本情報",
+  "licInfo": "License Info",
+  "licDetails": {
+    "expireDate": "Expire Date",
+    "rtspLimit": "Total Stream Limit"
+  },
   "frequency": "頻度",
   "netCard": "ネットカード",
   "bandwidth": "帯域幅",

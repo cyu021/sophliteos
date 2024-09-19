@@ -35,10 +35,16 @@
   "cores": "코어 수",
   "memory": "메모리",
   "size": "크기",
-  "disk": "디스크",
+  "disk": "디스크(eMMC)",
+  "diskExt": "Disk(others)",
   "zong": "총",
   "ge": " ",
   "basicInfor": "기본 정보",
+  "licInfo": "License Info",
+  "licDetails": {
+    "expireDate": "Expire Date",
+    "rtspLimit": "Total Stream Limit"
+  },
   "frequency": "주파수",
   "netCard": "NetCard",
   "bandwidth": "대역폭",

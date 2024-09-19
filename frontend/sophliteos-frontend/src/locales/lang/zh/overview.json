@@ -35,10 +35,16 @@
   "cores": "核数",
   "memory": "内存",
   "size": "大小",
-  "disk": "硬盘",
+  "disk": "硬盘(eMMC)",
+  "diskExt": "Disk(HDD)",
   "zong": "总",
   "ge": " ",
   "basicInfor": "基础信息",
+  "licInfo": "License Info",
+  "licDetails": {
+    "expireDate": "Expire Date",
+    "rtspLimit": "Total Stream Limit"
+  },
   "frequency": "主频",
   "netCard": "网卡",
   "bandwidth": "带宽",

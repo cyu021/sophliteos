@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { resourceApi, IsAlgorithm } from '/@/api/overview/index';
+import { resourceApi, IsAlgorithm, licInfoApi } from '/@/api/overview/index';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { asyncRoutes } from '/@/router/routes';
 import { usePermissionStore } from '/@/store/modules/permission';
@@ -72,9 +72,11 @@ export const useDeviceInfo = defineStore({
     async getDeviceInfo() {
       const result = await resourceApi();
       const isAlgo = await IsAlgorithm();
+      const licInfo = await licInfoApi();
 
       if (result) {
         this.originData = result;
+        this.originData['licInfo'] = licInfo;
         const { cpu, memory, coreComputingUnit, deviceSn, deviceType } = result;
         Object.keys(this.deviceInfo).forEach((key) => {
           if (key === 'runTime') {

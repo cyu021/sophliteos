@@ -10,6 +10,7 @@ const PATH = {
   onOff: '/onoffDynamicModel',
   delete: '/deleteDynamicModel',
   upload: '/dynamic/uploadDynamicModel',
+  licInfo: '/streamTask/licInfo'
 }
 
 const AbilitiesPATH = {
@@ -202,12 +203,21 @@ const deleteFile = (name) => {
     })
 };
 
+const licInfoGet = () => {
+  return defHttp
+    .get({ url: PATH.licInfo, }, { apiUrl: '', isTransformResponse: false })
+    .then((res) => {
+      return res.data
+    })
+}
+
 const apis = {
   list,
   upload,
   start,
   stop,
   deleteFile,
+  licInfoGet,
 };
 
 export default apis;

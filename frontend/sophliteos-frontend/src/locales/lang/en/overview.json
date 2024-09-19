@@ -35,10 +35,16 @@
   "cores": "Core Count",
   "memory": "Memory",
   "size": "Size",
-  "disk": "Disk",
+  "disk": "Disk(eMMC)",
+  "diskExt": "Disk(HDD)",
   "zong": "Total",
   "ge": " ",
   "basicInfor": "Basic Information",
+  "licInfo": "License Info",
+  "licDetails": {
+    "expireDate": "Expire Date",
+    "rtspLimit": "Total Stream Limit"
+  },
   "frequency": "Frequency",
   "netCard": "NetCard",
   "bandwidth": "Bandwidth",

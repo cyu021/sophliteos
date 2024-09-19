@@ -1,4 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
+import apis from '../../views/accessAlgo/algorithms/apis.js'
 
 // import { DeviceInfoApiResponse } from '../model/baseModel';
 
@@ -8,6 +9,10 @@ enum Api {
   Operation = '/device/core/operation',
   Software = '/device/version',
   isAlgo = '/algorithm',
+}
+
+export function licInfoApi() {
+  return apis.licInfoGet()
 }
 
 export function resourceApi() {
