@@ -36,14 +36,15 @@
   "memory": "メモリ",
   "size": "サイズ",
   "disk": "ディスク(eMMC)",
-  "diskExt": "Disk(HDD)",
+  "diskExt": "ディスク(HDD)",
   "zong": "合計",
   "ge": " ",
   "basicInfor": "基本情報",
-  "licInfo": "License Info",
+  "licInfo": "ライセンス情報",
   "licDetails": {
-    "expireDate": "Expire Date",
-    "rtspLimit": "Total Stream Limit"
+    "expireDate": "有効期限",
+    "rtspLimit": "トータルストリム数",
+    "streamLimitForAlgo": "アルゴリズムのストリーム制限"
   },
   "frequency": "頻度",
   "netCard": "ネットカード",

@@ -99,7 +99,7 @@
           }}</a-descriptions-item>
           <a-descriptions-item 
             v-for="(lv, lk) of originData.licInfo['pipelineCfgs']"
-            :label="'Stream Limit for Algo: '+lk">{{
+            :label="t('overview.licDetails.streamLimitForAlgo')+': '+lk">{{
             lv['rtspLimit']
           }}</a-descriptions-item>
         </a-descriptions>
