@@ -478,11 +478,16 @@ func getDisks(disk []dto.Disk) []response.Disk {
 		total = 1
 		free = 0
 	}
-	disks = append(disks, response.Disk{
+	dsk := response.Disk{
 		ID:    "others",
 		Total: total,
 		Usage: (1 - float64(free/total)) * 100,
-	})
+	}
+	if dsk.Total == 1 && dsk.Usage == 100 {
+		dsk.Total = 0.0
+		dsk.Usage = 0.0
+	}
+	disks = append(disks, dsk)
 	return disks
 }
 
