@@ -86,6 +86,8 @@
         </a-row>
       </a-col>
     </a-row>
+  </div>
+  <div class="p-24px">
     <a-row class="se5-row">
       <a-col :xs="24" :lg="12">
         <a-descriptions :title="t('overview.licInfo')" bordered :column="1">
