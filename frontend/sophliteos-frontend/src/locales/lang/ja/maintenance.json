@@ -136,7 +136,7 @@
     "inputProtocol": "以下のいずれかを入力してください: http, https",
     "serverEndpoint": "エンドポイント",
     "enableRetry": "リトライを有効にする",
-    "retryRows": "リトライ行",
+    "retryRows": "retry回数",
     "pushEndpointMain": "メインプッシュエンドポイント",
     "pushEndpointBackup": "バックアッププッシュエンドポイント",
     "pushRetry": "プッシュリトライ"
