@@ -95,12 +95,12 @@
             originData.licInfo['expireDate']
           }}</a-descriptions-item>
           <a-descriptions-item :label="t('overview.licDetails.rtspLimit')">{{
-            originData.licInfo['rtspLimit']
+            originData.licInfo['rtspCurr']+"/"+originData.licInfo['rtspLimit']
           }}</a-descriptions-item>
           <a-descriptions-item 
             v-for="(lv, lk) of originData.licInfo['pipelineCfgs']"
             :label="t('overview.licDetails.streamLimitForAlgo')+': '+lk">{{
-            lv['rtspLimit']
+            lv['rtspCurr']+"/"+lv['rtspLimit']
           }}</a-descriptions-item>
         </a-descriptions>
       </a-col>

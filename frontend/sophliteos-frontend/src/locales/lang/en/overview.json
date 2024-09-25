@@ -43,8 +43,8 @@
   "licInfo": "License Info",
   "licDetails": {
     "expireDate": "Expire Date",
-    "rtspLimit": "Total Stream Limit",
-    "streamLimitForAlgo": "Stream Limit for Algo"
+    "rtspLimit": "Total Stream Decoding/Limit",
+    "streamLimitForAlgo": "Stream Decoding/Limit for Algo"
   },
   "frequency": "Frequency",
   "netCard": "NetCard",

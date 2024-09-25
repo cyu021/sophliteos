@@ -43,8 +43,8 @@
   "licInfo": "ライセンス情報",
   "licDetails": {
     "expireDate": "有効期限",
-    "rtspLimit": "トータルストリム数",
-    "streamLimitForAlgo": "アルゴリズムのストリーム制限"
+    "rtspLimit": "トータルストリームデコードのリミット",
+    "streamLimitForAlgo": "ストリームデコード/アルゴリズムのリミット"
   },
   "frequency": "頻度",
   "netCard": "ネットカード",
