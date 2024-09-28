@@ -68,16 +68,18 @@ export function getBasicColumns(): BasicColumn[] {
     //   align: 'left',
     // },
     {
-      title: t('dataSource.videoManage.encodeFormat'),
+      title: t('dataSource.videoManage.encodeFormat')+'\n(h264/hevc)',
       dataIndex: 'codec',
-      width: 150,
-      align: 'left',
-    },
-    {
-      title: t('dataSource.videoManage.resolution'),
-      dataIndex: 'resolution',
       width: 100,
       align: 'left',
+      ellipsis: false,
+    },
+    {
+      title: t('dataSource.videoManage.resolution')+'\n(1920x1080)',
+      dataIndex: 'resolution',
+      width: 80,
+      align: 'left',
+      ellipsis: false,
     },
   ];
 }

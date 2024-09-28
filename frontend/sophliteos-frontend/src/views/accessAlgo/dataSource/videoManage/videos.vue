@@ -176,17 +176,27 @@
   async function oneStart() {
     const deviceIds = getDataSource().map((item) => item.deviceId);
     setLoading(true);
-    await DeviceCheck({ deviceIds: deviceIds });
+    var checkResult = await DeviceCheck({ deviceIds: deviceIds });
+    console.info("oneStart.checkResult => " + JSON.stringify(checkResult));
     setLoading(false);
-    createMessage.success('Check stream success');
+    if(checkResult["msg"] !== "ok") {
+      createMessage.error(checkResult["msg"]);
+    } else {
+      createMessage.success('Check stream success');
+    }
     reload();
   }
   async function PatrolInsepect(record) {
     const deviceId = [record.deviceId];
     setLoading(true);
-    await DeviceCheck({ deviceIds: deviceId });
+    var checkResult = await DeviceCheck({ deviceIds: deviceId });
+    console.info("PatrolInsepect.checkResult => " + JSON.stringify(checkResult));
     setLoading(false);
-    createMessage.success('Check stream success');
+    if(checkResult["msg"] !== "ok") {
+      createMessage.error(checkResult["msg"]);
+    } else {
+      createMessage.success('Check stream success');
+    }
     reload();
   }
 </script>

@@ -1,6 +1,6 @@
 import { defHttp } from '/@/utils/http/axios';
 
-import { BasicApiResponse, VideoApiResponse } from '../model/baseModel';
+import { BasicApiResponse, VideoApiResponse, BasicResponseCap } from '../model/baseModel';
 
 enum Api {
   getMediaServer = '/media/get',
@@ -48,5 +48,12 @@ export function AddDevice(params: any) {
 }
 
 export function DeviceCheck(params: any) {
-  return defHttp.post({ url: Api.deviceCheck, params }, { apiUrl: 'algorithm' });
+  const res = defHttp
+    .post({ url: Api.deviceCheck, params }, { apiUrl: 'algorithm', isTransformResponse: false })
+    .then((res) => {
+      // console.info("DeviceCheck => " + JSON.stringify(res))
+      return res;
+    });
+  // console.info("DeviceCheck => " + JSON.stringify(res))
+  return res;
 }
