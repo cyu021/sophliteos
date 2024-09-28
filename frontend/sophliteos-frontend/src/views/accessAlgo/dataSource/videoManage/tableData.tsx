@@ -73,6 +73,13 @@ export function getBasicColumns(): BasicColumn[] {
       width: 120,
       align: 'left',
       ellipsis: false,
+      customRender: ({ record }) => {
+        const codec = record.codec;
+        const color = ((codec === "h264") || (codec === "h265")) ? 'green' : 'red';
+        // const color = ((codec === "h265")) ? 'green' : 'red';
+        const text = codec
+        return h(Tag, { color: color }, () => text);
+      },
     },
     {
       title: t('dataSource.videoManage.resolution')+'\n(Support 1920x1080)',
@@ -80,6 +87,12 @@ export function getBasicColumns(): BasicColumn[] {
       width: 120,
       align: 'left',
       ellipsis: false,
+      customRender: ({ record }) => {
+        const resolution = record.resolution;
+        const color = (resolution === "1920*1080") ? 'green' : 'red';
+        const text = resolution
+        return h(Tag, { color: color }, () => text);
+      },
     },
   ];
 }
