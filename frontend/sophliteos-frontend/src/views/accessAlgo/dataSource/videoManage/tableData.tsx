@@ -68,11 +68,14 @@ export function getBasicColumns(): BasicColumn[] {
     //   align: 'left',
     // },
     {
-      title: t('dataSource.videoManage.encodeFormat')+'\n(Support H.264/H.265)',
+      title: t('dataSource.videoManage.encodeFormat'),
       dataIndex: 'codec',
       width: 120,
       align: 'left',
       ellipsis: false,
+      customHeaderCell: () => {
+        return {style:{whiteSpace: 'pre-wrap'}}
+      },
       customRender: ({ record }) => {
         const codec = record.codec;
         const color = ((codec === "h264") || (codec === "h265")) ? 'green' : 'red';
@@ -82,11 +85,14 @@ export function getBasicColumns(): BasicColumn[] {
       },
     },
     {
-      title: t('dataSource.videoManage.resolution')+'\n(Support 1920x1080)',
+      title: t('dataSource.videoManage.resolution'),
       dataIndex: 'resolution',
       width: 120,
       align: 'left',
       ellipsis: false,
+      customHeaderCell: () => {
+        return {style:{whiteSpace: 'pre-wrap'}}
+      },
       customRender: ({ record }) => {
         const resolution = record.resolution;
         const color = (resolution === "1920*1080") ? 'green' : 'red';
