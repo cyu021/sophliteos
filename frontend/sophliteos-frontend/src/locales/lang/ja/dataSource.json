@@ -31,7 +31,7 @@
     "mediaPull": "プルのフロー状態",
     "isNeedDetect": "検査ステータス",
     "encodeFormat": "エンコード形式",
-    "resolution": "解像度",
+    "resolution": "デバイス解像度",
     "addDevice": "デバイスを追加",
     "editDevice": "機器を編集",
     "allCheck": "全てストリムチェック",

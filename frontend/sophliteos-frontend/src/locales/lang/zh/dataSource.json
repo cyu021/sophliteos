@@ -31,7 +31,7 @@
     "mediaPull": "拉流状态",
     "isNeedDetect": "巡检状态",
     "encodeFormat": "编码格式",
-    "resolution": "分辨率",
+    "resolution": "设备分辨率",
     "addDevice": "新增设备(1920x1080)",
     "editDevice": "编辑设备",
     "allCheck": "全部巡检",

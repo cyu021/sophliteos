@@ -31,7 +31,7 @@
     "mediaPull": "Pull Flow State",
     "isNeedDetect": "Inspection Status",
     "encodeFormat": "Encoding Format",
-    "resolution": "Resolution",
+    "resolution": "Stream Resolution",
     "addDevice": "Add Device (1920x1080)",
     "editDevice": "Edit Equipment",
     "allCheck": "Stream Check",
