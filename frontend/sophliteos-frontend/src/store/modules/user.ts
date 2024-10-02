@@ -67,6 +67,7 @@ export const useUserStore = defineStore({
       setAuthCache(ROLES_KEY, roleList);
     },
     setUserInfo(info: UserInfo | null) {
+      console.info("info=" + JSON.stringify(info))
       this.userInfo = info;
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
@@ -96,15 +97,15 @@ export const useUserStore = defineStore({
 
         // save token
         this.setToken(token);
-        return this.afterLoginAction(goHome);
+        return this.afterLoginAction(loginParams, goHome);
       } catch (error) {
         return Promise.reject(error);
       }
     },
-    async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
+    async afterLoginAction(params:LoginParams, goHome?: boolean): Promise<GetUserInfoModel | null> {
       if (!this.getToken) return null;
       // get user info
-      const userInfo = await this.getUserInfoAction();
+      const userInfo = await this.getUserInfoAction(params);
       const sessionTimeout = this.sessionTimeout;
       if (sessionTimeout) {
         this.setSessionTimeout(false);
@@ -122,18 +123,18 @@ export const useUserStore = defineStore({
       }
       return userInfo;
     },
-    async getUserInfoAction(): Promise<UserInfo | null> {
+    async getUserInfoAction(params?:LoginParams): Promise<UserInfo | null> {
       if (!this.getToken) return null;
       // const userInfo = await getUserInfo();
-      console.info('userInfo='+this.getUserInfo)
+      console.info('userInfo='+JSON.stringify(this.getUserInfo))
       const userInfo = {
         userId: this.getUserInfo.userId, //'1',
-        username: this.getUserInfo.username, //'admin',
-        realName: 'Big Brother',
+        username: params?.username || this.getUserInfo.username, //'admin',
+        realName: params?.username || this.getUserInfo.realName,
         avatar: '',
         desc: 'manager',
-        password: 'fakePassword1',
-        token: 'fakeToken1',
+        password: '',
+        token: '',
         homePath: '',
         roles: [
           {

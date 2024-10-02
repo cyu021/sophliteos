@@ -55,7 +55,7 @@ const ATabs = Tabs;
 const ATabPane = Tabs.TabPane;
 const AButton = Button
 
-const activeKey = ref('hardware');
+const activeKey = ref('services');
 const serviceSteps = ref('');
 
 const hardwareStep = ref('')
