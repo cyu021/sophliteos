@@ -253,6 +253,18 @@
               :placeholder="item.placeholder"
               :disabled=true
             />
+            <a-select 
+              v-if="item.type === 'select'"
+              mode="combobox" 
+              show-search
+              v-model:value="formTimedate['timezone']"
+              @change="handleTZChange">
+              <a-select-option 
+                v-for="i in formTimedate['timezones']" 
+                :key="i">
+                {{i}}
+              </a-select-option>
+            </a-select>
           </a-form-item>
           <a-form-item class="!pl-1/6">
             <a-button type="primary" html-type="submit" :loading="loading">{{
@@ -1177,7 +1189,7 @@
       label: t('maintenance.timedateConfig.timezone'),
       field: 'timezone',
       placeholder: t('sys.form.placeholder'),
-      type: 'input',
+      type: 'select',
     },
     {
       label: t('maintenance.timedateConfig.ntpservers'),
@@ -1258,6 +1270,11 @@
     } finally {
       loading.value = false;
     }
+  };
+
+  const handleTZChange = async (value) => {
+    console.info(`Selected: ${formTimedate['timezone']}`);
+    formTimedate['timezone'] = value;
   };
 
   const submitFormTimedate = async () => {
