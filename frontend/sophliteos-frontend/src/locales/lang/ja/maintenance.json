@@ -152,6 +152,14 @@
     "title": "アラーム閾値",
     "cloud": "クラウドプラットフォームの設定"
   },
+  "timedateConfig": {
+    "timedateConfig": "Time Setting",
+    "localtime": "Local Time",
+    "timezone": "Time Zone",
+    "ntpservers": "Time Servers",
+    "synced": "Time Synchronized",
+    "ntpstat": "NTP service"
+  },
   "ruleTemplate": {
     "modelName": "アルゴリズム名",
     "templateName": "テンプレート名",

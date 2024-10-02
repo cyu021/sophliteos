@@ -152,6 +152,14 @@
     "title": "알람 임계값",
     "cloud": "클라우드 플랫폼 구성"
   },
+  "timedateConfig": {
+    "timedateConfig": "Time Setting",
+    "localtime": "Local Time",
+    "timezone": "Time Zone",
+    "ntpservers": "Time Servers",
+    "synced": "Time Synchronized",
+    "ntpstat": "NTP service"
+  },
   "ruleTemplate": {
     "modelName": "AI Model Name",
     "templateName": "Template Name",

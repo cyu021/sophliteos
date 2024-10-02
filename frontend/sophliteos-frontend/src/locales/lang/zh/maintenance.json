@@ -152,6 +152,14 @@
     "title": "告警阈值配置",
     "cloud": "云平台配置"
   },
+  "timedateConfig": {
+    "timedateConfig": "Time Setting",
+    "localtime": "Local Time",
+    "timezone": "Time Zone",
+    "ntpservers": "Time Servers",
+    "synced": "Time Synchronized",
+    "ntpstat": "NTP service"
+  },
   "ruleTemplate": {
     "modelName": "AI模型名称",
     "templateName": "模版名称",

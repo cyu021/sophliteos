@@ -52,14 +52,14 @@ const overview: AppRouteModule = {
         dynamicLevel: 1,
       },
     },
-    {
-      path: 'threshold',
-      name: 'Threshold',
-      component: () => import('/@/views/maintenance/threshold/index.vue'),
-      meta: {
-        title: t('dashboard.alarmThreshold'),
-      },
-    },
+    // {
+    //   path: 'threshold',
+    //   name: 'Threshold',
+    //   component: () => import('/@/views/maintenance/threshold/index.vue'),
+    //   meta: {
+    //     title: t('dashboard.alarmThreshold'),
+    //   },
+    // },
   ],
 };
 

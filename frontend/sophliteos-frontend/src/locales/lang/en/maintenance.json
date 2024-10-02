@@ -152,6 +152,14 @@
     "title": "Resource Alarm Threshold",
     "cloud": "Cloud Platform Config"
   },
+  "timedateConfig": {
+    "timedateConfig": "Time Setting",
+    "localtime": "Local Time",
+    "timezone": "Time Zone",
+    "ntpservers": "Time Servers",
+    "synced": "Time Synchronized",
+    "ntpstat": "NTP service"
+  },
   "ruleTemplate": {
     "modelName": "AI Model Name",
     "templateName": "Template Name",

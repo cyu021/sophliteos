@@ -46,6 +46,16 @@ export interface AlarmParams {
   tpuRate: number;
 }
 
+export interface TimedateParams {
+  localtimePast: string;
+  localtime: string;
+  timezone: string;
+  ntpservers: string;
+  timezones: string[];
+  synced: string;
+  ntpstat: string;
+}
+
 export interface RollbackParams {
   workflowId: number;
 }

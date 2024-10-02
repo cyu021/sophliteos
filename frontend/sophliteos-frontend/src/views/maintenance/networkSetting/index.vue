@@ -190,6 +190,78 @@
         </a-form>
       </a-skeleton>
     </a-tab-pane>
+    <a-tab-pane key="resourceAlarm" :tab="t('maintenance.threshold.title')">
+      <a-skeleton :loading="pageLoading" active>
+        <a-form
+          :model="formState"
+          v-bind="formItemLayout"
+          class="flex flex-wrap justify-around"
+          size="large"
+        >
+          <a-form-item
+            v-for="item of formItemListAlarm"
+            :key="item.field"
+            :label="item.label"
+            class="w-2/5"
+            :labelCol="{ style: 'width: 150px' }"
+          >
+            <a-input-number
+              v-model:value="formState[item.field]"
+              :placeholder="placeholder"
+              :max="100"
+            >
+              <template #addonAfter>
+                <span v-if="item.unit" :style="{ color }">{{ item.unit }}</span>
+                <percentage-outlined v-else :style="{ color }" />
+              </template>
+            </a-input-number>
+          </a-form-item>
+          <a-form-item class="w-2/5" />
+          <a-form-item :wrapper-col="{ offset: 8, span: 16 }" class="w-2/5 !mr-1/2">
+            <a-button type="primary" @click="submitFormAlarm" :loading="loading">{{
+              t('sys.btn.confirm')
+            }}</a-button>
+          </a-form-item>
+        </a-form>
+      </a-skeleton>
+    </a-tab-pane>
+    <a-tab-pane key="timedateConfig" :tab="t('maintenance.timedateConfig.timedateConfig')">
+      <a-skeleton :loading="pageLoading" active>
+        <a-form
+          :model="formTimedate"
+          v-bind="formItemLayout"
+          size="large"
+          class="w-1/2 !mx-auto"
+          @finish="submitFormTimedate"
+          v-show="!pageLoading"
+        >
+          <a-form-item
+            v-for="item of formTimedateConfig"
+            :key="item.field"
+            :label="item.label"
+            :name="item.field"
+            :labelCol="{ style: 'width: 150px' }"
+          >
+            <a-input
+              v-if="item.type === 'input'"
+              v-model:value="formTimedate[item.field]"
+              :placeholder="item.placeholder"
+            />
+            <a-input
+              v-if="item.type === 'text'"
+              v-model:value="formTimedate[item.field]"
+              :placeholder="item.placeholder"
+              :disabled=true
+            />
+          </a-form-item>
+          <a-form-item class="!pl-1/6">
+            <a-button type="primary" html-type="submit" :loading="loading">{{
+              t('sys.btn.confirm')
+            }}</a-button>
+          </a-form-item>
+        </a-form>
+      </a-skeleton>
+    </a-tab-pane>
   </a-tabs>
   <BasicModal
     v-bind="$attrs"
@@ -210,7 +282,7 @@
 <script lang="ts" setup>
   import { reactive, ref, onMounted, computed, watch, h } from 'vue';
   import type { UnwrapRef } from 'vue';
-  import { ipGet, ipSet } from '/@/api/maintenance/index';
+  import { ipGet, ipSet, getAlarm, setAlarm, getTimedate, setTimedate } from '/@/api/maintenance/index';
   import { Tabs, Modal } from 'ant-design-vue';
   import { ExclamationCircleOutlined, CopyOutlined } from '@ant-design/icons-vue';
 
@@ -218,7 +290,7 @@
   import { copyTextToClipboard } from '/@/hooks/web/useCopyToClipboard';
   import { useMessage } from '/@/hooks/web/useMessage';
 
-  import { IpSetParams } from '/@/api/maintenance/model/index';
+  import { IpSetParams, AlarmParams, TimedateParams } from '/@/api/maintenance/model/index';
   // import { number } from '@intlify/core-base';
   import { IpCheck, subnetMaskCheck, gatewayCheck, dnsCheck } from '/@/utils/validateFuncs';
   import { useDeviceInfo } from '/@/store/modules/overview';
@@ -444,6 +516,9 @@
     // initAlgoConfig();
     initUpUrlConfig();
     initRotateCfgConfig();
+    
+    initResourceAlarmgConfig();
+    initTimedateConfig();
   });
 
   ////////////////////////////////////////////////
@@ -919,7 +994,7 @@
   import { Model } from 'echarts';
 
   const rotateCfgConfig: UnwrapRef<RotateCfgSetParams> = reactive({
-    record: 3,
+    record: 72,
     serviceLog: 3,
   });
 
@@ -952,7 +1027,7 @@
       field: 'record',
       placeholder: t('sys.form.placeholder'),
       type: 'input',
-      suffix: 'days',
+      suffix: 'hours',
     },
     {
       label: t('maintenance.rotateConfig.serviceLog'),
@@ -984,7 +1059,7 @@
 
   const submitFormRotateCfgConfig = () => {
     loading.value = true;
-    var params: rotateCfgParams = { record: 3, serviceLog: 3, retryRows: 1000, enableRetry: false };
+    var params: rotateCfgParams = { record: 72, serviceLog: 3, retryRows: 1000, enableRetry: false };
     params.record = parseInt(rotateCfgConfigMap['rotateCfgConfig'].record, 10);
     params.serviceLog = parseInt(rotateCfgConfigMap['rotateCfgConfig'].serviceLog, 10);
     params.retryRows = parseInt(rotateCfgConfigMap['rotateCfgConfig'].retryRows, 10);
@@ -999,5 +1074,214 @@
       createMessage.error('invalid operation');
     }
     loading.value = false;
+  };
+  
+  const initResourceAlarmgConfig = async () => {
+    const resultAlarm = await getAlarm();
+    console.info("getAlarm => "+JSON.stringify(resultAlarm))
+    if (resultAlarm) {
+      formState.fanSpeed = 9999;
+      formState.boardTemperature = resultAlarm.boardTemperature;
+      formState.coreTemperature = resultAlarm.coreTemperature;
+      formState.cpuRate = Math.round(resultAlarm.cpuRate * 100);
+      formState.totalMemoryScale = Math.round(resultAlarm.totalMemoryScale * 100);
+      // formState.systemScale = resultAlarm.systemScale * 100;
+      // formState.videoScale = resultAlarm.videoScale * 100;
+      formState.tpuScale = Math.round(resultAlarm.tpuScale * 100);
+      // formState.externalHardDiskRate = resultAlarm.externalHardDiskRate * 100;
+      formState.diskRate = Math.round(resultAlarm.diskRate * 100);
+      formState.tpuRate = Math.round(resultAlarm.tpuRate * 100);
+    }
+  };
+
+  const placeholder = t('sys.form.phNumber');
+  const color = '#0960BD';
+  const formItemListAlarm = [
+    // {
+    //   label: t('maintenance.threshold.fanSpeed'),
+    //   field: 'fanSpeed',
+    //   unit: 'r/min',
+    //   placeholder: t('sys.form.placeholder'),
+    //   max: 1000000,
+    // },
+    {
+      label: t('maintenance.threshold.boardTemperature'),
+      field: 'boardTemperature',
+      unit: '°C',
+    },
+    {
+      label: t('maintenance.threshold.coreTemperature'),
+      field: 'coreTemperature',
+      unit: '°C',
+    },
+    {
+      label: t('maintenance.threshold.cpuRate'),
+      field: 'cpuRate',
+      unit: '%',
+    },
+    {
+      label: t('maintenance.threshold.totalMemoryScale'),
+      field: 'totalMemoryScale',
+      unit: '%',
+    },
+    // {
+    //   label: t('maintenance.threshold.memoryScale'),
+    //   field: 'systemScale',
+    // },
+    // {
+    //   label: t('maintenance.threshold.videoScale'),
+    //   field: 'videoScale',
+    // },
+    {
+      label: t('maintenance.threshold.tpuScale'),
+      field: 'tpuScale',
+      unit: '%',
+    },
+    // {
+    //   label: t('maintenance.threshold.externalHardDiskRate'),
+    //   field: 'externalHardDiskRate',
+    // },
+    {
+      label: t('maintenance.threshold.diskRate'),
+      field: 'diskRate',
+      unit: '%',
+    },
+    {
+      label: t('overview.tpuUtililizationRate'),
+      field: 'tpuRate',
+      unit: '%',
+    },
+  ];
+  const formState: UnwrapRef<AlarmParams> = reactive({
+    fanSpeed: 0,
+    boardTemperature: 0,
+    coreTemperature: 0,
+    cpuRate: 90,
+    totalMemoryScale: 90,
+    // systemScale: 90,
+    // videoScale: 90,
+    tpuScale: 90,
+    // externalHardDiskRate: 90,
+    diskRate: 90,
+    tpuRate: 90,
+  });
+
+  const formTimedateConfig = [
+    {
+      label: t('maintenance.timedateConfig.localtime'),
+      field: 'localtime',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.timedateConfig.timezone'),
+      field: 'timezone',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.timedateConfig.ntpservers'),
+      field: 'ntpservers',
+      placeholder: t('sys.form.placeholder'),
+      type: 'input',
+    },
+    {
+      label: t('maintenance.timedateConfig.synced'),
+      field: 'synced',
+      placeholder: t('sys.form.placeholder'),
+      type: 'text',
+    },
+    {
+      label: t('maintenance.timedateConfig.ntpstat'),
+      field: 'ntpstat',
+      placeholder: t('sys.form.placeholder'),
+      type: 'text',
+    },
+  ];
+
+  const initTimedateConfig = async () => {
+    const resultTimedate = await getTimedate();
+    console.info("getTimedate => "+JSON.stringify(resultTimedate))
+    if(resultTimedate) {
+      formTimedate.localtime = resultTimedate.data.localtime
+      formTimedate.localtimePast =formTimedate.localtime
+      formTimedate.timezone = resultTimedate.data.timezone
+      formTimedate.ntpservers = resultTimedate.data.ntpservers
+      formTimedate.timezones = resultTimedate.data.timezones
+      formTimedate.synced = resultTimedate.data.synced
+      formTimedate.ntpstat = resultTimedate.data.ntpstat
+    }
+  };
+
+  const formTimedate: UnwrapRef<TimedateParams> = reactive({
+    localtimePast: '',
+    localtime: '',
+    timezone: '',
+    ntpservers: '',
+    timezones: [],
+    synced: '',
+    ntpstat: '',
+  });
+
+  const submitFormAlarm = async () => {
+    try {
+      loading.value = true;
+      const params = {
+        ...formState,
+      };
+      // 不需要转变的字段
+      const staticFields = ['fanSpeed', 'boardTemperature', 'coreTemperature'];
+      Object.keys(params).forEach((key) => {
+        if (!staticFields.includes(key)) {
+          params[key] = params[key] / 100;
+        }
+      });
+      const isParams = Object.values(params).every((value) => value > 0);
+      if (!isParams) {
+        createMessage.error(`Config value must be greater than 0！`, 1);
+        init();
+      } else {
+        await setAlarm(params)
+          .then(() => {
+            createMessage.success('Done');
+          })
+          .catch(() => {
+            createMessage.error('Failed');
+          });
+      }
+    } catch (error) {
+      // createErrorModal({
+      //   title: t('sys.api.errorTip'),
+      //   content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+      //   getContainer: () => document.body,
+      // });
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const submitFormTimedate = async () => {
+    try {
+      loading.value = true;
+      let formTimedateReq = {...formTimedate}
+      formTimedateReq.timezones = [];
+      if(formTimedate.localtimePast === formTimedate.localtime) {
+        formTimedateReq.localtime = '';
+      }
+      formTimedate.localtimePast = formTimedate.localtime;
+      const params = {
+        ...formTimedateReq,
+      };
+      await setTimedate(params)
+        .then(() => {
+          createMessage.success('Done');
+        })
+        .catch(() => {
+          createMessage.error('Failed');
+        });
+    } catch (error) {
+    } finally {
+      loading.value = false;
+    }
   };
 </script>

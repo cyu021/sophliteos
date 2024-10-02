@@ -4,6 +4,7 @@ import { useGlobSetting } from '/@/hooks/setting';
 import {
   IpSetParams,
   AlarmParams,
+  TimedateParams,
   RollbackParams,
   // UploadFileParamsSys,
   UploadApiResult,
@@ -22,6 +23,7 @@ import { BasicApiResponse } from '../model/baseModel';
 const { uploadUrl = '' } = useGlobSetting();
 
 enum Api {
+  timedate = '/device/configure/timedate',
   IpSet = '/device/ip',
   Alarm = '/device/configure/alarm',
   Upgrade = '/device/ota/upgrade',
@@ -87,6 +89,14 @@ export function setAlarm(params: AlarmParams) {
 // 告警阈值查询
 export function getAlarm() {
   return defHttp.get({ url: Api.Alarm });
+}
+
+export function getTimedate() {
+  return defHttp.get({ url: Api.timedate }, { isTransformResponse: false });
+}
+
+export function setTimedate(params: TimedateParams) {
+  return defHttp.post({ url: Api.timedate, params }, { isTransformResponse: false });
 }
 
 // OTA一键升级
