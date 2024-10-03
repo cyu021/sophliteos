@@ -1,7 +1,7 @@
 <template>
   <div style="margin: 13% 40%">
     <div class="content">
-      <div style="width: 100%; font-size: 25px; font-weight: bold; margin-bottom: 20px">{{
+      <div style="width: 300%; text-align: center; font-size: 25px; font-weight: bold; margin-bottom: 20px">{{
         t('logs.logloading.sysLog')
       }}</div>
       <a-button type="primary" style="width: 80%; height: 40px; font-size: 20px" @click="loading"

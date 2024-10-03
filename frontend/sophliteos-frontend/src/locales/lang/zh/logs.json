@@ -39,7 +39,7 @@
     "deviceSn": "告警设备SN"
   },
   "logloading": {
-    "sysLog": "系统日志下载",
+    "sysLog": "Debug日志下载",
     "loading": "下载"
   },
   "cpu": "CPU",

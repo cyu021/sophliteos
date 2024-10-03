@@ -39,7 +39,7 @@
     "deviceSn": "SN"
   },
   "logloading": {
-    "sysLog": "System Log Export",
+    "sysLog": "Debug Logs Export",
     "loading": "Export"
   },
   "cpu": "CPU",
