@@ -21,6 +21,7 @@
     "expansionRatio": "Detection Expansion Ratio",
     "retentionTime": "Retention Time",
     "notSaveImage": "Do Not Save Image",
+    "iouRatio": "IOU Ratio",
     "top": "Top-Point",
     "center": "Center-Point",
     "bottom": "Bottom-Point",

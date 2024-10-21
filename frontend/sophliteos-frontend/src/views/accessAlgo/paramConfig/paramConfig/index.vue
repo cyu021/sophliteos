@@ -491,6 +491,7 @@
       ExpansionRatio: algo.Extend?.roiExtendRatio || 1.0,
       RetentionTime: algo.Extend?.dwellTimeSec || 3,
       NotSaveImage: algo.Extend?.notSaveImage || false,
+      IouRatio: algo.Extend?.iouRatio || 0.8,
     };
 
     roiMode.value = Array.isArray(algo.Extend?.detectModeRoi) ? algo.Extend?.detectModeRoi : [0, 0];
@@ -582,6 +583,7 @@
     // console.info("RetentionTime="+values.RetentionTime)
     extend.dwellTimeSec = Number(values.RetentionTime == undefined ? 2 : values.RetentionTime);
     extend.notSaveImage = values.NotSaveImage;
+    extend.iouRatio = Number(values.IouRatio == undefined ? 0.8 : values.IouRatio);
 
     extend.detectModeRoi = roiMode.value;
     extend.detectModeCrossline = crossLineMode.value;

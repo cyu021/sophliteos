@@ -21,6 +21,7 @@
     "expansionRatio": "検出ボックス拡張比率",
     "retentionTime": "滞留時間",
     "notSaveImage": "画像を保存しない",
+    "iouRatio": "IOU Ratio",
     "top": "頂点",
     "center": "中心",
     "bottom": "底部",

@@ -21,6 +21,7 @@
     "expansionRatio": "检测框外扩比例",
     "retentionTime": "滞留时间",
     "notSaveImage": "不保存图片",
+    "iouRatio": "IOU Ratio",
     "top": "顶点",
     "center": "中心",
     "bottom": "底部",
