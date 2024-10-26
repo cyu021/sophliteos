@@ -45,7 +45,7 @@ const upload = (params, onUploadProgress) => {
     {
       url: PATH.upload,
       onUploadProgress,
-      timeout: 1000 * 60 * 5,
+      timeout: 1000 * 60 * 30,
       requestOptions: {
         ignoreCancelToken: false,
         isTransformResponse: false,

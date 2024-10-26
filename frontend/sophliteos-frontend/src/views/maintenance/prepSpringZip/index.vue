@@ -205,6 +205,8 @@ const beforeUpload = (file) => {
 async function handleUpload() {
   if (fileList.value.length <= 0) {
     createMessage.error('Select zip file first');
+  } else if(formState.algoName?.trim().length == 0) {
+    createMessage.error('Annotator name must be upper/lowercase letter + number');
   } else {
     return uploadFile()
   }
