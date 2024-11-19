@@ -113,6 +113,190 @@ export const usePermissionStore = defineStore({
       const { t } = useI18n();
       const userStore = useUserStore();
       const appStore = useAppStoreWithOut();
+      console.info("userStore.getUserInfo="+JSON.stringify(userStore.getUserInfo))
+      const sitemapPriv = userStore.getSitemapPriv
+      console.info("userStore.getSitemapPriv="+JSON.stringify(sitemapPriv))
+      // const sitemapPriv = {
+      //   "dashboard.basicInfor": {
+      //     "hide": false,
+      //     "name": "Overview"
+      //   },
+      //   "dashboard.ovewview": {
+      //     "hide": false,
+      //     "name": "OverviewPage",
+      //     "parent": "dashboard.basicInfor"
+      //   },
+      //   "dashboard.accessAlgo": {
+      //     "hide": false,
+      //     "name": "accessAlgo"
+      //   },
+      //   "dashboard.videoManage": {
+      //     "hide": false,
+      //     "name": "videoManage",
+      //     "parent": "dashboard.accessAlgo",
+      //     "function2hide": {
+      //       "create": false,
+      //       "edit": false,
+      //       "delete": false,
+      //       "inspect": false,
+      //       "preview": false
+      //     }
+      //   },
+      //   "dashboard.task": {
+      //     "hide": false,
+      //     "name": "TaskList",
+      //     "parent": "dashboard.accessAlgo",
+      //     "function2hide": {
+      //       "create": false,
+      //       "edit": false,
+      //       "delete": false,
+      //       "trigger": false,
+      //       "preview": false
+      //     }
+      //   },
+      //   "dashboard.AlgoParamConfig": {
+      //     "hide": false,
+      //     "name": "paramList",
+      //     "parent": "dashboard.accessAlgo",
+      //     "function2hide": {
+      //       "update": false,
+      //       "reset": false,
+      //       "upsertRule": false,
+      //       "deleteRule": false
+      //     }
+      //   },
+      //   "dashboard.eventManage": {
+      //     "hide": false,
+      //     "name": "events"
+      //   },
+      //   "dashboard.eventList": {
+      //     "hide": false,
+      //     "name": "EvnetList",
+      //     "parent": "dashboard.eventManage"
+      //   },
+      //   "dashboard.alarmRetrieval": {
+      //     "hide": false,
+      //     "name": "AlarmRetrieval",
+      //     "parent": "dashboard.eventManage"
+      //   },
+      //   "dashboard.algoModel": {
+      //     "hide": false,
+      //     "name": "algoModel"
+      //   },
+      //   "dashboard.algorithm": {
+      //     "hide": false,
+      //     "name": "AlgorithmsList",
+      //     "parent": "dashboard.algoModel",
+      //     "function2hide": {
+      //       "selectFile": false,
+      //       "trigger": false,
+      //       "delete": false
+      //     }
+      //   },
+      //   "dashboard.prepSpringZip": {
+      //     "hide": false,
+      //     "name": "PrepSpringZip",
+      //     "parent": "dashboard.algoModel",
+      //     "function2hide": {
+      //       "selectFile": false,
+      //       "pack": false
+      //     }
+      //   },
+      //   "dashboard.maintenance": {
+      //     "hide": false,
+      //     "name": "Maintenance"
+      //   },
+      //   "dashboard.sysSoft": {
+      //     "hide": false,
+      //     "name": "SysSoft",
+      //     "parent": "dashboard.maintenance"
+      //   },
+      //   "dashboard.softUpdate": {
+      //     "hide": false,
+      //     "name": "softUpdate",
+      //     "parent": "dashboard.maintenance",
+      //     "function2hide": {
+      //       "selectFile": false,
+      //       "upgrade": false,
+      //       "upload": false,
+      //       "restart": false
+      //     }
+      //   },
+      //   "dashboard.sysSetting": {
+      //     "hide": false,
+      //     "name": "NetworkSetting",
+      //     "parent": "dashboard.maintenance",
+      //     "function2hide": {
+      //       "confirm": false
+      //     }
+      //   },
+      //   "dashboard.ruleTemplate": {
+      //     "hide": false,
+      //     "name": "ruleTemplate",
+      //     "parent": "dashboard.maintenance",
+      //     "function2hide": {
+      //       "add": false,
+      //       "import": false,
+      //       "export": false,
+      //       "edit": false,
+      //       "delete": false
+      //     }
+      //   },
+      //   "dashboard.restart": {
+      //     "hide": false,
+      //     "name": "restart",
+      //     "parent": "dashboard.maintenance",
+      //     "function2hide": {
+      //       "hwRestart": false,
+      //       "swRestart": false
+      //     }
+      //   },
+      //   "dashboard.logs": {
+      //     "hide": false,
+      //     "name": "Logs"
+      //   },
+      //   "dashboard.warning": {
+      //     "hide": false,
+      //     "name": "Warning",
+      //     "parent": "dashboard.logs"
+      //   },
+      //   "dashboard.operate": {
+      //     "hide": false,
+      //     "name": "Operate",
+      //     "parent": "dashboard.logs"
+      //   },
+      //   "dashboard.logDownload": {
+      //     "hide": false,
+      //     "name": "logDownload",
+      //     "parent": "dashboard.logs"
+      //   },
+      //   "dashboard.privilege": {
+      //     "hide": false,
+      //     "name": "privilege"
+      //   },
+      //   "dashboard.account": {
+      //     "hide": false,
+      //     "name": "acctMgmt",
+      //     "parent": "dashboard.privilege",
+      //     "function2hide": {
+      //       "create": false,
+      //       "trigger": false,
+      //       "edit": false,
+      //       "delete": false
+      //     }
+      //   },
+      //   "dashboard.role": {
+      //     "hide": false,
+      //     "name": "rolMgmt",
+      //     "parent": "dashboard.privilege",
+      //     "function2hide": {
+      //       "create": false,
+      //       "trigger": false,
+      //       "edit": false,
+      //       "delete": false
+      //     }
+      //   }
+      // };
 
       let routes: AppRouteRecordRaw[] = [];
       const roleList = toRaw(userStore.getRoleList) || [];
@@ -123,6 +307,9 @@ export const usePermissionStore = defineStore({
         const { meta } = route;
         // 抽出角色
         const { roles } = meta || {};
+        // console.info("route="+JSON.stringify(route))
+        // console.info("roles="+JSON.stringify(roles))
+        if(sitemapPriv[route.meta.title] && (sitemapPriv[route.meta.title]['hide'] == true)) return false;
         if (!roles) return true;
         // 进行角色权限判断
         return roleList.some((role) => roles.includes(role));
@@ -168,6 +355,8 @@ export const usePermissionStore = defineStore({
         return;
       };
 
+      // console.info("permissionMode="+permissionMode);
+      // console.info("asyncRoutes="+JSON.stringify(asyncRoutes));
       switch (permissionMode) {
         // 角色权限
         case PermissionModeEnum.ROLE:

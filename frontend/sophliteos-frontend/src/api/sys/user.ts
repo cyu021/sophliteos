@@ -16,6 +16,17 @@ enum Api {
   GetPermCode = '/getPermCode',
   Password = '/device/password',
   TestRetry = '/testRetry',
+  GetAcctPrivSitemap = '/priv/acct/getPrivSitemap',
+}
+
+export function GetWebAcctPrivApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.GetAcctPrivSitemap,
+      params
+    },
+    { isTransformResponse: false }
+  );
 }
 
 /**

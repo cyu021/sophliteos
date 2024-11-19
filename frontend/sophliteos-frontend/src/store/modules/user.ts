@@ -4,10 +4,10 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
-import { getAuthCache, setAuthCache } from '/@/utils/auth';
+import { ROLES_KEY, SITEMAP_PRIV_KEY, TOKEN_KEY, USER_INFO_KEY } from '/@/enums/cacheEnum';
+import { getAuthCache, setAuthCache, clearAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, loginApi } from '/@/api/sys/user';
+import { doLogout, GetWebAcctPrivApi, loginApi } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
@@ -24,6 +24,7 @@ interface UserState {
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  priv: {};
 }
 
 export const useUserStore = defineStore({
@@ -39,8 +40,12 @@ export const useUserStore = defineStore({
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
+    priv: {}
   }),
   getters: {
+    getSitemapPriv(): any {
+      return getAuthCache<any>(SITEMAP_PRIV_KEY) || {};
+    },
     getUserInfo(): UserInfo {
       return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
     },
@@ -58,6 +63,10 @@ export const useUserStore = defineStore({
     },
   },
   actions: {
+    setSitemapPriv(priv: {}) {
+      this.priv = priv;
+      setAuthCache(SITEMAP_PRIV_KEY, priv);
+    },
     setToken(info: string | undefined) {
       this.token = info ? info : ''; // for null or undefined value
       setAuthCache(TOKEN_KEY, info);
@@ -80,6 +89,8 @@ export const useUserStore = defineStore({
       this.token = '';
       this.roleList = [];
       this.sessionTimeout = false;
+      this.priv = {};
+      clearAuthCache();
     },
     /**
      * @description: login
@@ -97,6 +108,7 @@ export const useUserStore = defineStore({
 
         // save token
         this.setToken(token);
+        console.info("setToken now");
         return this.afterLoginAction(loginParams, goHome);
       } catch (error) {
         return Promise.reject(error);
@@ -107,6 +119,13 @@ export const useUserStore = defineStore({
       // get user info
       const userInfo = await this.getUserInfoAction(params);
       const sessionTimeout = this.sessionTimeout;
+      const priv = await GetWebAcctPrivApi({user_id: params.username});
+      if(priv["code"] == 0 && priv["data"] && priv["data"]["sitemap_priv"]) {
+        console.info("this.setSitemapPriv with => " + JSON.stringify(priv["data"]["sitemap_priv"]))
+        this.setSitemapPriv(priv["data"]["sitemap_priv"])
+      }
+      console.info("GetAcctPrivApi=" + JSON.stringify(priv));
+      console.info("this.getSitemapPriv=" + JSON.stringify(this.getSitemapPriv));
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
@@ -171,6 +190,8 @@ export const useUserStore = defineStore({
       this.setToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
+      this.setSitemapPriv({});
+      clearAuthCache();
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
 
@@ -186,6 +207,7 @@ export const useUserStore = defineStore({
         content: () => h('span', t('sys.app.logoutMessage')),
         onOk: async () => {
           await this.logout(true);
+          clearAuthCache();
         },
       });
     },

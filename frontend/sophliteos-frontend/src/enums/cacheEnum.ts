@@ -1,6 +1,8 @@
 // token key
 export const TOKEN_KEY = 'TOKEN__';
 
+export const SITEMAP_PRIV_KEY = 'SITEMAP__PRIV__';
+
 export const LOCALE_KEY = 'LOCALE__';
 
 // user info key
