@@ -5,7 +5,7 @@
   "upgradePackage": "Upgrade Package",
   "rotateConfig": {
     "rotateConfig": "Rotate Config",
-    "inputRotateRetention": "Must between 1 and 180",
+    "inputRotateRetention": "Must between 1 and 4320",
     "record": "Record&Snapshot",
     "serviceLog": "ServiceLog"
   },

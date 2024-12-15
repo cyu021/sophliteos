@@ -5,7 +5,7 @@
   "upgradePackage": "已上传升级包",
   "rotateConfig": {
     "rotateConfig": "旋转配置",
-    "inputRotateRetention": "必须在 1 到 180 之间",
+    "inputRotateRetention": "必须在 1 到 4320 之间",
     "record": "记录&Snapshot",
     "serviceLog": "服务日志"
   },

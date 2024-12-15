@@ -5,7 +5,7 @@
   "upgradePackage": "アップグレードパッケージ",
   "rotateConfig": {
     "rotateConfig": "設定を回転",
-    "inputRotateRetention": "1～180の間でなければなりません",
+    "inputRotateRetention": "1～4320の間でなければなりません",
     "record": "記録&Snapshot",
     "serviceLog": "サービスログ"
   },

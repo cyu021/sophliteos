@@ -69,7 +69,7 @@ export const protocolCheck = (_rule, value) => {
 
 export const rotateRetentionCheck = (_rule, value) => {
   console.log("rotateRetentionCheck on "+value);
-  if(value < 1 || value > 180) {
+  if(value < 1 || value > 4320) {
     return Promise.reject(t('maintenance.rotateConfig.inputRotateRetention'));
   } else {
     return Promise.resolve();
