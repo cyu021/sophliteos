@@ -113,9 +113,9 @@ export const usePermissionStore = defineStore({
       const { t } = useI18n();
       const userStore = useUserStore();
       const appStore = useAppStoreWithOut();
-      console.info("userStore.getUserInfo="+JSON.stringify(userStore.getUserInfo))
+      // console.info("userStore.getUserInfo="+JSON.stringify(userStore.getUserInfo))
       const sitemapPriv = userStore.getSitemapPriv
-      console.info("userStore.getSitemapPriv="+JSON.stringify(sitemapPriv))
+      // console.info("userStore.getSitemapPriv="+JSON.stringify(sitemapPriv))
       // const sitemapPriv = {
       //   "dashboard.basicInfor": {
       //     "hide": false,

@@ -57,5 +57,8 @@
   },
   "privilegeMgmt": "权限管理",
   "acctManage": "账号管理",
-  "privilegeConfig": "权限配置"
+  "privilegeConfig": "权限配置",
+  "privilege": "权限管理",
+  "account": "账号管理",
+  "role": "权限配置"
 }

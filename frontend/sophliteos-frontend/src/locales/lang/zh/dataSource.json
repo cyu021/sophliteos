@@ -51,6 +51,7 @@
   "privilegeCfg": {
     "roleType": "角色类别",
     "addRole": "创建角色",
+    "editRole": "编辑角色",
     "roleName": "角色"
   }
 }

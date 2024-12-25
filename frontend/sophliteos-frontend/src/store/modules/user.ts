@@ -44,7 +44,7 @@ export const useUserStore = defineStore({
   }),
   getters: {
     getSitemapPriv(): any {
-      return getAuthCache<any>(SITEMAP_PRIV_KEY) || {};
+      return this.priv || getAuthCache<any>(SITEMAP_PRIV_KEY) || {};
     },
     getUserInfo(): UserInfo {
       return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
@@ -121,11 +121,11 @@ export const useUserStore = defineStore({
       const sessionTimeout = this.sessionTimeout;
       const priv = await GetWebAcctPrivApi({user_id: params.username});
       if(priv["code"] == 0 && priv["data"] && priv["data"]["sitemap_priv"]) {
-        console.info("this.setSitemapPriv with => " + JSON.stringify(priv["data"]["sitemap_priv"]))
+        // console.info("this.setSitemapPriv with => " + JSON.stringify(priv["data"]["sitemap_priv"]))
         this.setSitemapPriv(priv["data"]["sitemap_priv"])
       }
-      console.info("GetAcctPrivApi=" + JSON.stringify(priv));
-      console.info("this.getSitemapPriv=" + JSON.stringify(this.getSitemapPriv));
+      // console.info("GetAcctPrivApi=" + JSON.stringify(priv));
+      // console.info("this.getSitemapPriv=" + JSON.stringify(this.getSitemapPriv));
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {

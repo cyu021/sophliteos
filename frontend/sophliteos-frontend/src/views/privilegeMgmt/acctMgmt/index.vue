@@ -35,7 +35,7 @@
   import { ref, onMounted } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { Table, Divider, Button, Space } from 'ant-design-vue';
-  import { GetAcctListApi, PostAcctDeleteApi, PostAcctUpsert } from '/@/api/sys/user';
+  import { GetAcctListApi, PostAcctDeleteApi, PostAcctUpsertApi, GetRoleListApi } from '/@/api/sys/user';
   import { useUserStore } from '/@/store/modules/user';
   import { useModal } from '/@/components/Modal';
   import editAcct from './editAcct.vue';
@@ -80,23 +80,25 @@
       dataSource.value = res.data.acctList;
       console.info("AcctList dataSource.value = " + JSON.stringify(dataSource.value));
       // console.info("userInfo = " + JSON.stringify(userStore.$state.userInfo));
+    });
+    GetRoleListApi({}).then((res) => {
       var roleList = []
-      for(let i=0; i < dataSource.value.length; i++) {
-        roleList.push(dataSource.value[i].role)
+      for(let i=0; i < res.data.roleList.length; i++) {
+        roleList.push(res.data.roleList[i]['role_name'])
       }
       // console.info("roleList = " + JSON.stringify(roleList));
-      const acctRoleSet = new Set(roleList)
-      // console.info("acctRoleSet = " + JSON.stringify(acctRoleSet));
-      var acctRoleOptions = [];
-      acctRoleSet.forEach(function(role) {
+      const roleSet = new Set(roleList)
+      // console.info("roleSet = " + JSON.stringify(roleSet));
+      var roleOptions = [];
+      roleSet.forEach(function(role) {
         var roleOption = {}
         roleOption['label'] = role
         roleOption['value'] = role
-        acctRoleOptions.push(roleOption)
+        roleOptions.push(roleOption)
       })
       // console.info("acctRoleOptions = " + JSON.stringify(acctRoleOptions));
       // console.info("options1 = " + JSON.stringify(acctSchema[2].componentProps.options));
-      acctSchema[2].componentProps.options = acctRoleOptions
+      acctSchema[2].componentProps.options = roleOptions
       // console.info("options2 = " + JSON.stringify(acctSchema[2].componentProps.options));
     });
   }
@@ -114,7 +116,7 @@
   }
   
   function AcctSuccess() {
-    createMessage.success('Create account success');
+    createMessage.success('Upsert account success');
     refresh();
   }
 
@@ -123,11 +125,12 @@
   }
   
   function handleDeleteAcct(record) {
-    var result = PostAcctDeleteApi(record)
-    console.info("PostAcctDeleteApi result = " + JSON.stringify(result))
-    sleep(1000);
-    createMessage.success('Delete account success');
-    refresh();
+    PostAcctDeleteApi(record).then((result) => {
+      console.info("PostAcctDeleteApi result = " + JSON.stringify(result))
+      createMessage.success('Delete account success');
+      refresh();
+    })
+    // sleep(1000);
   }
 
   function handleUpdateAcctRole(record) {

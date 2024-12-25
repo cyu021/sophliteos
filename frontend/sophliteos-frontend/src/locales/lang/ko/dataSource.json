@@ -51,6 +51,7 @@
   "privilegeCfg": {
     "roleType": "Role Type",
     "addRole": "Create Role",
+    "editRole": "Edit Role",
     "roleName": "Role"
   }
 }

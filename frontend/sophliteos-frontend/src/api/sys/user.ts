@@ -21,6 +21,61 @@ enum Api {
   GetRoleList = '/priv/role/getList',
   PostAcctUpsert = '/priv/acct/upsert',
   PostAcctDelete = '/priv/acct/delete',
+  PostAcctGet = '/priv/acct/get',
+  PostRoleUpsert = '/priv/role/upsert',
+  PostRoleDelete = '/priv/role/delete',
+  GetRolePrivTpl = '/priv/role/privTpl',
+  PostRoleGet = '/priv/role/get',
+}
+
+export function PostRoleGetApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.PostRoleGet,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function GetRolePrivTplApi(params: {}) {
+  return defHttp.get<{}>(
+    {
+      url: Api.GetRolePrivTpl,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function PostRoleDeleteApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.PostRoleDelete,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function PostRoleUpsertApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.PostRoleUpsert,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function PostAcctGetApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.PostAcctGet,
+      params
+    },
+    { isTransformResponse: false }
+  );
 }
 
 export function PostAcctDeleteApi(params: {}) {
