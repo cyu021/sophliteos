@@ -39,5 +39,18 @@
     "flowType": "Flow 유형",
     "deviceType": "장치 이름",
     "RTSP": "RTSP 주소"
+  },
+  "acctMgmt": {
+    "acctType": "Account Type",
+    "addAcct": "Create Account",
+    "editAcct": "Edit Account",
+    "acctName": "Account",
+    "acctRole": "Role",
+    "acctStatus": "Status"
+  },
+  "privilegeCfg": {
+    "roleType": "Role Type",
+    "addRole": "Create Role",
+    "roleName": "Role"
   }
 }

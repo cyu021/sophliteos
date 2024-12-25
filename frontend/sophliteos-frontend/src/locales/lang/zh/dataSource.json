@@ -39,5 +39,18 @@
     "flowType": "取流类型",
     "deviceType": "设备名称",
     "RTSP": "RTSP地址"
+  },
+  "acctMgmt": {
+    "acctType": "账号类别",
+    "addAcct": "创建帐号",
+    "editAcct": "编辑账号",
+    "acctName": "账号",
+    "acctRole": "角色",
+    "acctStatus": "状态"
+  },
+  "privilegeCfg": {
+    "roleType": "角色类别",
+    "addRole": "创建角色",
+    "roleName": "角色"
   }
 }

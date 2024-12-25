@@ -39,5 +39,18 @@
     "flowType": "プロトコルタイプ",
     "deviceType": "デバイス名",
     "RTSP": "アドレス\n（例：rtsp://xxxxx）"
+  },
+  "acctMgmt": {
+    "acctType": "Account Type",
+    "addAcct": "Create Account",
+    "editAcct": "Edit Account",
+    "acctName": "Account",
+    "acctRole": "Role",
+    "acctStatus": "Status"
+  },
+  "privilegeCfg": {
+    "roleType": "Role Type",
+    "addRole": "Create Role",
+    "roleName": "Role"
   }
 }

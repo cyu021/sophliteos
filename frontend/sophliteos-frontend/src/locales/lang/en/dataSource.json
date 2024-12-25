@@ -39,5 +39,18 @@
     "flowType": "Protocol Type",
     "deviceType": "Device Name",
     "RTSP": "RTSP Address"
+  },
+  "acctMgmt": {
+    "acctType": "Account Type",
+    "addAcct": "Create Account",
+    "editAcct": "Edit Account",
+    "acctName": "Account",
+    "acctRole": "Role",
+    "acctStatus": "Status"
+  },
+  "privilegeCfg": {
+    "roleType": "Role Type",
+    "addRole": "Create Role",
+    "roleName": "Role"
   }
 }

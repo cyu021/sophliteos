@@ -17,6 +17,50 @@ enum Api {
   Password = '/device/password',
   TestRetry = '/testRetry',
   GetAcctPrivSitemap = '/priv/acct/getPrivSitemap',
+  GetAcctList = '/priv/acct/getList',
+  GetRoleList = '/priv/role/getList',
+  PostAcctUpsert = '/priv/acct/upsert',
+  PostAcctDelete = '/priv/acct/delete',
+}
+
+export function PostAcctDeleteApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.PostAcctDelete,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function PostAcctUpsertApi(params: {}) {
+  return defHttp.post<{}>(
+    {
+      url: Api.PostAcctUpsert,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function GetRoleListApi(params: {}) {
+  return defHttp.get<{}>(
+    {
+      url: Api.GetRoleList,
+      params
+    },
+    { isTransformResponse: false }
+  );
+}
+
+export function GetAcctListApi(params: {}) {
+  return defHttp.get<{}>(
+    {
+      url: Api.GetAcctList,
+      params
+    },
+    { isTransformResponse: false }
+  );
 }
 
 export function GetWebAcctPrivApi(params: {}) {

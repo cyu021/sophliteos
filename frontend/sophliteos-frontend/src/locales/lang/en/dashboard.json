@@ -57,5 +57,8 @@
       "SSM software is a management service deployed on AI computing devices, providing functions such as system management, system upgrade, computing device information acquisition, and algorithm application deployment.",
     "liteContent":
       "LiteOS software is based on SSM device management services and provides functions such as device monitoring, alarm query software, and system upgrade on WEB pages"
-  }
+  },
+  "privilegeMgmt": "Privilege Mgmt",
+  "acctManage": "Account Mgmt",
+  "privilegeConfig": "Privilege Config"
 }
