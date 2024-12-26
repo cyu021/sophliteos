@@ -56,7 +56,7 @@
       key: 'action',
     },
   ]);
-  
+
   const refresh = () => {
     GetRoleListApi({}).then((res) => {
       dataSource.value = res.data.roleList;
@@ -90,7 +90,7 @@
           label: t(k),
           required: false,
           defaultValue: (menuTree[k]['hide']==false)? true: false,
-          labelWidth: 250,
+          labelWidth: 200,
         }
         rolePrivFormSchema.push(opt)
         for(const k2 in menuTree[k]['kids']) {
@@ -100,7 +100,7 @@
             label: t(k) + " > " + t(k2),
             required: false,
             defaultValue: (menuTree[k]['kids'][k2]['hide']==false && menuTree[k]['hide']==false)? true: false,
-            labelWidth: 250,
+            labelWidth: 325,
           }
           rolePrivFormSchema.push(opt2)
         }
