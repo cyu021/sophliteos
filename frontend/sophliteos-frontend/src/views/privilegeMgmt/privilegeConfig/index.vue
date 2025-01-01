@@ -58,12 +58,13 @@
   ]);
 
   const refresh = () => {
-    GetRoleListApi({}).then((res) => {
-      dataSource.value = res.data.roleList;
-      console.info("RoleList dataSource.value = " + JSON.stringify(dataSource.value));
-    });
     PostAcctGetApi({"user_id": userStore.$state.userInfo.username}).then((res) => {
       userRole = res.data.acct.role;
+      
+      GetRoleListApi({}).then((res) => {
+        dataSource.value = res.data.roleList;
+        console.info("RoleList dataSource.value = " + JSON.stringify(dataSource.value));
+      });
     });    
     if(rolePrivFormSchema.length == 1) {
     GetRolePrivTplApi({}).then((res) => {
