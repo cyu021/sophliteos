@@ -14,7 +14,7 @@
   import { ref } from 'vue';
 
   const { t } = useI18n();
-  const emit = defineEmits(['success', 'register']);
+  const emit = defineEmits(['success', 'register', 'error']);
 
   const title = ref();
   const [registerForm, { resetFields, validate, setFieldsValue }] = useForm({
@@ -60,12 +60,19 @@
           privCfg[k]['hide'] = true
         }
       }).then(() => {
-        PostRoleUpsertApi({"role_name": values['role_name'], "sitemap_priv": privCfg})
+        PostRoleUpsertApi({"role_name": values['role_name'], "sitemap_priv": privCfg}).then((resp) => {
+          if(resp["code"] != 0) {
+            emit('error', resp["msg"])
+          } else {
+            emit('success');
+            closeModal();
+          }
+        })
       });
       
 
-      emit('success');
-      closeModal();
+      // emit('success');
+      // closeModal();
     } finally {
       setModalProps({ confirmLoading: false });
     }

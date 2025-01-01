@@ -153,6 +153,7 @@
     const usedUrl = getDataSource() ? getDataSource().map((item) => item.deviceName) : [];
     console.info("usedUrl = " + JSON.stringify(usedUrl))
     const algoOptions = await getAbilityOption();
+    console.info("addTask, algoOptions = " + JSON.stringify(algoOptions))
     addOpenModal(true, {
       usedUrl,
       algoOptions: algoOptions,
@@ -179,6 +180,7 @@
 
   async function getAbilityOption() {
     const ret = await getAbilites();
+    console.info("getAbilites = " + JSON.stringify(ret));
     return (
       ret
         .map((item) => ({ label: item.name, value: item.type }))

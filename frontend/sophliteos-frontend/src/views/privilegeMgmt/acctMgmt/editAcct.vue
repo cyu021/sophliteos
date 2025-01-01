@@ -15,7 +15,7 @@
   import md5 from 'crypto-js/md5';
 
   const { t } = useI18n();
-  const emit = defineEmits(['success', 'register']);
+  const emit = defineEmits(['success', 'register', 'error']);
 
   const title = ref();
   const [registerForm, { resetFields, validate, setFieldsValue }] = useForm({
@@ -33,7 +33,7 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     resetFields();
     setModalProps({ confirmLoading: false });
-    // console.info("data = " + JSON.stringify(data))
+    // console.info("editAcct data = " + JSON.stringify(data))
     if (data.record == 'add') {
       title.value = t('dataSource.acctMgmt.addAcct');
       isAdd(false);
@@ -67,11 +67,20 @@
           values['pwd'] = md5(md5(values['user_id']).toString()).toString()
         }
         // console.info("values2 = " + JSON.stringify(values))
-        await PostAcctUpsertApi(values)
+        // await PostAcctUpsertApi(values)
+        PostAcctUpsertApi(values).then((resp) => {
+          console.info("PostAcctUpsertApi = " + JSON.stringify(resp))
+          if(resp["code"] != 0) {
+            emit('error', resp["msg"])
+          } else {
+            emit('success');
+            closeModal();
+          }
+        })
       // }
 
-      emit('success');
-      closeModal();
+      // emit('success');
+      // closeModal();
     } finally {
       setModalProps({ confirmLoading: false });
     }

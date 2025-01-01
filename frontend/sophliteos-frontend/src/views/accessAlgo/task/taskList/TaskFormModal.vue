@@ -48,6 +48,7 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {    
     resetFields();
     algoOptions.value = data.algoOptions;
+    console.info("edit task, algoOptions.value = " + JSON.stringify(algoOptions))
     setModalProps({ confirmLoading: false });
     let video = '';
     const res = await getVideosList();
@@ -60,6 +61,7 @@
       return { label: `${name}-${deviceId}-${url}`, value: JSON.stringify(item) };
     });
 
+    console.info("data.record.types = " + JSON.stringify(data.record.types))
     setFieldsValue({
       ...data.record,
       urlList: video,

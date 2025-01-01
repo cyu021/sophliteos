@@ -76,7 +76,7 @@ export const acctSchema: FormSchema[] = [
   },
   {
     field: 'role',
-    component: 'Select',
+    component: 'CheckboxGroup',
     label: t('dataSource.acctMgmt.acctRole'),
     componentProps: {
       options: [

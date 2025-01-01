@@ -16,13 +16,13 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'action'">
         <Space>
-          <Button v-if="userRole == 'Admin' && record['role_name'] != 'Admin'" type="primary" @click="handleUpdateRole(record)">{{ t('dataSource.privilegeCfg.editRole') }}</Button>
-          <Button v-if="userRole == 'Admin' && record['role_name'] != 'Admin'" type="danger" @click="handleDeleteRole(record)">{{ t('algorithm.delete') }}</Button>
+          <Button v-if="userRole.includes('Admin') && record['role_name'] != 'Admin'" type="primary" @click="handleUpdateRole(record)">{{ t('dataSource.privilegeCfg.editRole') }}</Button>
+          <Button v-if="userRole.includes('Admin') && record['role_name'] != 'Admin'" type="danger" @click="handleDeleteRole(record)">{{ t('algorithm.delete') }}</Button>
         </Space>
       </template>
     </template>
   </Table>
-  <editRole @register="RoleModal" @success="RoleSuccess" />
+  <editRole @register="RoleModal" @success="RoleSuccess" @error="RoleError" />
 </template>
 
 <script setup>
@@ -137,6 +137,11 @@
   
   function RoleSuccess() {
     createMessage.success('Upsert role success');
+    refresh();
+  }
+  
+  function RoleError(msg) {
+    createMessage.error(msg);
     refresh();
   }
   

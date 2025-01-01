@@ -14,13 +14,19 @@
   <Divider />
   <Table :columns="columns" :data-source="dataSource">
     <template #bodyCell="{ column, record }">
-      <template v-if="column.key === 'status'">
+      <template v-if="column.key === 'role'">
+        <Space>
+          <p>{{record[`roleStr`]}}</p>
+        </Space>
+      </template>
+      <!-- <template v-if="column.key === 'status'">
         <Space>
           <p v-if="record.status === '1'">{{ t('algorithm.state_on') }}</p>
           <p v-else>{{ t('algorithm.state_off') }}</p>
         </Space>
       </template>
-      <template v-else-if="column.key === 'action'">
+      <template v-else-if="column.key === 'action'"> -->
+      <template v-if="column.key === 'action'">
         <Space>
           <Button v-if="userStore.$state.userInfo.username != record.user_id && record.user_id != 'admin'" type="primary" @click="handleUpdateAcctRole(record)">{{ t('dataSource.acctMgmt.editAcct') }}</Button>
           <Button v-if="userStore.$state.userInfo.username != record.user_id && record.user_id != 'admin'" type="danger" @click="handleDeleteAcct(record)">{{ t('algorithm.delete') }}</Button>
@@ -28,7 +34,7 @@
       </template>
     </template>
   </Table>
-  <editAcct @register="AcctModal" @success="AcctSuccess" />
+  <editAcct @register="AcctModal" @success="AcctSuccess" @error="AcctError" />
 </template>
 
 <script setup>
@@ -63,11 +69,11 @@
       dataIndex: 'role',
       key: 'role',
     },
-    {
-      title: t('dataSource.acctMgmt.acctStatus'),
-      dataIndex: 'status',
-      key: 'status',
-    },
+    // {
+    //   title: t('dataSource.acctMgmt.acctStatus'),
+    //   dataIndex: 'status',
+    //   key: 'status',
+    // },
     {
       title: t('algorithm.action'),
       dataIndex: 'action',
@@ -78,7 +84,12 @@
   const refresh = () => {
     GetAcctListApi({}).then((res) => {
       dataSource.value = res.data.acctList;
-      console.info("AcctList dataSource.value = " + JSON.stringify(dataSource.value));
+      for(var i=0; i < dataSource.value.length; i++) {
+        dataSource.value[i][`roleStr`] = dataSource.value[i][`role`];
+        dataSource.value[i][`roleStr`] = dataSource.value[i][`roleStr`].replaceAll("[", "").replaceAll("]", "").replaceAll('"', "").replaceAll(",", ", ");
+        dataSource.value[i][`role`] = JSON.parse(dataSource.value[i][`role`]);
+      }
+      // console.info("AcctList dataSource.value = " + JSON.stringify(dataSource.value));
       // console.info("userInfo = " + JSON.stringify(userStore.$state.userInfo));
     });
     GetRoleListApi({}).then((res) => {
@@ -119,6 +130,11 @@
     createMessage.success('Upsert account success');
     refresh();
   }
+  
+  function AcctError(msg) {
+    createMessage.error(msg);
+    refresh();
+  }
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -134,7 +150,8 @@
   }
 
   function handleUpdateAcctRole(record) {
-    OpenAcctModal(true, {record});
+    // console.info("handleUpdateAcctRole => " + JSON.stringify(record))
+    OpenAcctModal(true, { record });
   }
 
 </script>

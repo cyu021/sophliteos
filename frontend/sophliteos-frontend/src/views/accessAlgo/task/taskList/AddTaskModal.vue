@@ -47,6 +47,7 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     resetFields();
     algoOptions.value = data.algoOptions;
+    console.info("add task, algoOptions.value = " + JSON.stringify(algoOptions))
     const res = await getVideosList();
     setModalProps({ confirmLoading: false });
     urlList.value = res.filter((item) => !data.usedUrl.includes(item.name));
