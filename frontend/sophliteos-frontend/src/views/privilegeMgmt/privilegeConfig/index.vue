@@ -23,6 +23,15 @@
     </template>
   </Table>
   <editRole @register="RoleModal" @success="RoleSuccess" @error="RoleError" />
+  
+  <editRole
+      :extend="extend"
+      @register="RoleModal"
+      :taskName="taskId"
+      :algorithmName="algorithmName"
+      @success="RoleSuccess"
+      @error="RoleError"
+    />
 </template>
 
 <script setup>
@@ -124,12 +133,13 @@
   }
 
   function handleUpdateRole(record) {
-    PostRoleGetApi(record).then((res) => {
-      for(const k in res.data.sitemap_priv) {
-        record[k] = (res.data.sitemap_priv[k]['hide'] == false) ? true: false;
-      }
-      OpenRoleModal(true, { record });
-    })
+    // PostRoleGetApi(record).then((res) => {
+    //   for(const k in res.data.sitemap_priv) {
+    //     record[k] = (res.data.sitemap_priv[k]['hide'] == false) ? true: false;
+    //   }
+    //   OpenRoleModal(true, { record });
+    // })
+    OpenRoleModal(true, { record });
   }
 
   function sleep(ms) {
