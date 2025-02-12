@@ -28,10 +28,18 @@ func (b *ResourceApi) NewResource(c *gin.Context) {
 	case "arm64":
 		resource := GetArmResource(c)
 		c.JSON(http.StatusOK, handle.Success(resource))
+	case "amd64":
+		resource := GetAmd64Resource(c)
+		c.JSON(http.StatusOK, handle.Success(resource))
 	default:
 		resource := getPcieResource(c)
 		c.JSON(http.StatusOK, handle.Success(resource))
 	}
+}
+
+func GetAmd64Resource(c *gin.Context) response.Resource {
+	resource := response.Resource{}
+	return resource
 }
 
 func getPcieResource(c *gin.Context) response.PcieResource {
