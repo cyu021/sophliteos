@@ -36,6 +36,7 @@
   "memory": "メモリ",
   "size": "サイズ",
   "disk": "ディスク(eMMC)",
+  "diskSsd": "ディスク(SSD)",
   "diskExt": "ディスク(HDD)",
   "zong": "合計",
   "ge": " ",

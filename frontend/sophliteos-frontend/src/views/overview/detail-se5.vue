@@ -4,7 +4,7 @@
     <a-row class="se5-row">
       <a-col :xs="24" :lg="12">
         <a-descriptions :title="t('overview.basicInfor')" bordered :column="1">
-          <a-descriptions-item :label="t('overview.deviceName')">
+          <a-descriptions-item v-if="deviceInfoStore.deviceType !== 'X86_64'" :label="t('overview.deviceName')">
             <span class="editName">
               <span v-if="!edit">{{ deviceInfo.deviceName }}</span>
               <a-input
@@ -30,14 +30,14 @@
           <a-descriptions-item :label="t('overview.device.sn')">{{
             originData.deviceSn
           }}</a-descriptions-item>
-          <a-descriptions-item :label="t('overview.device.sdkVersion')">{{
+          <a-descriptions-item v-if="deviceInfoStore.deviceType !== 'X86_64'" :label="t('overview.device.sdkVersion')">{{
             originData.sdkVersion
           }}</a-descriptions-item>
-          <a-descriptions-item :label="t('overview.buildTime')">{{
+          <a-descriptions-item v-if="deviceInfoStore.deviceType !== 'X86_64'" :label="t('overview.buildTime')">{{
             originData.bmssmVersion
           }}</a-descriptions-item>
           <a-descriptions-item label="WAN IP">{{ originData.wanIp }}</a-descriptions-item>
-          <a-descriptions-item label="LAN IP">
+          <a-descriptions-item v-if="deviceInfoStore.deviceType !== 'X86_64'" label="LAN IP">
             {{ originData.lanIp.split(',')[0] || '' }}
             <br />
             {{ originData.lanIp.split(',')[1] || '' }}
@@ -69,7 +69,7 @@
               :unit="t('overview.coreTemperature') + '（℃）'"
             />
           </a-col>
-          <a-col :xs="12" :md="12" :xl="12">
+          <a-col v-if="deviceInfoStore.deviceType !== 'X86_64'" :xs="12" :md="12" :xl="12">
             <GaugeChart
               :value="originData?.coreComputingUnit?.board[0].temperature"
               :unit="t('overview.boardTemperature') + '（℃）'"
@@ -89,7 +89,7 @@
   </div>
   <div class="p-24px">
     <a-row class="se5-row">
-      <a-col :xs="24" :lg="12">
+      <a-col :xs="24" :lg="14">
         <a-descriptions :title="t('overview.licInfo')" bordered :column="1">
           <a-descriptions-item :label="t('overview.licDetails.expireDate')">{{
             originData.licInfo['expireDate']
@@ -143,8 +143,54 @@
     if (!originData.value.cpu) {
       return [];
     }
-    return [
-      {
+
+    if(deviceInfoStore.deviceType !== 'X86_64') {
+      return [
+        {
+          title: t('overview.cpu'),
+          usage: originData.value.cpu.usage,
+          text: [
+            `${originData.value.cpu.cores}${t('overview.core')}${
+              originData.value.cpu.frequency / 1000
+            }GHz`,
+          ],
+        },
+        {
+          title: t('overview.memory'),
+          usage: originData.value.memory.usage,
+          total: originData.value.memory.total,
+        },
+        {
+          title: t('overview.disk'),
+          usage: originData.value.disk[0].usage,
+          total: originData.value.disk[0].total,
+        },
+        {
+          title: t('overview.diskExt'),
+          usage: originData.value.disk[1].usage,
+          total: originData.value.disk[1].total,
+        },
+        {
+          title: t('overview.tpu'),
+          usage: originData.value?.coreComputingUnit?.board
+            ? originData.value?.coreComputingUnit?.board[0].chip[0].tpuUtililizationRate
+            : 0,
+          text: [
+            chipTypeMap.get(originData.value?.coreComputingUnit?.board[0].chip[0].chipType),
+            `INT8 ${
+              originData.value?.coreComputingUnit?.board[0].chip[0]?.theoretialCalculationCapacity ||
+              0
+            }TOPS`,
+          ],
+        },
+        {
+          title: t('overview.tpuMemory'),
+          used: originData.value?.coreComputingUnit?.board[0].chip[0].memoryUsedBytes || 0,
+          total: originData.value?.coreComputingUnit?.board[0].chip[0].memoryTotalBytes || 0,
+        },
+      ];
+    } else {
+      return [{
         title: t('overview.cpu'),
         usage: originData.value.cpu.usage,
         text: [
@@ -152,51 +198,51 @@
             originData.value.cpu.frequency / 1000
           }GHz`,
         ],
-      },
-      {
+      },{
         title: t('overview.memory'),
         usage: originData.value.memory.usage,
         total: originData.value.memory.total,
-      },
-      {
-        title: t('overview.disk'),
+      },{
+        title: t('overview.diskRoot'),
         usage: originData.value.disk[0].usage,
         total: originData.value.disk[0].total,
-      },
-      {
-        title: t('overview.diskExt'),
+      },{
+        title: t('overview.diskData'),
         usage: originData.value.disk[1].usage,
         total: originData.value.disk[1].total,
-      },
-      {
-        title: t('overview.tpu'),
-        usage: originData.value?.coreComputingUnit?.board
-          ? originData.value?.coreComputingUnit?.board[0].chip[0].tpuUtililizationRate
-          : 0,
-        text: [
-          chipTypeMap.get(originData.value?.coreComputingUnit?.board[0].chip[0].chipType),
-          `INT8 ${
-            originData.value?.coreComputingUnit?.board[0].chip[0]?.theoretialCalculationCapacity ||
-            0
-          }TOPS`,
-        ],
-      },
-      {
-        title: t('overview.tpuMemory'),
-        used: originData.value?.coreComputingUnit?.board[0].chip[0].memoryUsedBytes || 0,
-        total: originData.value?.coreComputingUnit?.board[0].chip[0].memoryTotalBytes || 0,
-      },
-    ];
+      }];
+    }
+    
   });
 
   // 动态运行时间
   const dynTime = computed(() => {
-    return getFormatTime(deviceInfo.value.runTime, t);
+    // console.info("dynTime(" + deviceInfo.value.runTime + ")");
+    if(!(parseInt(deviceInfo.value.runTime) >= 0)) {
+      deviceInfoStore.getDeviceInfo().then((result) => {
+        // console.info("[dynTime] deviceInfo.value=" + JSON.stringify(result));
+        loading.value = false;
+        const netValue = result.runTime;
+        deviceInfoStore.updateDevice('runTime', netValue);
+        return getFormatTime(deviceInfo.value.runTime, t);
+      });
+    } else {
+      // console.info("[dynTime] deviceInfo.value=" + JSON.stringify(deviceInfo.value));
+      return getFormatTime(deviceInfo.value.runTime, t);
+    }
   });
 
   const timer = setInterval(() => {
-    const netValue = deviceInfo.value.runTime + 1;
-    deviceInfoStore.updateDevice('runTime', netValue);
+    if(!(parseInt(deviceInfo.value.runTime) >= 0)) {
+      deviceInfoStore.getDeviceInfo().then((result) => {
+        loading.value = false;
+        const netValue = result.runTime;
+        deviceInfoStore.updateDevice('runTime', netValue);
+      });
+    } else {
+      const netValue = parseInt(deviceInfo.value.runTime) + 1;
+      deviceInfoStore.updateDevice('runTime', netValue);
+    }
   }, 1000);
   onUnmounted(() => {
     clearInterval(timer);

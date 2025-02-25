@@ -1,6 +1,6 @@
 <template>
   <a-tabs v-model:activeKey="activeKey" class="!m-4 !p-4 bg-white" animated>
-    <a-tab-pane key="wan" :tab="t('maintenance.newworkSettings.wan')">
+    <a-tab-pane v-if="deviceStore.deviceType !== 'X86_64'" key="wan" :tab="t('maintenance.newworkSettings.wan')">
       <a-skeleton :loading="pageLoading" active>
         <a-form
           :model="wan"
@@ -190,7 +190,7 @@
         </a-form>
       </a-skeleton>
     </a-tab-pane>
-    <a-tab-pane key="resourceAlarm" :tab="t('maintenance.threshold.title')">
+    <a-tab-pane v-if="deviceStore.deviceType !== 'X86_64'" key="resourceAlarm" :tab="t('maintenance.threshold.title')">
       <a-skeleton :loading="pageLoading" active>
         <a-form
           :model="formState"
@@ -266,7 +266,7 @@
               </a-select-option>
             </a-select>
           </a-form-item>
-          <a-form-item class="!pl-1/6">
+          <a-form-item v-if="deviceStore.deviceType !== 'X86_64'" class="!pl-1/6">
             <a-button type="primary" html-type="submit" :loading="loading">{{
               t('sys.btn.confirm')
             }}</a-button>
@@ -318,7 +318,7 @@
   const ATabs = Tabs;
   const ATabPane = Tabs.TabPane;
 
-  const activeKey = ref('wan');
+  const activeKey = ref('timedateConfig');
   const wan: UnwrapRef<IpSetParams> = reactive({
     device: '',
     ipType: 1,
@@ -529,7 +529,10 @@
     initUpUrlConfig();
     initRotateCfgConfig();
     
-    initResourceAlarmgConfig();
+    // console.info("deviceStore.deviceType=" + deviceStore.deviceType)
+    if(deviceStore.deviceType !== "X86_64") {
+      initResourceAlarmgConfig();
+    }
     initTimedateConfig();
   });
 

@@ -37,6 +37,8 @@
   "size": "크기",
   "disk": "디스크(eMMC)",
   "diskExt": "Disk(HDD)",
+  "diskRoot": "Disk(/)",
+  "diskData": "Disk(/data)",
   "zong": "총",
   "ge": " ",
   "basicInfor": "기본 정보",

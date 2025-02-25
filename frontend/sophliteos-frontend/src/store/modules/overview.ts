@@ -24,7 +24,7 @@ export const useDeviceInfo = defineStore({
   id: 'app-device-info',
   state: () => ({
     hasCoreBoard: false,
-    singleBoardArr: ['se5', 'se7', 'se9'],
+    singleBoardArr: ['se5', 'se7', 'se9', 'x86_64'],
     deviceInfo: {
       deviceName: '',
       deviceSn: '',
@@ -77,6 +77,7 @@ export const useDeviceInfo = defineStore({
       if (result) {
         this.originData = result;
         this.originData['licInfo'] = licInfo;
+        // console.info("originData=" + JSON.stringify(this.originData));
         const { cpu, memory, coreComputingUnit, deviceSn, deviceType } = result;
         Object.keys(this.deviceInfo).forEach((key) => {
           if (key === 'runTime') {
@@ -86,7 +87,8 @@ export const useDeviceInfo = defineStore({
             if (
               result.deviceType === 'SE5' ||
               result.deviceType === 'SE7' ||
-              result.deviceType === 'SE9'
+              result.deviceType === 'SE9' ||
+              result.deviceType === 'X86_64'
             ) {
               this.deviceInfo[key] = result?.coreComputingUnit?.board[0]?.chip[0]?.temperature;
             } else {

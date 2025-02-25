@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"os/exec"
 	"sort"
 	"strconv"
 	"strings"
@@ -39,6 +40,107 @@ func (b *ResourceApi) NewResource(c *gin.Context) {
 
 func GetAmd64Resource(c *gin.Context) response.Resource {
 	resource := response.Resource{}
+	resource.DeviceType = "X86_64"
+
+	rootDisk := exec.Command("bash", "-c", `df -m | grep -e '/$' | awk '{print $2","$3}'`)
+	rootDiskBytes, _ := rootDisk.CombinedOutput()
+	rootDiskStr := strings.TrimSpace(string(rootDiskBytes))
+	rootDiskEles := strings.Split(rootDiskStr, ",")
+	rootDiskTotalFp64, _ := strconv.ParseFloat(rootDiskEles[0], 64)
+	rootDiskUsageFp64, _ := strconv.ParseFloat(rootDiskEles[1], 64)
+
+	resource.Disk = append(resource.Disk, response.Disk{Total: rootDiskTotalFp64, Usage: (rootDiskUsageFp64 / rootDiskTotalFp64) * 100})
+	resource.Disk = append(resource.Disk, response.Disk{Total: 0.0, Usage: 0.0})
+
+	temperature := exec.Command("bash", "-c", "cat /sys/class/thermal/thermal_zone*/temp | head -1")
+	temperatureBytes, _ := temperature.CombinedOutput()
+	temperatureInt32, _ := strconv.ParseInt(strings.TrimSpace(string(temperatureBytes)), 10, 32)
+	chip := response.Chip{
+		ChipType:                      0,
+		TheoretialCalculationCapacity: 0.0,
+		MemoryUsedBytes:               0,
+		MemoryTotalBytes:              0,
+		ChipTemperatureCelsius:        int(temperatureInt32 / 1000),
+		Temperature:                   int(temperatureInt32 / 1000),
+	}
+	board := response.Board{}
+	board.Chip = append(board.Chip, chip)
+	resource.CoreComputingUnit.Board = append(resource.CoreComputingUnit.Board, board)
+
+	osRelease := exec.Command("bash", "-c", `cat /etc/os-release | grep PRETTY_NAME | awk -F'"' '{print $2}'`)
+	osReleaseBytes, _ := osRelease.CombinedOutput()
+	resource.OperatingSystem = strings.TrimSpace(string(osReleaseBytes))
+
+	deviceSn := exec.Command("bash", "-c", "dmidecode -s system-serial-number")
+	deviceSnBytes, _ := deviceSn.CombinedOutput()
+	resource.DeviceSn = strings.TrimSpace(string(deviceSnBytes))
+
+	wanIp := exec.Command("bash", "-c", "ip addr | grep 'state UP' -A2 | grep inet | awk '{print $2}' | head -1")
+	wanIpBytes, _ := wanIp.CombinedOutput()
+	resource.WanIP = strings.TrimSpace(string(wanIpBytes))
+	resource.DeviceIP = resource.WanIP
+
+	nicName := exec.Command("bash", "-c", "ip addr | grep 'state UP' -A2 | grep UP | awk '{print $2}' | awk -F':' '{print $1}' | head -1")
+	nicNameBytes, _ := nicName.CombinedOutput()
+	nicNameStr := strings.TrimSpace(string(nicNameBytes))
+
+	macAddr := exec.Command("bash", "-c", "ip addr | grep 'state UP' -A2 | grep 'link/ether' | awk '{print $2}' | head -1")
+	macAddrBytes, _ := macAddr.CombinedOutput()
+
+	bandwidth := exec.Command("bash", "-c", `ethtool `+nicNameStr+` | grep Speed | awk '{print int($2)}' | head -1`)
+	bandwidthBytes, _ := bandwidth.CombinedOutput()
+	bandwidthInt, _ := strconv.ParseInt(strings.TrimSpace(string(bandwidthBytes)), 10, 32)
+
+	nic := response.NetCard{
+		Ip:        resource.WanIP,
+		Name:      nicNameStr,
+		Mac:       strings.TrimSpace(string(macAddrBytes)),
+		Bandwidth: int(bandwidthInt),
+	}
+	resource.NetCard = append(resource.NetCard, nic)
+
+	cpuCores := exec.Command("bash", "-c", `lscpu | grep '^CPU(s):' | awk '{print int($2)}'`)
+	cpuCoresBytes, _ := cpuCores.CombinedOutput()
+	cpuCoresFp64, _ := strconv.ParseFloat(strings.TrimSpace(string(cpuCoresBytes)), 64)
+	resource.Cpu.Cores = cpuCoresFp64
+
+	cpuUsage := exec.Command("bash", "-c", `top -b -n 1 | grep '^%Cpu' | awk '{print $8}'`)
+	cpuUsageBytes, err := cpuUsage.CombinedOutput()
+	if err != nil {
+		fmt.Printf(">>> %v\n", err.Error())
+	}
+	fmt.Printf(">>> cpuUsageBytes=%v\n", string(cpuUsageBytes))
+	cpuUsageFp64, _ := strconv.ParseFloat(strings.TrimSpace(string(cpuUsageBytes)), 64)
+	fmt.Printf(">>> cpuUsageFp64=%v\n", cpuUsageFp64)
+	cpuUsageFp64 = (100.0 - cpuUsageFp64)
+	fmt.Printf(">>> (100.0-cpuUsageFp64)=%v\n", cpuUsageFp64)
+	resource.Cpu.Usage = cpuUsageFp64
+
+	cpuFreq := exec.Command("bash", "-c", `lscpu | grep '^CPU' | grep 'MHz:' | awk '{print int($3)}'`)
+	cpuFreqBytes, _ := cpuFreq.CombinedOutput()
+	cpuFreqInt32, _ := strconv.ParseInt(strings.TrimSpace(string(cpuFreqBytes)), 10, 32)
+	resource.Cpu.Frequency = int(cpuFreqInt32)
+
+	cpuType := exec.Command("bash", "-c", `lscpu | grep '^Model name:' | awk -F':' '{print $2}'`)
+	cpuTypeBytes, _ := cpuType.CombinedOutput()
+	resource.Cpu.Type = strings.TrimSpace(string(cpuTypeBytes))
+
+	cpuArch := exec.Command("bash", "-c", `lscpu | grep '^Architecture' | awk '{print $2}'`)
+	cpuArchBytes, _ := cpuArch.CombinedOutput()
+	resource.Cpu.Arch = strings.TrimSpace(string(cpuArchBytes))
+
+	freeM := exec.Command("bash", "-c", `free -m | grep Mem | awk '{print $2","$3}'`)
+	freeMBytes, _ := freeM.CombinedOutput()
+	freeMStr := strings.TrimSpace(string(freeMBytes))
+	freeMEles := strings.Split(freeMStr, ",")
+	memTotalFp64, _ := strconv.ParseFloat(freeMEles[0], 64)
+	memUsageFp64, _ := strconv.ParseFloat(freeMEles[1], 64)
+	resource.Memory.Total = memTotalFp64
+	resource.Memory.Usage = (memUsageFp64 / memTotalFp64) * 100
+
+	uptime := exec.Command("bash", "-c", `awk '{print int($1)}' /proc/uptime`)
+	uptimeBytes, _ := uptime.CombinedOutput()
+	resource.RunTime = strings.TrimSpace(string(uptimeBytes))
 	return resource
 }
 
