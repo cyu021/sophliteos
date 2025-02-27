@@ -234,12 +234,16 @@
 
   const timer = setInterval(() => {
     if(!(parseInt(deviceInfo.value.runTime) >= 0)) {
+      console.info(">>> runTime=" + deviceInfo.value.runTime + ", partInt=" + parseInt(deviceInfo.value.runTime));
+      console.info("getDeviceInfo()");
       deviceInfoStore.getDeviceInfo().then((result) => {
         loading.value = false;
         const netValue = result.runTime;
         deviceInfoStore.updateDevice('runTime', netValue);
+        console.info("<<< runTime=" + deviceInfo.value.runTime + ", partInt=" + parseInt(deviceInfo.value.runTime));
       });
     } else {
+      // console.info("runTime from cache");
       const netValue = parseInt(deviceInfo.value.runTime) + 1;
       deviceInfoStore.updateDevice('runTime', netValue);
     }
